@@ -1,7 +1,10 @@
 import { Lora, Gupter } from "next/font/google";
 import "./globals.css";
+import Navbar from "@/components/sharedUI/Navbar";
+import { Button, styled } from "@mui/material";
+import Link from "next/link";
 
-const lora = Lora({ 
+const lora = Lora({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-lora"
@@ -22,6 +25,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${lora.variable} ${gupter.variable}`}>
+        <Navbar />
         {children}
       </body>
     </html>
