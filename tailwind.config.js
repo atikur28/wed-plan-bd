@@ -5,6 +5,7 @@ module.exports = {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+   darkMode: "class",
   theme: {
     extend: {
       backgroundImage: {
@@ -15,6 +16,10 @@ module.exports = {
       fontFamily: {
         lora: ["var(--font-lora)"],
         gupter: ["var(--font-gupter)"],
+      },
+      colors: {
+        "dark": "#232A3C",
+        "medium": "#293245"
       },
     },
   },

@@ -24,7 +24,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${lora.variable} ${gupter.variable}`}>
+      <body className={`${lora.variable} ${gupter.variable} dark:bg-dark`}>
         <Navbar />
         {children}
       </body>

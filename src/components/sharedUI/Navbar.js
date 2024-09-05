@@ -30,6 +30,7 @@ import Typography from '@mui/material/Typography';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import * as React from 'react';
+import ThemeToggle from '../ui/ThemeToggle';
 
 const drawerWidth = 240;
 
@@ -163,15 +164,16 @@ export default function Navbar() {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar className="fixed 3xl:static bg-white pt-3" open={open}>
-        <Box className="flex justify-end items-center gap-8 mr-5 lg:mr-8">
-          <Link href="/signin" className="text-black font-lora font-medium">SIGN IN</Link>
-          <Link href="/signup" className="text-black font-lora font-medium px-10 py-1.5 bg-[#e1e1e1] hover:bg-[#c4c4c4] rounded-sm">SIGNUP</Link>
+      <AppBar className="fixed 3xl:static bg-white dark:bg-dark pt-3" open={open}>
+        <Box className="flex justify-end items-center gap-2 md:gap-8 mr-5 lg:mr-8">
+          <ThemeToggle />
+          <Link href="/signin" className="text-[12px] md:text-base text-black dark:text-white font-lora font-medium px-2 md:px-10 py-1.5 border rounded-sm">SIGN IN</Link>
+          <Link href="/signup" className="text-[12px] md:text-base text-black font-lora font-medium px-2 md:px-10 py-1.5 bg-[#e1e1e1] hover:bg-[#c4c4c4] rounded-sm">SIGNUP</Link>
         </Box>
         <Box className="flex items-center justify-between">
           <Toolbar>
             <IconButton
-              className="text-black lg:hidden"
+              className="text-black dark:text-white lg:hidden"
               title="Open menu"
               aria-label="open drawer"
               onClick={handleDrawerOpen}
@@ -185,14 +187,14 @@ export default function Navbar() {
             >
               <MenuIcon className="md:text-3xl" />
             </IconButton>
-            <Typography className="text-xl 2xl:text-2xl font-bold font-lora text-black" noWrap component="div">
+            <Typography className="text-xl 2xl:text-2xl font-bold font-lora text-black dark:text-white" noWrap component="div">
               <Link href="/">WedPlan BD</Link>
             </Typography>
           </Toolbar>
           <Box className="flex justify-end items-center">
             <section className="hidden xl:flex items-center justify-end">
               {menus.map((menu) => (
-                <Link href={menu.pathName} key={menu.route} className={`font-lora font-medium mr-10 text-black ${isActive(menu.pathName) ? `font-semibold underline` : `hover:underline`}`}>
+                <Link href={menu.pathName} key={menu.route} className={`font-lora font-medium mr-10 text-black dark:text-white ${isActive(menu.pathName) ? `font-semibold underline` : `hover:underline`}`}>
                   {menu.route}
                 </Link>
               ))}
@@ -207,7 +209,7 @@ export default function Navbar() {
                 onClick={handleMenu}
                 color="inherit"
               >
-                <AccountCircle className="text-black text-4xl" />
+                <AccountCircle className="text-black dark:text-white text-4xl" />
               </IconButton>
               <Menu
                 id="menu-appbar"
