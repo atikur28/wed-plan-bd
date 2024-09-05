@@ -27,7 +27,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={`${lora.variable} ${gupter.variable} dark:bg-medium max-w-[2440px] mx-auto`}>
         <Navbar />
-        <section className="min-h-[80vh]">
+        <section className="min-h-[70vh]">
           {children}
         </section>
         <Footer />
