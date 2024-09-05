@@ -167,8 +167,9 @@ export default function Navbar() {
       <AppBar className="fixed 3xl:static bg-white dark:bg-dark pt-3" open={open}>
         <Box className="flex justify-end items-center gap-2 md:gap-8 mr-5 lg:mr-8">
           <ThemeToggle />
-          <Link href="/signin" className="text-[12px] md:text-base text-black dark:text-white font-lora font-medium px-2 md:px-10 py-1.5 border rounded-sm">SIGN IN</Link>
-          <Link href="/signup" className="text-[12px] md:text-base text-black font-lora font-medium px-2 md:px-10 py-1.5 bg-[#e1e1e1] hover:bg-[#c4c4c4] rounded-sm">SIGNUP</Link>
+          <Link href="/signin" className={`text-[12px] md:text-base text-black dark:text-white font-lora font-medium px-2 md:px-10 py-1.5 border rounded-sm ${isActive("/signin") ? `font-semibold bg-[#e1e1e1]` : `hover:bg-[#e1e1e1]`}`}>SIGN IN</Link>
+
+          <Link href="/signup" className={`text-[12px] md:text-base text-black font-lora font-medium px-2 md:px-10 py-1.5 hover:bg-[#e1e1e1] border rounded-sm ${isActive("/signup") ? `font-semibold bg-[#e1e1e1] border rounded-sm` : ``}`}>SIGNUP</Link>
         </Box>
         <Box className="flex items-center justify-between">
           <Toolbar>
@@ -194,7 +195,7 @@ export default function Navbar() {
           <Box className="flex justify-end items-center">
             <section className="hidden xl:flex items-center justify-end">
               {menus.map((menu) => (
-                <Link href={menu.pathName} key={menu.route} className={`font-lora font-medium mr-10 text-black dark:text-white ${isActive(menu.pathName) ? `font-semibold underline` : `hover:underline`}`}>
+                <Link href={menu.pathName} key={menu.route} className={`font-lora font-medium mr-10 dark:text-white ${isActive(menu.pathName) ? `font-semibold text-black underline` : `text-[#6f6f6f] hover:underline`}`}>
                   {menu.route}
                 </Link>
               ))}

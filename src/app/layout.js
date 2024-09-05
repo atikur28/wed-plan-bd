@@ -3,6 +3,7 @@ import "./globals.css";
 import Navbar from "@/components/sharedUI/Navbar";
 import { Button, styled } from "@mui/material";
 import Link from "next/link";
+import Footer from "@/components/sharedUI/Footer";
 
 const lora = Lora({
   subsets: ["latin"],
@@ -24,9 +25,12 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${lora.variable} ${gupter.variable} dark:bg-dark`}>
+      <body className={`${lora.variable} ${gupter.variable} dark:bg-medium max-w-[2440px] mx-auto`}>
         <Navbar />
-        {children}
+        <section className="min-h-[80vh]">
+          {children}
+        </section>
+        <Footer />
       </body>
     </html>
   );
