@@ -6,54 +6,48 @@ import LockIcon from '@mui/icons-material/Lock';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { Box, Button, IconButton, InputAdornment, TextField, Typography } from '@mui/material';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export default function SignUpForm() {
-    const [formData, setFormData] = useState({
-        firstName: '',
-        lastName: '',
-        gmail: '',
-        password: '',
-        confirmPassword: '',
-    });
+    const router = useRouter();
 
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+
+    const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState({});
     const [showPassword, setShowPassword] = useState(false);
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
-    };
 
     const validateForm = () => {
         const newErrors = {};
 
-        if (!formData.firstName.trim()) {
+        if (!firstName.trim()) {
             newErrors.firstName = 'First name is required';
         }
 
-        if (!formData.lastName.trim()) {
+        if (!lastName.trim()) {
             newErrors.lastName = 'Last name is required';
         }
 
-        if (!formData.gmail.trim()) {
-            newErrors.gmail = 'Gmail is required';
-        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.gmail)) {
-            newErrors.gmail = 'Enter a valid Gmail address';
+        if (!email.trim()) {
+            newErrors.email = 'Email is required';
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            newErrors.email = 'Enter a valid Email address';
         }
 
-        if (!formData.password) {
+        if (!password) {
             newErrors.password = 'Password is required';
-        } else if (formData.password.length < 6) {
+        } else if (password.length < 6) {
             newErrors.password = 'Password must be at least 6 characters long';
         }
 
-        if (!formData.confirmPassword) {
+        if (!confirmPassword) {
             newErrors.confirmPassword = 'Please confirm your password';
-        } else if (formData.password !== formData.confirmPassword) {
+        } else if (password !== confirmPassword) {
             newErrors.confirmPassword = 'Passwords do not match';
         }
 
@@ -61,10 +55,39 @@ export default function SignUpForm() {
         return Object.keys(newErrors).length === 0;
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const handleSubmit = async () => {
+        const registerError = {};
+
         if (validateForm()) {
-            console.log('Form Data:', formData);
+            setLoading(true);
+            const user = {
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                password: password,
+                status: "User",
+            }
+            console.log(user);
+
+            try {
+                let res = await fetch("http://localhost:3000/api/users/signup", {
+                    method: "Post",
+                    body: JSON.stringify(user)
+                });
+                res = await res.json();
+                setLoading(false);
+                setErrors({});
+                setFirstName("");
+                setLastName("");
+                setEmail("");
+                setPassword("");
+                setConfirmPassword("");
+                router.push("/signin")
+                alert("registered successfully!");
+            } catch (error) {
+                registerError.signupError = error;
+                setErrors(registerError);
+            }
         }
     };
 
@@ -73,45 +96,54 @@ export default function SignUpForm() {
     };
 
     return (
-        <Box
-            className="flex flex-col items-center justify-center px-4 py-8 sm:px-6 lg:px-8"
-        >
+        <Box className="flex flex-col items-center justify-center px-4 py-8 sm:px-6 lg:px-8">
             <Box className="max-w-md w-full space-y-8 p-8 border-l border-t rounded-md">
                 <Typography
                     component="h1"
                     variant="h5"
-                    className="text-2xl font-lora font-bold mb-6"
+                    className="text-2xl dark:text-white font-lora font-bold mb-6"
                 >
-                    Sign Up
+                    {loading ? "Processing" : "Sign Up"}
                 </Typography>
-
-                <form className="space-y-4" onSubmit={handleSubmit}>
+                <form className="space-y-4">
                     {/* First Name */}
                     <TextField
                         label="First Name"
-                        variant="outlined"
                         fullWidth
                         required
                         name="firstName"
-                        value={formData.firstName}
-                        onChange={handleChange}
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
                         error={!!errors.firstName}
                         helperText={errors.firstName}
                         sx={{ mt: 2 }}
                         InputProps={{
                             startAdornment: (
                                 <InputAdornment position="start">
-                                    <AccountCircleIcon />
+                                    <AccountCircleIcon className="dark:text-white" />
                                 </InputAdornment>
                             ),
                             sx: {
                                 fontFamily: 'Lora, serif',
+                                color: 'black',
+                                '.Mui-focused': {
+                                    color: 'black',
+                                },
+                                '.MuiInputBase-root': {
+                                    color: 'white', // Change text color
+                                },
                             },
+                            className: 'dark:text-white',
                         }}
                         InputLabelProps={{
                             sx: {
                                 fontFamily: 'Lora, serif',
+                                color: 'black',
+                                '.Mui-focused': {
+                                    color: 'black',
+                                },
                             },
+                            className: 'dark:text-white',
                         }}
                     />
 
@@ -121,55 +153,81 @@ export default function SignUpForm() {
                         variant="outlined"
                         fullWidth
                         name="lastName"
-                        value={formData.lastName}
-                        onChange={handleChange}
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
                         error={!!errors.lastName}
                         helperText={errors.lastName}
                         sx={{ mt: 2 }}
                         InputProps={{
                             startAdornment: (
                                 <InputAdornment position="start">
-                                    <AccountCircleIcon />
+                                    <AccountCircleIcon className="dark:text-white" />
                                 </InputAdornment>
                             ),
                             sx: {
                                 fontFamily: 'Lora, serif',
+                                color: 'black',
+                                '.Mui-focused': {
+                                    color: 'black',
+                                },
+                                '.MuiInputBase-root': {
+                                    color: 'white',
+                                },
                             },
+                            className: 'dark:text-white',
                         }}
                         InputLabelProps={{
                             sx: {
                                 fontFamily: 'Lora, serif',
+                                color: 'black',
+                                '.Mui-focused': {
+                                    color: 'black',
+                                },
                             },
+                            className: 'dark:text-white',
                         }}
                     />
 
-                    {/* Gmail */}
+                    {/* Email */}
                     <TextField
-                        label="Gmail"
+                        label="Email"
                         type="email"
                         variant="outlined"
                         fullWidth
                         required
-                        name="gmail"
-                        value={formData.gmail}
-                        onChange={handleChange}
-                        error={!!errors.gmail}
-                        helperText={errors.gmail}
+                        name="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        error={!!errors.email}
+                        helperText={errors.email}
                         sx={{ mt: 2 }}
                         InputProps={{
                             startAdornment: (
                                 <InputAdornment position="start">
-                                    <EmailIcon />
+                                    <EmailIcon className="dark:text-white" />
                                 </InputAdornment>
                             ),
                             sx: {
                                 fontFamily: 'Lora, serif',
+                                color: 'black',
+                                '.Mui-focused': {
+                                    color: 'black',
+                                },
+                                '.MuiInputBase-root': {
+                                    color: 'white',
+                                },
                             },
+                            className: 'dark:text-white',
                         }}
                         InputLabelProps={{
                             sx: {
                                 fontFamily: 'Lora, serif',
+                                color: 'black',
+                                '.Mui-focused': {
+                                    color: 'black',
+                                },
                             },
+                            className: 'dark:text-white',
                         }}
                     />
 
@@ -181,15 +239,15 @@ export default function SignUpForm() {
                         fullWidth
                         required
                         name="password"
-                        value={formData.password}
-                        onChange={handleChange}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                         error={!!errors.password}
                         helperText={errors.password}
                         sx={{ mt: 2 }}
                         InputProps={{
                             startAdornment: (
                                 <InputAdornment position="start">
-                                    <LockIcon />
+                                    <LockIcon className="dark:text-white" />
                                 </InputAdornment>
                             ),
                             endAdornment: (
@@ -199,18 +257,31 @@ export default function SignUpForm() {
                                         onClick={handleClickShowPassword}
                                         edge="end"
                                     >
-                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                        {showPassword ? <VisibilityOff className="dark:text-white" /> : <Visibility className="dark:text-white" />}
                                     </IconButton>
                                 </InputAdornment>
                             ),
                             sx: {
                                 fontFamily: 'Lora, serif',
+                                color: 'black',
+                                '.Mui-focused': {
+                                    color: 'black',
+                                },
+                                '.MuiInputBase-root': {
+                                    color: 'white',
+                                },
                             },
+                            className: 'dark:text-white',
                         }}
                         InputLabelProps={{
                             sx: {
                                 fontFamily: 'Lora, serif',
+                                color: 'black',
+                                '.Mui-focused': {
+                                    color: 'black',
+                                },
                             },
+                            className: 'dark:text-white',
                         }}
                     />
 
@@ -222,36 +293,50 @@ export default function SignUpForm() {
                         fullWidth
                         required
                         name="confirmPassword"
-                        value={formData.confirmPassword}
-                        onChange={handleChange}
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
                         error={!!errors.confirmPassword}
                         helperText={errors.confirmPassword}
                         sx={{ mt: 2 }}
                         InputProps={{
                             startAdornment: (
                                 <InputAdornment position="start">
-                                    <LockIcon />
+                                    <LockIcon className="dark:text-white" />
                                 </InputAdornment>
                             ),
                             sx: {
                                 fontFamily: 'Lora, serif',
+                                color: 'black',
+                                '.Mui-focused': {
+                                    color: 'black',
+                                },
+                                '.MuiInputBase-root': {
+                                    color: 'white',
+                                },
                             },
+                            className: 'dark:text-white',
                         }}
                         InputLabelProps={{
                             sx: {
                                 fontFamily: 'Lora, serif',
+                                color: 'black',
+                                '.Mui-focused': {
+                                    color: 'black',
+                                },
                             },
+                            className: 'dark:text-white',
                         }}
                     />
 
-                    {/* Submit Button */}
                     <Button
-                        type="submit"
+                        type="button"
                         fullWidth
-                        color="#000000"
-                        sx={{ mt: 4, bgcolor: "#e1e1e1", fontFamily: "lora", fontSize: '16px', fontWeight: 700 }}
+                        variant="contained"
+                        color="primary"
+                        className="bg-gray-400 font-lora font-bold mt-4"
+                        onClick={handleSubmit}
                     >
-                        Sign Up
+                        {loading ? "Signing up..." : "Sign Up"}
                     </Button>
                 </form>
             </Box>
