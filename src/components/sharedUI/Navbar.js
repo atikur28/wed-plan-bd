@@ -31,6 +31,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import * as React from 'react';
 import ThemeToggle from '../ui/ThemeToggle';
+import axios from 'axios';
 
 const drawerWidth = 240;
 
@@ -139,7 +140,35 @@ export default function Navbar() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const pathName = usePathname();
+
+  const checkAuth = async () => {
+    try {
+      const res = await axios.post("/api/users/profile");
+      if (res.data.success) {
+        setIsLoggedIn(true);
+      } else {
+        setIsLoggedIn(false);
+      }
+    } catch (error) {
+      setIsLoggedIn(false);
+    }
+  };
+
+  React.useEffect(() => {
+    checkAuth();
+  }, [pathName]);
+
+  const signout = async () => {
+    try {
+      await axios.get("/api/users/signout");
+      alert("Successfully Signed Out");
+      setIsLoggedIn(false);
+    } catch (error) {
+      alert(error.message);
+    }
+  };
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -167,9 +196,15 @@ export default function Navbar() {
       <AppBar className="fixed 3xl:static bg-white dark:bg-dark pt-3" open={open}>
         <Box className="flex justify-end items-center gap-2 md:gap-8 mr-5 lg:mr-8">
           <ThemeToggle />
-          <Link href="/signin" className={`text-[12px] md:text-base text-black dark:text-white font-lora font-medium px-2 md:px-10 py-1.5 border rounded-sm ${isActive("/signin") ? `font-semibold bg-[#e1e1e1]` : `hover:bg-[#e1e1e1]`}`}>SIGN IN</Link>
+          {
+            !isLoggedIn ? (<>
+              <Link href="/signin" className={`text-[12px] md:text-base text-black dark:text-white dark:hover:text-black font-lora font-medium px-2 md:px-10 py-1.5 border rounded-sm ${isActive("/signin") ? `font-semibold bg-[#e1e1e1]` : `hover:bg-[#e1e1e1]`}`}>SIGN IN</Link>
 
-          <Link href="/signup" className={`text-[12px] md:text-base text-black font-lora font-medium px-2 md:px-10 py-1.5 hover:bg-[#e1e1e1] border rounded-sm ${isActive("/signup") ? `font-semibold bg-[#e1e1e1] border rounded-sm` : ``}`}>SIGNUP</Link>
+              <Link href="/signup" className={`text-[12px] md:text-base text-black dark:text-white dark:hover:text-black font-lora font-medium px-2 md:px-10 py-1.5 hover:bg-[#e1e1e1] border rounded-sm ${isActive("/signup") ? `font-semibold bg-[#e1e1e1] border rounded-sm` : ``}`}>SIGNUP</Link>
+            </>) : (<>
+              <Typography onClick={signout} className={`text-[12px] md:text-base text-black dark:text-white dark:hover:text-black font-lora font-medium px-2 md:px-10 py-1.5 border hover:cursor-pointer rounded-sm ${isActive("/signout") ? `font-semibold bg-[#e1e1e1]` : `hover:bg-[#e1e1e1]`}`}>SIGN OUT</Typography>
+            </>)
+          }
         </Box>
         <Box className="flex items-center justify-between">
           <Toolbar>
