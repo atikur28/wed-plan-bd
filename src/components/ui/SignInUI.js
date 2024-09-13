@@ -1,11 +1,10 @@
 "use client";
 
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { Box, Button, IconButton, InputAdornment, TextField, Typography } from '@mui/material';
+import { Alert, Box, Button, IconButton, InputAdornment, Snackbar, TextField, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
@@ -17,6 +16,8 @@ export default function SignInForm() {
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState({});
     const [showPassword, setShowPassword] = useState(false);
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState("");
 
     const validateForm = () => {
         const newErrors = {};
@@ -43,7 +44,7 @@ export default function SignInForm() {
 
             try {
                 const res = await fetch("/api/users/signin", {
-                    method: "Post",
+                    method: "POST",
                     headers: {
                         'Content-Type': 'application/json',
                     },
@@ -57,20 +58,27 @@ export default function SignInForm() {
                     setEmail("");
                     setPassword("");
                     setErrors({});
-                    alert(result.message);
                     router.push("/");
                 } else {
                     setErrors({ signInError: result.error });
+                    setSnackbarMessage(result.error);
+                    setSnackbarOpen(true);
                 }
             } catch (error) {
                 setLoading(false);
                 setErrors({ signInError: "An unexpected error occurred" });
+                setSnackbarMessage("An unexpected error occurred");
+                setSnackbarOpen(true);
             }
         }
     };
 
     const handleClickShowPassword = () => {
         setShowPassword((prev) => !prev);
+    };
+
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
     };
 
     return (
@@ -180,11 +188,13 @@ export default function SignInForm() {
                             className: 'dark:text-white',
                         }}
                     />
+
                     {errors.signInError && (
                         <Typography color="error" className="font-lora mt-2">
                             {errors.signInError}
                         </Typography>
                     )}
+
                     <Button
                         type="button"
                         fullWidth
@@ -198,6 +208,18 @@ export default function SignInForm() {
                     </Button>
                 </form>
             </Box>
+
+            {/* Snackbar for errors */}
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={4000}
+                onClose={handleSnackbarClose}
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+            >
+                <Alert onClose={handleSnackbarClose} severity="error" sx={{ width: '100%' }}>
+                    {snackbarMessage}
+                </Alert>
+            </Snackbar>
         </Box>
     );
 }

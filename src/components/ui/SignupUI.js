@@ -5,7 +5,7 @@ import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { Box, Button, IconButton, InputAdornment, TextField, Typography } from '@mui/material';
+import { Box, Button, IconButton, InputAdornment, TextField, Typography, Alert, Snackbar } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
@@ -21,6 +21,10 @@ export default function SignUpForm() {
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState({});
     const [showPassword, setShowPassword] = useState(false);
+
+    const [alertOpen, setAlertOpen] = useState(false);
+    const [alertMessage, setAlertMessage] = useState('');
+    const [alertType, setAlertType] = useState('success');
 
     const validateForm = () => {
         const newErrors = {};
@@ -76,23 +80,38 @@ export default function SignUpForm() {
                 });
                 res = await res.json();
                 setLoading(false);
-                setErrors({});
-                setFirstName("");
-                setLastName("");
-                setEmail("");
-                setPassword("");
-                setConfirmPassword("");
-                router.push("/signin")
-                alert("registered successfully!");
+                if (res.success) {
+                    setAlertMessage('Registered successfully!');
+                    setAlertType('success');
+                    setAlertOpen(true);
+                    setErrors({});
+                    setFirstName("");
+                    setLastName("");
+                    setEmail("");
+                    setPassword("");
+                    setConfirmPassword("");
+                } else {
+                    setAlertMessage(res.message || 'Registration failed');
+                    setAlertType('error');
+                    setAlertOpen(true);
+                }
             } catch (error) {
                 registerError.signupError = error;
                 setErrors(registerError);
+                setAlertMessage('An error occurred during registration.');
+                setAlertType('error');
+                setAlertOpen(true);
+                setLoading(false);
             }
         }
     };
 
     const handleClickShowPassword = () => {
         setShowPassword((prev) => !prev);
+    };
+
+    const handleCloseAlert = () => {
+        setAlertOpen(false);
     };
 
     return (
@@ -130,7 +149,7 @@ export default function SignUpForm() {
                                     color: 'black',
                                 },
                                 '.MuiInputBase-root': {
-                                    color: 'white', // Change text color
+                                    color: 'white',
                                 },
                             },
                             className: 'dark:text-white',
@@ -340,6 +359,16 @@ export default function SignUpForm() {
                     </Button>
                 </form>
             </Box>
+            <Snackbar
+                open={alertOpen}
+                autoHideDuration={4000}
+                onClose={handleCloseAlert}
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+            >
+                <Alert onClose={handleCloseAlert} severity={alertType} sx={{ width: '100%' }}>
+                    {alertMessage}
+                </Alert>
+            </Snackbar>
         </Box>
     );
 }

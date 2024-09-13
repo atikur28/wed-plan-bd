@@ -13,7 +13,7 @@ import MediationIcon from '@mui/icons-material/Mediation';
 import MenuIcon from '@mui/icons-material/Menu';
 import SupportIcon from '@mui/icons-material/Support';
 import VillaIcon from '@mui/icons-material/Villa';
-import { Menu, MenuItem } from '@mui/material';
+import { Menu, MenuItem, Snackbar, Alert } from '@mui/material';
 import MuiAppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -36,74 +36,40 @@ import axios from 'axios';
 const drawerWidth = 240;
 
 const menus = [
-  {
-    route: "Home",
-    pathName: "/",
-    icon: HouseIcon
-  },
-  {
-    route: "Venue",
-    pathName: "/venue",
-    icon: VillaIcon
-  },
-  {
-    route: "Supplier",
-    pathName: "/supplier",
-    icon: SupportIcon
-  },
-  {
-    route: "About",
-    pathName: "/about",
-    icon: InfoIcon
-  },
-  {
-    route: "Media",
-    pathName: "/media",
-    icon: MediationIcon
-  },
-  {
-    route: "Contact Us",
-    pathName: "/contact",
-    icon: ContactsIcon
-  }
+  { route: "Home", pathName: "/", icon: HouseIcon },
+  { route: "Venue", pathName: "/venue", icon: VillaIcon },
+  { route: "Supplier", pathName: "/supplier", icon: SupportIcon },
+  { route: "About", pathName: "/about", icon: InfoIcon },
+  { route: "Media", pathName: "/media", icon: MediationIcon },
+  { route: "Contact Us", pathName: "/contact", icon: ContactsIcon }
 ];
 
 const settings = [
-  {
-    route: "Profile",
-    pathName: "/profile",
-    icon: FaceIcon
-  },
-  {
-    route: "Dashboard",
-    pathName: "/dashboard",
-    icon: DashboardIcon
-  }
+  { route: "Profile", pathName: "/profile", icon: FaceIcon },
+  { route: "Dashboard", pathName: "/dashboard", icon: DashboardIcon }
 ];
 
-const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
-  ({ theme }) => ({
-    flexGrow: 1,
-    padding: theme.spacing(1.5),
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    marginLeft: `-${drawerWidth}px`,
-    variants: [
-      {
-        props: ({ open }) => open,
-        style: {
-          transition: theme.transitions.create('margin', {
-            easing: theme.transitions.easing.easeOut,
-            duration: theme.transitions.duration.enteringScreen,
-          }),
-          marginLeft: 0,
-        },
-      },
-    ],
+const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })( ({ theme }) => ({
+  flexGrow: 1,
+  padding: theme.spacing(1.5),
+  transition: theme.transitions.create('margin', {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
   }),
-);
+  marginLeft: `-${drawerWidth}px`,
+  variants: [
+    {
+      props: ({ open }) => open,
+      style: {
+        transition: theme.transitions.create('margin', {
+          easing: theme.transitions.easing.easeOut,
+          duration: theme.transitions.duration.enteringScreen,
+        }),
+        marginLeft: 0,
+      },
+    },
+  ],
+}));
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -141,6 +107,8 @@ export default function Navbar() {
   const [open, setOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  const [snackbarOpen, setSnackbarOpen] = React.useState(false);
+  const [snackbarMessage, setSnackbarMessage] = React.useState('');
   const pathName = usePathname();
 
   const checkAuth = async () => {
@@ -163,10 +131,12 @@ export default function Navbar() {
   const signout = async () => {
     try {
       await axios.get("/api/users/signout");
-      alert("Successfully Signed Out");
+      setSnackbarMessage("Successfully Signed Out");
+      setSnackbarOpen(true);
       setIsLoggedIn(false);
     } catch (error) {
-      alert(error.message);
+      setSnackbarMessage(error.message);
+      setSnackbarOpen(true);
     }
   };
 
@@ -186,6 +156,10 @@ export default function Navbar() {
     setAnchorEl(null);
   };
 
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
+
   const isActive = (path) => {
     return pathName === path;
   }
@@ -197,13 +171,14 @@ export default function Navbar() {
         <Box className="flex justify-end items-center gap-2 md:gap-8 mr-5 lg:mr-8">
           <ThemeToggle />
           {
-            !isLoggedIn ? (<>
-              <Link href="/signin" className={`text-[12px] md:text-base text-black dark:text-white dark:hover:text-black font-lora font-medium px-2 md:px-10 py-1.5 border rounded-sm ${isActive("/signin") ? `font-semibold bg-[#e1e1e1]` : `hover:bg-[#e1e1e1]`}`}>SIGN IN</Link>
-
-              <Link href="/signup" className={`text-[12px] md:text-base text-black dark:text-white dark:hover:text-black font-lora font-medium px-2 md:px-10 py-1.5 hover:bg-[#e1e1e1] border rounded-sm ${isActive("/signup") ? `font-semibold bg-[#e1e1e1] border rounded-sm` : ``}`}>SIGNUP</Link>
-            </>) : (<>
+            !isLoggedIn ? (
+              <>
+                <Link href="/signin" className={`text-[12px] md:text-base text-black dark:text-white dark:hover:text-black font-lora font-medium px-2 md:px-10 py-1.5 border rounded-sm ${isActive("/signin") ? `font-semibold bg-[#e1e1e1]` : `hover:bg-[#e1e1e1]`}`}>SIGN IN</Link>
+                <Link href="/signup" className={`text-[12px] md:text-base text-black dark:text-white dark:hover:text-black font-lora font-medium px-2 md:px-10 py-1.5 hover:bg-[#e1e1e1] border rounded-sm ${isActive("/signup") ? `font-semibold bg-[#e1e1e1] border rounded-sm` : ``}`}>SIGNUP</Link>
+              </>
+            ) : (
               <Typography onClick={signout} className={`text-[12px] md:text-base text-black dark:text-white dark:hover:text-black font-lora font-medium px-2 md:px-10 py-1.5 border hover:cursor-pointer rounded-sm ${isActive("/signout") ? `font-semibold bg-[#e1e1e1]` : `hover:bg-[#e1e1e1]`}`}>SIGN OUT</Typography>
-            </>)
+            )
           }
         </Box>
         <Box className="flex items-center justify-between">
@@ -314,6 +289,16 @@ export default function Navbar() {
       <Main open={open}>
         <DrawerHeader />
       </Main>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={4000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert onClose={handleSnackbarClose} severity={snackbarMessage.includes("Successfully") ? "success" : "error"}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }
