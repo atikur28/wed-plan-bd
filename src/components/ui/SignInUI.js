@@ -50,18 +50,22 @@ export default function SignInForm() {
                     },
                     body: JSON.stringify({ email, password }),
                 });
-
+    
                 const result = await res.json();
                 setLoading(false);
-
+    
                 if (res.ok) {
                     setEmail("");
                     setPassword("");
                     setErrors({});
                     router.push("/");
                 } else {
+                    if (result.error === "Please verify your email first.") {
+                        setSnackbarMessage("You need to verify your email to continue.");
+                    } else {
+                        setSnackbarMessage(result.error);
+                    }
                     setErrors({ signInError: result.error });
-                    setSnackbarMessage(result.error);
                     setSnackbarOpen(true);
                 }
             } catch (error) {

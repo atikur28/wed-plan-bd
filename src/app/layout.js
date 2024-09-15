@@ -1,9 +1,7 @@
-import { Lora, Gupter } from "next/font/google";
-import "./globals.css";
-import Navbar from "@/components/sharedUI/Navbar";
-import { Button, styled } from "@mui/material";
-import Link from "next/link";
 import Footer from "@/components/sharedUI/Footer";
+import Navbar from "@/components/sharedUI/Navbar";
+import { Gupter, Lora } from "next/font/google";
+import "./globals.css";
 
 const lora = Lora({
   subsets: ["latin"],
@@ -27,7 +25,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={`${lora.variable} ${gupter.variable} dark:bg-medium max-w-[2440px] mx-auto`}>
         <Navbar />
-        <section className="min-h-[70vh]">
+        <section className="min-h-[60vh]">
           {children}
         </section>
         <Footer />
