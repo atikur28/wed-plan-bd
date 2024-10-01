@@ -31,7 +31,7 @@ export default function Footer() {
           
           {/* Venues Section */}
           <Grid item xs={12} sm={6} md={2} sx={{ textAlign: 'left' }}>
-            <Typography className="text-lg font-bold font-lora text-black dark:text-white">Venues</Typography>
+            <Typography className="text-lg font-bold font-lora text-black dark:text-white">Centers</Typography>
             <Box mt={2}>
               <Link href="/venues/venue1" className="font-lora font-semibold text-black dark:text-white" underline="hover">Abu Dhab</Link><br />
               <Link href="/venues/venue2" className="font-lora font-semibold text-black dark:text-white" underline="hover">Al Ain</Link><br />

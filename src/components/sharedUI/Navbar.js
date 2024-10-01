@@ -37,7 +37,7 @@ const drawerWidth = 240;
 
 const menus = [
   { route: "Home", pathName: "/", icon: HouseIcon },
-  { route: "Venue", pathName: "/venue", icon: VillaIcon },
+  { route: "Centers", pathName: "/centers", icon: VillaIcon },
   { route: "Supplier", pathName: "/supplier", icon: SupportIcon },
   { route: "About", pathName: "/about", icon: InfoIcon },
   { route: "Media", pathName: "/media", icon: MediationIcon },

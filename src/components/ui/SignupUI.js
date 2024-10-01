@@ -5,7 +5,7 @@ import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { Box, Button, IconButton, InputAdornment, TextField, Typography, Alert, Snackbar } from '@mui/material';
+import { Box, Button, IconButton, InputAdornment, MenuItem, TextField, Typography, Alert, Snackbar } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
@@ -17,6 +17,7 @@ export default function SignUpForm() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [userCategory, setUserCategory] = useState(""); // New State for userCategory
 
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState({});
@@ -25,6 +26,18 @@ export default function SignUpForm() {
     const [alertOpen, setAlertOpen] = useState(false);
     const [alertMessage, setAlertMessage] = useState('');
     const [alertType, setAlertType] = useState('success');
+
+    const categories = [
+        "Community Center",
+        "Photographer & Videographer",
+        "Decor and Design",
+        "Attire & Accessories",
+        "Entertainer",
+        "Choreographers",
+        "Honeymoon & Travel",
+        "Makeup Artists",
+        "User"
+    ];
 
     const validateForm = () => {
         const newErrors = {};
@@ -55,6 +68,10 @@ export default function SignUpForm() {
             newErrors.confirmPassword = 'Passwords do not match';
         }
 
+        if (!userCategory) {
+            newErrors.userCategory = 'Please select a category';
+        }
+
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -65,18 +82,19 @@ export default function SignUpForm() {
         if (validateForm()) {
             setLoading(true);
             const user = {
-                firstName: firstName,
-                lastName: lastName,
-                email: email,
-                password: password,
+                firstName,
+                lastName,
+                email,
+                password,
                 status: "User",
-            }
+                userCategory, // Include userCategory in the payload
+            };
             console.log(user);
 
             try {
                 let res = await fetch("http://localhost:3000/api/users/signup", {
                     method: "Post",
-                    body: JSON.stringify(user)
+                    body: JSON.stringify(user),
                 });
                 res = await res.json();
                 setLoading(false);
@@ -90,6 +108,7 @@ export default function SignUpForm() {
                     setEmail("");
                     setPassword("");
                     setConfirmPassword("");
+                    setUserCategory(""); // Reset the category after submission
                 } else {
                     setAlertMessage(res.message || 'Registration failed');
                     setAlertType('error');
@@ -207,6 +226,48 @@ export default function SignUpForm() {
                         }}
                     />
 
+                    {/* Category Selection */}
+                    <TextField
+                        label="Select your activity"
+                        select
+                        fullWidth
+                        name="userCategory"
+                        value={userCategory}
+                        onChange={(e) => setUserCategory(e.target.value)}
+                        error={!!errors.userCategory}
+                        helperText={errors.userCategory}
+                        sx={{ mt: 2 }}
+                        InputProps={{
+                            sx: {
+                                fontFamily: 'Lora, serif',
+                                color: 'black',
+                                '.Mui-focused': {
+                                    color: 'black',
+                                },
+                                '.MuiInputBase-root': {
+                                    color: 'white',
+                                },
+                            },
+                            className: 'dark:text-white',
+                        }}
+                        InputLabelProps={{
+                            sx: {
+                                fontFamily: 'Lora, serif',
+                                color: 'black',
+                                '.Mui-focused': {
+                                    color: 'black',
+                                },
+                            },
+                            className: 'dark:text-white',
+                        }}
+                    >
+                        {categories.map((category, index) => (
+                            <MenuItem key={index} value={category}>
+                                {category}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+
                     {/* Email */}
                     <TextField
                         label="Email"
@@ -274,7 +335,6 @@ export default function SignUpForm() {
                                     <IconButton
                                         aria-label="toggle password visibility"
                                         onClick={handleClickShowPassword}
-                                        edge="end"
                                     >
                                         {showPassword ? <VisibilityOff className="dark:text-white" /> : <Visibility className="dark:text-white" />}
                                     </IconButton>
@@ -348,24 +408,30 @@ export default function SignUpForm() {
                     />
 
                     <Button
-                        type="button"
-                        fullWidth
                         variant="contained"
-                        color="primary"
-                        className="bg-gray-400 font-lora font-bold mt-4"
+                        fullWidth
                         onClick={handleSubmit}
+                        disabled={loading}
+                        sx={{
+                            mt: 2,
+                            backgroundColor: 'darkblue',
+                            fontFamily: 'Lora, serif',
+                            fontWeight: 'bold',
+                            '&:hover': {
+                                backgroundColor: 'darkred',
+                            },
+                        }}
                     >
-                        {loading ? "Signing up..." : "Sign Up"}
+                        {loading ? "Submitting..." : "Sign Up"}
                     </Button>
                 </form>
             </Box>
-            <Snackbar
-                open={alertOpen}
-                autoHideDuration={4000}
-                onClose={handleCloseAlert}
-                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-            >
-                <Alert onClose={handleCloseAlert} severity={alertType} sx={{ width: '100%' }}>
+
+            {/* Alert */}
+            <Snackbar open={alertOpen} autoHideDuration={6000} onClose={handleCloseAlert}
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
+                <Alert onClose={handleCloseAlert} severity={alertType}
+                    sx={{ width: '100%' }}>
                     {alertMessage}
                 </Alert>
             </Snackbar>

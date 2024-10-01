@@ -14,6 +14,7 @@ const userModel = new mongoose.Schema({
         type: String,
         required: [true, "Please provide a password"]
     },
+    userCategory: String,
     status: String,
     isVerified: {
         type: Boolean,
