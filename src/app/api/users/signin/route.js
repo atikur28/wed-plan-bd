@@ -17,7 +17,6 @@ export async function POST(request) {
             return NextResponse.json({ error: "User does not exist!" }, { status: 400 });
         }
 
-        // Check if the user is verified
         if (!user.isVerified) {
             return NextResponse.json({ error: "Please verify your email first." }, { status: 400 });
         }
@@ -32,6 +31,7 @@ export async function POST(request) {
             id: user._id,
             firstName: user.firstName,
             lastName: user.lastName,
+            image: user.image,
             email: user.email
         };
 
@@ -41,7 +41,7 @@ export async function POST(request) {
 
         response.cookies.set("token", token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",  // Set to secure in production
+            secure: process.env.NODE_ENV === "production",
         });
 
         return response;

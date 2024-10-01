@@ -84,10 +84,11 @@ export default function SignUpForm() {
             const user = {
                 firstName,
                 lastName,
+                image: "",
                 email,
                 password,
                 status: "User",
-                userCategory, // Include userCategory in the payload
+                userCategory,
             };
             console.log(user);
 

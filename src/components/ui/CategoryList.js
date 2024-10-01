@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Box, Grid, Card, CardMedia, Typography, Pagination } from "@mui/material";
+import { Box, Grid, Card, CardMedia, Typography, Pagination, PaginationItem } from "@mui/material";
+import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
+import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 import Link from "next/link";
 
 const CategoryList = ({ categories }) => {
@@ -26,7 +28,7 @@ const CategoryList = ({ categories }) => {
             <Link href={`/category/${category.pathName}`}>
               <Card elevation={0}>
                 <CardMedia
-                  className="rounded-lg"
+                  className="rounded-2xl"
                   component="img"
                   height="140"
                   image={category.image}
@@ -47,10 +49,25 @@ const CategoryList = ({ categories }) => {
           page={currentPage}
           onChange={handlePageChange}
           color="primary"
+          renderItem={(item) => (
+            <PaginationItem
+              slots={{ previous: KeyboardDoubleArrowLeftIcon, next: KeyboardDoubleArrowRightIcon }}
+              {...item}
+            />
+          )}
           sx={{
             "& .MuiPaginationItem-root": {
               fontFamily: "'Lora', serif",
               fontWeight: "bold",
+              borderRadius: "8px",
+              backgroundColor: "#edf2f7",
+            },
+            "& .Mui-selected": {
+              backgroundColor: "#9CA3AF",
+              color: "#000",
+            },
+            "& .MuiPaginationItem-root:hover": {
+              backgroundColor: "#e2e8f0",
             },
           }}
         />
