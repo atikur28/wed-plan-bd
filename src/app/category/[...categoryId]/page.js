@@ -1,13 +1,12 @@
-import { Box, Typography, Card, CardContent, CardMedia, Grid, Rating } from "@mui/material";
+import { Box, Card, CardContent, CardMedia, Grid, Rating, Typography } from "@mui/material";
 
 const Category = async ({ params }) => {
-    const res = await fetch(`http://localhost:3028/api/categories/${params.categoryId}`);
+    const res = await fetch(`http://localhost:3002/api/categories/${params.categoryId}`);
     const data = await res.json();
     const providers = data.result;
 
     return (
         <Box className="mt-8 w-[90%] mx-auto mb-10">
-            {/* Category Title */}
             <Typography className="lg:text-lg xl:text-xl font-lora font-semibold mb-8">
                 {providers[0]?.professionName}
             </Typography>
@@ -18,7 +17,6 @@ const Category = async ({ params }) => {
                     <Grid item key={provider._id} xs={12} sm={6} md={4} lg={3}>
                         {/* Card for each provider */}
                         <Card className="shadow-lg">
-                            {/* Provider Image */}
                             <CardMedia
                                 component="img"
                                 height="140"
@@ -26,7 +24,6 @@ const Category = async ({ params }) => {
                                 alt={provider.professionName}
                             />
 
-                            {/* Provider Info */}
                             <CardContent>
                                 <Typography className="font-lora font-semibold" variant="h6">
                                     {provider.name}
@@ -35,13 +32,12 @@ const Category = async ({ params }) => {
                                     Address: {provider.address}
                                 </Typography>
 
-                                {/* Star Rating */}
                                 <Typography className="flex justify-start items-center text-[18px] font-lora font-semibold">
                                     Ratings:
                                     <Rating
                                         name="read-only"
                                         value={provider.rating}
-                                        precision={0.1} // Allows for decimal ratings
+                                        precision={0.1}
                                         readOnly
                                     />
                                 </Typography>
