@@ -35,7 +35,7 @@ const CategoryList = ({ categories }) => {
                   alt={category.name}
                 />
               </Card>
-              <Typography className="xl:text-xl font-lora font-semibold mt-2" component="div">
+              <Typography className="xl:text-xl font-lora font-semibold mt-2 dark:text-white" component="div">
                 {category.name}
               </Typography>
             </Link>

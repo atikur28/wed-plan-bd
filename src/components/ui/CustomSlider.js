@@ -10,6 +10,7 @@ import food2 from "@/assets/slider/food-2.png";
 import { Box, Button, Typography } from "@mui/material";
 import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 const CustomSlider = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -78,7 +79,7 @@ const CustomSlider = () => {
         {/* Slide 1: Photography */}
         <Box
           className={`absolute transition-opacity duration-1000 ease-in-out ${
-            currentIndex === 0 ? "opacity-100" : "opacity-0"
+            currentIndex === 0 ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
           }`}
           style={{
             backgroundImage: `url(${photographer.src})`,
@@ -102,11 +103,14 @@ const CustomSlider = () => {
                 </span>
               </Typography>
               <Typography className="text-[10px] md:text-xl xl:text-3xl font-lora font-medium text-white mt-3 lg:mt-10 mb-2 lg:mb-7 md:max-w-[450px] lg:max-w-[600px]">
-                Capture every beautiful moment with our professional photographers.
+                Capture every beautiful moment with our professional
+                photographers.
               </Typography>
-              <Button className="text-[10px] md:text-base px-4 bg-white text-black font-semibold font-lora">
-                Photographer
-              </Button>
+              <Link href="/category/photography">
+                <Button className="text-[10px] md:text-base px-4 bg-white text-black font-semibold font-lora">
+                  Photographer
+                </Button>
+              </Link>
             </Box>
           </Box>
         </Box>
@@ -114,7 +118,7 @@ const CustomSlider = () => {
         {/* Slide 2: Honeymoon Plan */}
         <Box
           className={`absolute transition-opacity duration-1000 ease-in-out ${
-            currentIndex === 1 ? "opacity-100" : "opacity-0"
+            currentIndex === 1 ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
           }`}
           style={{
             backgroundImage: `url(${honeymoon.src})`,
@@ -132,9 +136,11 @@ const CustomSlider = () => {
               <Typography className="text-[10px] md:text-xl xl:text-3xl font-lora font-medium text-white mt-3 lg:mt-10 mb-2 lg:mb-7 md:max-w-[450px] lg:max-w-[600px]">
                 Plan the perfect honeymoon with our exclusive packages.
               </Typography>
-              <Button className="text-[10px] md:text-base px-4 bg-white text-black font-semibold font-lora">
-                Travel
-              </Button>
+              <Link href="/category/travel">
+                <Button className="text-[10px] md:text-base px-4 bg-white text-black font-semibold font-lora">
+                  Travel
+                </Button>
+              </Link>
             </Box>
           </Box>
         </Box>
@@ -142,7 +148,7 @@ const CustomSlider = () => {
         {/* Slide 3: Food */}
         <Box
           className={`absolute transition-opacity duration-1000 ease-in-out ${
-            currentIndex === 2 ? "opacity-100" : "opacity-0"
+            currentIndex === 2 ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
           }`}
           style={{
             backgroundImage: `url(${communityCenter.src})`,
@@ -153,19 +159,32 @@ const CustomSlider = () => {
           }}
         >
           <Box className="flex justify-evenly items-center h-full">
-            <Image className="w-[80px] md:w-[150px] lg:w-[300px] xl:w-[400px]" src={food} width={400} height={400} alt="Food" />
+            <Image
+              className="w-[80px] md:w-[150px] lg:w-[300px] xl:w-[400px]"
+              src={food}
+              width={400}
+              height={400}
+              alt="Food"
+            />
             <Box className="flex flex-col max-w-[200px] md:max-w-[400px] lg:max-w-[650px]">
               <Box>
                 <Typography className="text-[12px] md:text-xl lg:text-2xl 2xl:text-5xl font-lora font-semibold text-start text-[#60422d]">
                   WHAT – The Wedding Food and Drink
                 </Typography>
                 <Typography className="text-[8px] md:text-[12px] lg:text-[14px] 2xl:text-xl text-start font-lora font-medium text-[#60422d] lg:mt-3 xl:mt-5 lg:mb-2 xl:mb-10">
-                  Delight your guests with exquisite cuisine and crafted cocktails! Choose
-                  from elegant hors d&apos;oeuvres, a stunning wedding cake, and a
-                  personalized menu that reflects your taste.
+                  Delight your guests with exquisite cuisine and crafted
+                  cocktails! Choose from elegant hors d&apos;oeuvres, a stunning
+                  wedding cake, and a personalized menu that reflects your
+                  taste.
                 </Typography>
               </Box>
-              <Image className="w-[60px] md:w-[150px] lg:w-[250px] xl:w-[400px]" src={food2} width={300} height={300} alt="Food" />
+              <Image
+                className="w-[60px] md:w-[150px] lg:w-[250px] xl:w-[400px]"
+                src={food2}
+                width={300}
+                height={300}
+                alt="Food"
+              />
             </Box>
           </Box>
         </Box>
@@ -173,7 +192,7 @@ const CustomSlider = () => {
         {/* Slide 4: Decoration */}
         <Box
           className={`absolute transition-opacity duration-1000 ease-in-out ${
-            currentIndex === 3 ? "opacity-100" : "opacity-0"
+            currentIndex === 3 ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
           }`}
           style={{
             backgroundImage: `url(${decoration.src})`,
@@ -188,14 +207,16 @@ const CustomSlider = () => {
               Transform Your Wedding with Stunning Decor!
             </Typography>
             <Typography className="text-[10px] md:text-[14px] xl:text-2xl text-start font-lora font-medium text-white mt-3 xl:mt-10 mb-2 xl:mb-16">
-              Delight your guests with exquisite cuisine and crafted cocktails! Choose
-              from elegant hors d&apos;oeuvres, a stunning wedding cake, and a personalized
-              menu that reflects your taste. Make your celebration unforgettable with a
-              feast that tantalizes the senses!
+              Delight your guests with exquisite cuisine and crafted cocktails!
+              Choose from elegant hors d&apos;oeuvres, a stunning wedding cake,
+              and a personalized menu that reflects your taste. Make your
+              celebration unforgettable with a feast that tantalizes the senses!
             </Typography>
-            <Button className="text-[10px] md:text-base px-4 bg-white text-black font-semibold font-lora w-max">
-              Decoration
-            </Button>
+            <Link href="/category/decoration">
+              <Button className="text-[10px] md:text-base px-4 bg-white text-black font-semibold font-lora w-max">
+                Decoration
+              </Button>
+            </Link>
           </Box>
         </Box>
       </Box>
