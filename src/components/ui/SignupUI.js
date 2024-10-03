@@ -1,13 +1,20 @@
 "use client";
 
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import EmailIcon from '@mui/icons-material/Email';
-import LockIcon from '@mui/icons-material/Lock';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { Box, Button, IconButton, InputAdornment, MenuItem, TextField, Typography, Alert, Snackbar } from '@mui/material';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import CategoryIcon from '@mui/icons-material/Category';
+import EmailIcon from "@mui/icons-material/Email";
+import LockIcon from "@mui/icons-material/Lock";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { Alert, Box, Button, IconButton, InputAdornment, MenuItem, Snackbar, TextField, Typography } from "@mui/material";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+
+const getCategories = async () => {
+    const res = await fetch("http://localhost:3005/api/categories");
+    const data = await res.json();
+    return data.result;
+};
 
 export default function SignUpForm() {
     const router = useRouter();
@@ -17,59 +24,57 @@ export default function SignUpForm() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-    const [userCategory, setUserCategory] = useState(""); // New State for userCategory
+    const [userCategory, setUserCategory] = useState("");
 
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState({});
     const [showPassword, setShowPassword] = useState(false);
 
     const [alertOpen, setAlertOpen] = useState(false);
-    const [alertMessage, setAlertMessage] = useState('');
-    const [alertType, setAlertType] = useState('success');
+    const [alertMessage, setAlertMessage] = useState("");
+    const [alertType, setAlertType] = useState("success");
 
-    const categories = [
-        "Community Center",
-        "Photographer & Videographer",
-        "Decor and Design",
-        "Attire & Accessories",
-        "Entertainer",
-        "Choreographers",
-        "Honeymoon & Travel",
-        "Makeup Artists",
-        "User"
-    ];
+    const [categories, setCategories] = useState([]);
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            const data = await getCategories();
+            setCategories(data);
+        };
+        fetchCategories();
+    }, []);
 
     const validateForm = () => {
         const newErrors = {};
 
         if (!firstName.trim()) {
-            newErrors.firstName = 'First name is required';
+            newErrors.firstName = "First name is required";
         }
 
         if (!lastName.trim()) {
-            newErrors.lastName = 'Last name is required';
+            newErrors.lastName = "Last name is required";
         }
 
         if (!email.trim()) {
-            newErrors.email = 'Email is required';
+            newErrors.email = "Email is required";
         } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-            newErrors.email = 'Enter a valid Email address';
+            newErrors.email = "Enter a valid Email address";
         }
 
         if (!password) {
-            newErrors.password = 'Password is required';
+            newErrors.password = "Password is required";
         } else if (password.length < 6) {
-            newErrors.password = 'Password must be at least 6 characters long';
+            newErrors.password = "Password must be at least 6 characters long";
         }
 
         if (!confirmPassword) {
-            newErrors.confirmPassword = 'Please confirm your password';
+            newErrors.confirmPassword = "Please confirm your password";
         } else if (password !== confirmPassword) {
-            newErrors.confirmPassword = 'Passwords do not match';
+            newErrors.confirmPassword = "Passwords do not match";
         }
 
         if (!userCategory) {
-            newErrors.userCategory = 'Please select a category';
+            newErrors.userCategory = "Please select a category";
         }
 
         setErrors(newErrors);
@@ -90,18 +95,45 @@ export default function SignUpForm() {
                 status: "User",
                 userCategory,
             };
-            console.log(user);
+
+            const professionFinder = categories?.find((p) => p.pathName === userCategory);
+            const profession = professionFinder?.name;
+            
+            const provider = {
+                name: firstName + " " + lastName,
+                professionImage: "",
+                email: email,
+                cost: "",
+                address: "",
+                status: userCategory,
+                professionName: profession,
+                additionalInfo: [],
+                popularity: []
+            }
 
             try {
-                let res = await fetch("http://localhost:3000/api/users/signup", {
-                    method: "Post",
+                let res = await fetch("http://localhost:3005/api/users/signup", {
+                    method: "POST",
                     body: JSON.stringify(user),
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
                 });
                 res = await res.json();
+
+                let response = await fetch("http://localhost:3005/api/providers/provider-post", {
+                    method: "POST",
+                    body: JSON.stringify(provider),
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
+                response = await response.json();
+
                 setLoading(false);
                 if (res.success) {
-                    setAlertMessage('Registered successfully!');
-                    setAlertType('success');
+                    setAlertMessage("Registered successfully!");
+                    setAlertType("success");
                     setAlertOpen(true);
                     setErrors({});
                     setFirstName("");
@@ -109,17 +141,17 @@ export default function SignUpForm() {
                     setEmail("");
                     setPassword("");
                     setConfirmPassword("");
-                    setUserCategory(""); // Reset the category after submission
+                    setUserCategory("");
                 } else {
-                    setAlertMessage(res.message || 'Registration failed');
-                    setAlertType('error');
+                    setAlertMessage(res.message || "Registration failed");
+                    setAlertType("error");
                     setAlertOpen(true);
                 }
             } catch (error) {
                 registerError.signupError = error;
                 setErrors(registerError);
-                setAlertMessage('An error occurred during registration.');
-                setAlertType('error');
+                setAlertMessage("An error occurred during registration.");
+                setAlertType("error");
                 setAlertOpen(true);
                 setLoading(false);
             }
@@ -163,26 +195,26 @@ export default function SignUpForm() {
                                 </InputAdornment>
                             ),
                             sx: {
-                                fontFamily: 'Lora, serif',
-                                color: 'black',
-                                '.Mui-focused': {
-                                    color: 'black',
+                                fontFamily: "Lora, serif",
+                                color: "black",
+                                ".Mui-focused": {
+                                    color: "black",
                                 },
-                                '.MuiInputBase-root': {
-                                    color: 'white',
+                                ".MuiInputBase-root": {
+                                    color: "white",
                                 },
                             },
-                            className: 'dark:text-white',
+                            className: "dark:text-white",
                         }}
                         InputLabelProps={{
                             sx: {
-                                fontFamily: 'Lora, serif',
-                                color: 'black',
-                                '.Mui-focused': {
-                                    color: 'black',
+                                fontFamily: "Lora, serif",
+                                color: "black",
+                                ".Mui-focused": {
+                                    color: "black",
                                 },
                             },
-                            className: 'dark:text-white',
+                            className: "dark:text-white",
                         }}
                     />
 
@@ -204,26 +236,26 @@ export default function SignUpForm() {
                                 </InputAdornment>
                             ),
                             sx: {
-                                fontFamily: 'Lora, serif',
-                                color: 'black',
-                                '.Mui-focused': {
-                                    color: 'black',
+                                fontFamily: "Lora, serif",
+                                color: "black",
+                                ".Mui-focused": {
+                                    color: "black",
                                 },
-                                '.MuiInputBase-root': {
-                                    color: 'white',
+                                ".MuiInputBase-root": {
+                                    color: "white",
                                 },
                             },
-                            className: 'dark:text-white',
+                            className: "dark:text-white",
                         }}
                         InputLabelProps={{
                             sx: {
-                                fontFamily: 'Lora, serif',
-                                color: 'black',
-                                '.Mui-focused': {
-                                    color: 'black',
+                                fontFamily: "Lora, serif",
+                                color: "black",
+                                ".Mui-focused": {
+                                    color: "black",
                                 },
                             },
-                            className: 'dark:text-white',
+                            className: "dark:text-white",
                         }}
                     />
 
@@ -239,32 +271,38 @@ export default function SignUpForm() {
                         helperText={errors.userCategory}
                         sx={{ mt: 2 }}
                         InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <CategoryIcon className="dark:text-white" />
+                                </InputAdornment>
+                            ),
                             sx: {
-                                fontFamily: 'Lora, serif',
-                                color: 'black',
-                                '.Mui-focused': {
-                                    color: 'black',
+                                fontFamily: "Lora, serif",
+                                color: "black",
+                                ".Mui-focused": {
+                                    color: "black",
                                 },
-                                '.MuiInputBase-root': {
-                                    color: 'white',
+                                ".MuiInputBase-root": {
+                                    color: "white",
                                 },
                             },
-                            className: 'dark:text-white',
+                            className: "dark:text-white",
                         }}
                         InputLabelProps={{
                             sx: {
-                                fontFamily: 'Lora, serif',
-                                color: 'black',
-                                '.Mui-focused': {
-                                    color: 'black',
+                                fontFamily: "Lora, serif",
+                                color: "black",
+                                ".Mui-focused": {
+                                    color: "black",
                                 },
                             },
-                            className: 'dark:text-white',
+                            className: "dark:text-white",
                         }}
                     >
-                        {categories.map((category, index) => (
-                            <MenuItem key={index} value={category}>
-                                {category}
+                        <MenuItem value="user">User</MenuItem>
+                        {categories?.map((category, index) => (
+                            <MenuItem key={index} value={category?.pathName}>
+                                {category?.name}
                             </MenuItem>
                         ))}
                     </TextField>
@@ -289,33 +327,33 @@ export default function SignUpForm() {
                                 </InputAdornment>
                             ),
                             sx: {
-                                fontFamily: 'Lora, serif',
-                                color: 'black',
-                                '.Mui-focused': {
-                                    color: 'black',
+                                fontFamily: "Lora, serif",
+                                color: "black",
+                                ".Mui-focused": {
+                                    color: "black",
                                 },
-                                '.MuiInputBase-root': {
-                                    color: 'white',
+                                ".MuiInputBase-root": {
+                                    color: "white",
                                 },
                             },
-                            className: 'dark:text-white',
+                            className: "dark:text-white",
                         }}
                         InputLabelProps={{
                             sx: {
-                                fontFamily: 'Lora, serif',
-                                color: 'black',
-                                '.Mui-focused': {
-                                    color: 'black',
+                                fontFamily: "Lora, serif",
+                                color: "black",
+                                ".Mui-focused": {
+                                    color: "black",
                                 },
                             },
-                            className: 'dark:text-white',
+                            className: "dark:text-white",
                         }}
                     />
 
                     {/* Password */}
                     <TextField
                         label="Password"
-                        type={showPassword ? 'text' : 'password'}
+                        type={showPassword ? "text" : "password"}
                         variant="outlined"
                         fullWidth
                         required
@@ -334,41 +372,41 @@ export default function SignUpForm() {
                             endAdornment: (
                                 <InputAdornment position="end">
                                     <IconButton
-                                        aria-label="toggle password visibility"
                                         onClick={handleClickShowPassword}
+                                        className="dark:text-white"
                                     >
-                                        {showPassword ? <VisibilityOff className="dark:text-white" /> : <Visibility className="dark:text-white" />}
+                                        {showPassword ? <Visibility /> : <VisibilityOff />}
                                     </IconButton>
                                 </InputAdornment>
                             ),
                             sx: {
-                                fontFamily: 'Lora, serif',
-                                color: 'black',
-                                '.Mui-focused': {
-                                    color: 'black',
+                                fontFamily: "Lora, serif",
+                                color: "black",
+                                ".Mui-focused": {
+                                    color: "black",
                                 },
-                                '.MuiInputBase-root': {
-                                    color: 'white',
+                                ".MuiInputBase-root": {
+                                    color: "white",
                                 },
                             },
-                            className: 'dark:text-white',
+                            className: "dark:text-white",
                         }}
                         InputLabelProps={{
                             sx: {
-                                fontFamily: 'Lora, serif',
-                                color: 'black',
-                                '.Mui-focused': {
-                                    color: 'black',
+                                fontFamily: "Lora, serif",
+                                color: "black",
+                                ".Mui-focused": {
+                                    color: "black",
                                 },
                             },
-                            className: 'dark:text-white',
+                            className: "dark:text-white",
                         }}
                     />
 
                     {/* Confirm Password */}
                     <TextField
                         label="Confirm Password"
-                        type="password"
+                        type={showPassword ? "text" : "password"}
                         variant="outlined"
                         fullWidth
                         required
@@ -384,58 +422,70 @@ export default function SignUpForm() {
                                     <LockIcon className="dark:text-white" />
                                 </InputAdornment>
                             ),
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        onClick={handleClickShowPassword}
+                                        className="dark:text-white"
+                                    >
+                                        {showPassword ? <Visibility /> : <VisibilityOff />}
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
                             sx: {
-                                fontFamily: 'Lora, serif',
-                                color: 'black',
-                                '.Mui-focused': {
-                                    color: 'black',
+                                fontFamily: "Lora, serif",
+                                color: "black",
+                                ".Mui-focused": {
+                                    color: "black",
                                 },
-                                '.MuiInputBase-root': {
-                                    color: 'white',
+                                ".MuiInputBase-root": {
+                                    color: "white",
                                 },
                             },
-                            className: 'dark:text-white',
+                            className: "dark:text-white",
                         }}
                         InputLabelProps={{
                             sx: {
-                                fontFamily: 'Lora, serif',
-                                color: 'black',
-                                '.Mui-focused': {
-                                    color: 'black',
+                                fontFamily: "Lora, serif",
+                                color: "black",
+                                ".Mui-focused": {
+                                    color: "black",
                                 },
                             },
-                            className: 'dark:text-white',
+                            className: "dark:text-white",
                         }}
                     />
 
                     <Button
-                        variant="contained"
+                        type="button"
                         fullWidth
+                        variant="contained"
+                        color="primary"
+                        className="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700"
+                        sx={{ mt: 4 }}
                         onClick={handleSubmit}
                         disabled={loading}
-                        sx={{
-                            mt: 2,
-                            backgroundColor: 'darkblue',
-                            fontFamily: 'Lora, serif',
-                            fontWeight: 'bold',
-                            '&:hover': {
-                                backgroundColor: 'darkred',
-                            },
-                        }}
                     >
-                        {loading ? "Submitting..." : "Sign Up"}
+                        {loading ? "Processing..." : "Sign Up"}
                     </Button>
                 </form>
-            </Box>
 
-            {/* Alert */}
-            <Snackbar open={alertOpen} autoHideDuration={6000} onClose={handleCloseAlert}
-                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
-                <Alert onClose={handleCloseAlert} severity={alertType}
-                    sx={{ width: '100%' }}>
-                    {alertMessage}
-                </Alert>
-            </Snackbar>
+                {/* Snackbar Alert for Success or Error */}
+                <Snackbar
+                    open={alertOpen}
+                    autoHideDuration={6000}
+                    onClose={handleCloseAlert}
+                    anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                >
+                    <Alert
+                        onClose={handleCloseAlert}
+                        severity={alertType}
+                        sx={{ width: "100%" }}
+                    >
+                        {alertMessage}
+                    </Alert>
+                </Snackbar>
+            </Box>
         </Box>
     );
 }
