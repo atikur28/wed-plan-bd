@@ -35,12 +35,12 @@ const CenterList = ({ centers }) => {
                                     alt={center.professionName}
                                 />
                             </Card>
-                            <Typography className="xl:text-xl font-lora font-semibold mt-2 dark:text-white" component="div">
+                            <h4 className="xl:text-xl font-lora font-semibold mt-2 dark:text-white" component="div">
                                 {center.professionName}
-                            </Typography>
-                            <Typography className="text-sm font-lora font-semibold mt-1 text-gray-500 dark:text-white">
+                            </h4>
+                            <p className="text-sm font-lora font-semibold mt-1 text-gray-500 dark:text-white">
                                 {center.address}
-                            </Typography>
+                            </p>
                         </Link>
                     </Grid>
                 ))}

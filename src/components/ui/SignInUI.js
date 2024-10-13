@@ -5,6 +5,7 @@ import LockIcon from '@mui/icons-material/Lock';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { Alert, Box, Button, IconButton, InputAdornment, Snackbar, TextField, Typography } from '@mui/material';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
@@ -87,14 +88,12 @@ export default function SignInForm() {
 
     return (
         <Box className="flex flex-col items-center justify-center px-4 py-8 sm:px-6 lg:px-8">
-            <Box className="max-w-md w-full space-y-8 p-8 border-l border-t rounded-md">
-                <Typography
-                    component="h1"
-                    variant="h5"
+            <Box className="max-w-md w-full px-8 pt-8 border-l border-t rounded-md">
+                <h3
                     className="text-2xl dark:text-white font-lora font-bold mb-6"
                 >
                     {loading ? "Processing" : "Sign In"}
-                </Typography>
+                </h3>
                 <form className="space-y-4">
                     {/* Email */}
                     <TextField
@@ -194,9 +193,9 @@ export default function SignInForm() {
                     />
 
                     {errors.signInError && (
-                        <Typography color="error" className="font-lora mt-2">
+                        <p className="font-lora mt-2 text-red-600">
                             {errors.signInError}
-                        </Typography>
+                        </p>
                     )}
 
                     <Button
@@ -211,6 +210,7 @@ export default function SignInForm() {
                         {loading ? "Signing in..." : "Sign In"}
                     </Button>
                 </form>
+                <p className="text-base font-lora font-medium mt-3 pb-3">Don&apos;t have any account? <Link href="/signup" className="text-gray-500">Sign Up</Link></p>
             </Box>
 
             {/* Snackbar for errors */}

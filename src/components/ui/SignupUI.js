@@ -7,11 +7,12 @@ import LockIcon from "@mui/icons-material/Lock";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { Alert, Box, Button, IconButton, InputAdornment, MenuItem, Snackbar, TextField, Typography } from "@mui/material";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const getCategories = async () => {
-    const res = await fetch("http://localhost:3005/api/categories");
+    const res = await fetch("http://localhost:3012/api/categories");
     const data = await res.json();
     return data.result;
 };
@@ -98,21 +99,25 @@ export default function SignUpForm() {
 
             const professionFinder = categories?.find((p) => p.pathName === userCategory);
             const profession = professionFinder?.name;
-            
+
             const provider = {
                 name: firstName + " " + lastName,
                 professionImage: "",
                 email: email,
                 cost: "",
+                age: "",
                 address: "",
                 status: userCategory,
                 professionName: profession,
+                photos: [],
+                videos: [],
+                bio: "",
                 additionalInfo: [],
                 popularity: []
             }
 
             try {
-                let res = await fetch("http://localhost:3005/api/users/signup", {
+                let res = await fetch("http://localhost:3012/api/users/signup", {
                     method: "POST",
                     body: JSON.stringify(user),
                     headers: {
@@ -121,7 +126,7 @@ export default function SignUpForm() {
                 });
                 res = await res.json();
 
-                let response = await fetch("http://localhost:3005/api/providers/provider-post", {
+                let response = await fetch("http://localhost:3012/api/providers/provider-post", {
                     method: "POST",
                     body: JSON.stringify(provider),
                     headers: {
@@ -168,14 +173,12 @@ export default function SignUpForm() {
 
     return (
         <Box className="flex flex-col items-center justify-center px-4 py-8 sm:px-6 lg:px-8">
-            <Box className="max-w-md w-full space-y-8 p-8 border-l border-t rounded-md">
-                <Typography
-                    component="h1"
-                    variant="h5"
+            <Box className="max-w-md w-full px-8 pt-8 border-l border-t rounded-md">
+                <h3
                     className="text-2xl dark:text-white font-lora font-bold mb-6"
                 >
                     {loading ? "Processing" : "Sign Up"}
-                </Typography>
+                </h3>
                 <form className="space-y-4">
                     {/* First Name */}
                     <TextField
@@ -462,7 +465,6 @@ export default function SignUpForm() {
                         variant="contained"
                         color="primary"
                         className="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700"
-                        sx={{ mt: 4 }}
                         onClick={handleSubmit}
                         disabled={loading}
                     >
@@ -485,6 +487,7 @@ export default function SignUpForm() {
                         {alertMessage}
                     </Alert>
                 </Snackbar>
+                <p className="text-base font-lora font-medium pb-3 mt-3">Already have an account? <Link href="/signin" className="text-blue-700">Sign In</Link></p>
             </Box>
         </Box>
     );

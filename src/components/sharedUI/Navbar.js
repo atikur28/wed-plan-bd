@@ -8,12 +8,11 @@ import FaceIcon from '@mui/icons-material/Face';
 import HouseIcon from '@mui/icons-material/House';
 import InfoIcon from '@mui/icons-material/Info';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
-import LoginIcon from '@mui/icons-material/Login';
 import MediationIcon from '@mui/icons-material/Mediation';
 import MenuIcon from '@mui/icons-material/Menu';
 import SupportIcon from '@mui/icons-material/Support';
 import VillaIcon from '@mui/icons-material/Villa';
-import { Menu, MenuItem, Snackbar, Alert } from '@mui/material';
+import { Alert, Menu, MenuItem, Snackbar } from '@mui/material';
 import MuiAppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -27,11 +26,11 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import { styled, useTheme } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import axios from 'axios';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import * as React from 'react';
 import ThemeToggle from '../ui/ThemeToggle';
-import axios from 'axios';
 
 const drawerWidth = 240;
 
@@ -49,7 +48,7 @@ const settings = [
   { route: "Dashboard", pathName: "/dashboard", icon: DashboardIcon }
 ];
 
-const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })( ({ theme }) => ({
+const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({ theme }) => ({
   flexGrow: 1,
   padding: theme.spacing(1.5),
   transition: theme.transitions.create('margin', {
@@ -177,7 +176,7 @@ export default function Navbar() {
                 <Link href="/signup" className={`text-[12px] md:text-base text-black dark:text-white dark:hover:text-black font-lora font-medium px-2 md:px-10 py-1.5 hover:bg-[#e1e1e1] border rounded-sm ${isActive("/signup") ? `font-semibold bg-[#e1e1e1] border rounded-sm` : ``}`}>SIGNUP</Link>
               </>
             ) : (
-              <Typography onClick={signout} className={`text-[12px] md:text-base text-black dark:text-white dark:hover:text-black font-lora font-medium px-2 md:px-10 py-1.5 border hover:cursor-pointer rounded-sm ${isActive("/signout") ? `font-semibold bg-[#e1e1e1]` : `hover:bg-[#e1e1e1]`}`}>SIGN OUT</Typography>
+              <p onClick={signout} className={`text-[12px] md:text-base text-black dark:text-white dark:hover:text-black font-lora font-medium px-2 md:px-10 py-1.5 border hover:cursor-pointer rounded-sm ${isActive("/signout") ? `font-semibold bg-[#e1e1e1]` : `hover:bg-[#e1e1e1]`}`}>SIGN OUT</p>
             )
           }
         </Box>
@@ -198,9 +197,9 @@ export default function Navbar() {
             >
               <MenuIcon className="md:text-3xl" />
             </IconButton>
-            <Typography className="text-xl 2xl:text-2xl font-bold font-lora text-black dark:text-white" noWrap component="div">
+            <h3 className="text-xl 2xl:text-2xl font-bold font-lora text-black dark:text-white" noWrap component="div">
               <Link href="/">WedPlan BD</Link>
-            </Typography>
+            </h3>
           </Toolbar>
           <Box className="flex justify-end items-center">
             <section className="hidden xl:flex items-center justify-end">
@@ -210,45 +209,47 @@ export default function Navbar() {
                 </Link>
               ))}
             </section>
-            <section>
-              <IconButton
-                className="mr-2 lg:mr-5"
-                title="Account of current user"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleMenu}
-                color="inherit"
-              >
-                <AccountCircle className="text-black dark:text-white text-4xl" />
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-              >
-                {settings.map((setting) => (
-                  <MenuItem key={setting.route} onClick={handleClose}>
-                    <Link href={setting.pathName}
-                      className={`font-medium font-lora ${isActive(setting.pathName) ? `font-semibold underline` : `hover:underline`}`}
-                      textAlign="center">
-                      <setting.icon className='mr-2' />
-                      {setting.route}
-                    </Link>
-                  </MenuItem>
-                ))}
-              </Menu>
-            </section>
+            {isLoggedIn && (
+              <section>
+                <IconButton
+                  className="mr-2 lg:mr-5"
+                  title="Account of current user"
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  onClick={handleMenu}
+                  color="inherit"
+                >
+                  <AccountCircle className="text-black dark:text-white text-4xl" />
+                </IconButton>
+                <Menu
+                  id="menu-appbar"
+                  anchorEl={anchorEl}
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  open={Boolean(anchorEl)}
+                  onClose={handleClose}
+                >
+                  {settings.map((setting) => (
+                    <MenuItem key={setting.route} onClick={handleClose}>
+                      <Link href={setting.pathName}
+                        className={`font-medium font-lora ${isActive(setting.pathName) ? `font-semibold underline` : `hover:underline`}`}
+                        textAlign="center">
+                        <setting.icon className='mr-2' />
+                        {setting.route}
+                      </Link>
+                    </MenuItem>
+                  ))}
+                </Menu>
+              </section>
+            )}
           </Box>
         </Box>
       </AppBar>

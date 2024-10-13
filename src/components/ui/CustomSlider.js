@@ -17,7 +17,6 @@ const CustomSlider = () => {
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
 
-  // Automatic transition every 4000ms
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % 4); // 4 slides
@@ -26,28 +25,22 @@ const CustomSlider = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Handle touch start
   const handleTouchStart = (e) => {
     touchStartX.current = e.touches[0].clientX;
   };
 
-  // Handle touch move
   const handleTouchMove = (e) => {
     touchEndX.current = e.touches[0].clientX;
   };
 
-  // Handle touch end
   const handleTouchEnd = () => {
     if (touchStartX.current - touchEndX.current > 50) {
-      // Swiped left (next slide)
       setCurrentIndex((prevIndex) => (prevIndex + 1) % 4);
     } else if (touchStartX.current - touchEndX.current < -50) {
-      // Swiped right (previous slide)
       setCurrentIndex((prevIndex) => (prevIndex - 1 + 4) % 4);
     }
   };
 
-  // Handle mouse events for drag
   const handleMouseDown = (e) => {
     touchStartX.current = e.clientX;
   };
@@ -94,18 +87,18 @@ const CustomSlider = () => {
               <Image src={camera} width={600} height={600} alt="Camera" />
             </Box>
             <Box>
-              <Typography>
+              <h1>
                 <span className="bg-[#ffe500] md:text-4xl xl:text-8xl text-black font-lora font-semibold pl-5">
                   PHOTO
                 </span>
                 <span className="md:text-4xl xl:text-8xl text-white font-lora font-semibold border-b-4 border-[#ffe500] ml-0.5">
                   GRAPHY
                 </span>
-              </Typography>
-              <Typography className="text-[10px] md:text-xl xl:text-3xl font-lora font-medium text-white mt-3 lg:mt-10 mb-2 lg:mb-7 md:max-w-[450px] lg:max-w-[600px]">
+              </h1>
+              <p className="text-[10px] md:text-xl xl:text-3xl font-lora font-medium text-white mt-3 lg:mt-10 mb-2 lg:mb-7 md:max-w-[450px] lg:max-w-[600px]">
                 Capture every beautiful moment with our professional
                 photographers.
-              </Typography>
+              </p>
               <Link href="/category/photography">
                 <Button className="text-[10px] md:text-base px-4 bg-white text-black font-semibold font-lora">
                   Photographer
@@ -130,12 +123,12 @@ const CustomSlider = () => {
         >
           <Box className="flex items-center pl-3 lg:pl-10 h-full bg-black bg-opacity-30">
             <Box>
-              <Typography className="md:text-4xl xl:text-8xl text-white font-lora font-semibold">
+              <h1 className="md:text-4xl xl:text-8xl text-white font-lora font-semibold">
                 Honeymoon Plan
-              </Typography>
-              <Typography className="text-[10px] md:text-xl xl:text-3xl font-lora font-medium text-white mt-3 lg:mt-10 mb-2 lg:mb-7 md:max-w-[450px] lg:max-w-[600px]">
+              </h1>
+              <p className="text-[10px] md:text-xl xl:text-3xl font-lora font-medium text-white mt-3 lg:mt-10 mb-2 lg:mb-7 md:max-w-[450px] lg:max-w-[600px]">
                 Plan the perfect honeymoon with our exclusive packages.
-              </Typography>
+              </p>
               <Link href="/category/travel">
                 <Button className="text-[10px] md:text-base px-4 bg-white text-black font-semibold font-lora">
                   Travel
@@ -168,15 +161,15 @@ const CustomSlider = () => {
             />
             <Box className="flex flex-col max-w-[200px] md:max-w-[400px] lg:max-w-[650px]">
               <Box>
-                <Typography className="text-[12px] md:text-xl lg:text-2xl 2xl:text-5xl font-lora font-semibold text-start text-[#60422d]">
+                <h2 className="text-[12px] md:text-xl lg:text-2xl 2xl:text-5xl font-lora font-semibold text-start text-[#60422d]">
                   WHAT – The Wedding Food and Drink
-                </Typography>
-                <Typography className="text-[8px] md:text-[12px] lg:text-[14px] 2xl:text-xl text-start font-lora font-medium text-[#60422d] lg:mt-3 xl:mt-5 lg:mb-2 xl:mb-10">
+                </h2>
+                <p className="text-[8px] md:text-[12px] lg:text-[14px] 2xl:text-xl text-start font-lora font-medium text-[#60422d] lg:mt-3 xl:mt-5 lg:mb-2 xl:mb-10">
                   Delight your guests with exquisite cuisine and crafted
                   cocktails! Choose from elegant hors d&apos;oeuvres, a stunning
                   wedding cake, and a personalized menu that reflects your
                   taste.
-                </Typography>
+                </p>
               </Box>
               <Image
                 className="w-[60px] md:w-[150px] lg:w-[250px] xl:w-[400px]"
@@ -203,15 +196,15 @@ const CustomSlider = () => {
           }}
         >
           <Box className="flex flex-col justify-center h-full md:max-w-[500px] xl:max-w-[800px] ml-2 xl:ml-20">
-            <Typography className="text-[14px] md:text-xl lg:text-2xl xl:text-5xl font-lora font-semibold text-white">
+            <h1 className="text-[14px] md:text-xl lg:text-2xl xl:text-5xl font-lora font-semibold text-white">
               Transform Your Wedding with Stunning Decor!
-            </Typography>
-            <Typography className="text-[10px] md:text-[14px] xl:text-2xl text-start font-lora font-medium text-white mt-3 xl:mt-10 mb-2 xl:mb-16">
+            </h1>
+            <p className="text-[10px] md:text-[14px] xl:text-2xl text-start font-lora font-medium text-white mt-3 xl:mt-10 mb-2 xl:mb-16">
               Delight your guests with exquisite cuisine and crafted cocktails!
               Choose from elegant hors d&apos;oeuvres, a stunning wedding cake,
               and a personalized menu that reflects your taste. Make your
               celebration unforgettable with a feast that tantalizes the senses!
-            </Typography>
+            </p>
             <Link href="/category/decoration">
               <Button className="text-[10px] md:text-base px-4 bg-white text-black font-semibold font-lora w-max">
                 Decoration

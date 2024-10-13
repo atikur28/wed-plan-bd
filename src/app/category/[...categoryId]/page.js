@@ -1,7 +1,7 @@
 import { Box, Card, CardContent, CardMedia, Grid, Typography } from "@mui/material";
 
 const Category = async ({ params }) => {
-    const res = await fetch(`http://localhost:3005/api/categories/${params.categoryId}`);
+    const res = await fetch(`http://localhost:3012/api/categories/${params.categoryId}`);
     const data = await res.json();
     const providers = data.result;
 
@@ -30,27 +30,22 @@ const Category = async ({ params }) => {
                                 />
 
                                 <CardContent>
-                                    <Typography
-                                        className="font-lora font-semibold dark:text-white"
-                                        variant="h6"
+                                    <h5
+                                        className="text-xl font-lora font-semibold dark:text-white"
                                     >
                                         {provider.name}
-                                    </Typography>
-                                    <Typography
-                                        className="text-[15px] font-lora font-bold dark:text-white"
-                                        variant="body2"
-                                        color="textSecondary"
+                                    </h5>
+                                    <p
+                                        className="text-[17px] font-lora font-bold text-gray-500 dark:text-white my-2"
                                     >
                                         Address: {provider.address}
-                                    </Typography>
+                                    </p>
 
-                                    <Typography
-                                        className="font-lora font-extrabold dark:text-white"
-                                        variant="body2"
-                                        color="textSecondary"
+                                    <p
+                                        className="text-[15px] font-lora font-extrabold text-gray-500 dark:text-white"
                                     >
                                         Popularity: {provider.popularity.length}
-                                    </Typography>
+                                    </p>
                                 </CardContent>
                             </Card>
                         </Grid>

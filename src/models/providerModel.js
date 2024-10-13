@@ -11,9 +11,13 @@ const providerModel = new mongoose.Schema({
         required: [true, "Please provide an email"]
     },
     cost: String,
+    age: String,
     address: String,
     status: String,
     professionName: String,
+    photos: Array,
+    videos: Array,
+    bio: String,
     additionalInfo: Array,
     popularity: Array
 });

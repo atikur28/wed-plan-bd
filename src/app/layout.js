@@ -23,7 +23,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${lora.variable} ${gupter.variable} dark:bg-medium max-w-[2440px] mx-auto`}>
+      <body className={`${lora.variable} ${gupter.variable} dark:bg-medium max-w-[2560px] mx-auto`}>
         <Navbar />
         <section className="min-h-[60vh]">
           {children}

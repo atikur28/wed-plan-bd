@@ -7,14 +7,12 @@ import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 const ReviewSlider = ({ reviews }) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
-  // Function to handle the previous review
   const handlePrev = () => {
     setActiveIndex((prevIndex) =>
       prevIndex === 0 ? reviews.length - 1 : prevIndex - 1
     );
   };
 
-  // Function to handle the next review
   const handleNext = () => {
     setActiveIndex((prevIndex) =>
       prevIndex === reviews.length - 1 ? 0 : prevIndex + 1
@@ -32,7 +30,7 @@ const ReviewSlider = ({ reviews }) => {
       <Box
         className="absolute left-1/4 transform -translate-x-1/2 p-4 shadow-lg transition-opacity duration-300 hidden lg:block"
         style={{
-          opacity: 0.3, // More transparency for the side reviews
+          opacity: 0.3,
           width: "100%",
           maxWidth: "500px",
         }}
@@ -45,15 +43,18 @@ const ReviewSlider = ({ reviews }) => {
               sx={{ width: 50, height: 50, mb: 2 }}
               className="rounded-full"
             />
-            <Typography variant="h6" className="font-lora font-semibold dark:text-white">
+            <h5 className="text-lg font-lora font-semibold dark:text-white">
               {reviews[getPreviousIndex(activeIndex)].name}
-            </Typography>
-            <Typography variant="body2" className="font-lora mt-2 dark:text-white">
+            </h5>
+            <p className="text-sm font-lora mt-2 dark:text-white">
               {reviews[getPreviousIndex(activeIndex)].review}
-            </Typography>
-            <Typography variant="caption" className="font-lora font-semibold text-gray-500 mt-2 block dark:text-white">
+            </p>
+            <p className="text-sm font-lora font-semibold text-gray-500 mt-2 block dark:text-white">
+              Booked: {reviews[getPreviousIndex(activeIndex)].recommendation}
+            </p>
+            <p className="text-sm font-lora font-semibold text-gray-500 mt-2 block dark:text-white">
               Recommended to try: {reviews[getPreviousIndex(activeIndex)].recommendPerson}
-            </Typography>
+            </p>
           </CardContent>
         </Card>
       </Box>
@@ -75,15 +76,18 @@ const ReviewSlider = ({ reviews }) => {
               sx={{ width: 70, height: 70, mb: 2 }}
               className="rounded-full"
             />
-            <Typography variant="h6" className="font-lora font-semibold dark:text-white">
+            <h5 className="text-lg font-lora font-semibold dark:text-white">
               {reviews[activeIndex].name}
-            </Typography>
-            <Typography variant="body2" className="font-lora mt-2 dark:text-white">
+            </h5>
+            <p className="text-sm font-lora mt-2 dark:text-white">
               {reviews[activeIndex].review}
-            </Typography>
-            <Typography variant="caption" className="font-lora font-semibold text-gray-500 mt-2 block dark:text-white">
+            </p>
+            <p className="text-sm font-lora font-semibold text-gray-500 mt-2 block dark:text-white">
+              Booked: {reviews[activeIndex].recommendation}
+            </p>
+            <p className="font-lora font-semibold text-gray-500 mt-2 block dark:text-white">
               Recommended to try: {reviews[activeIndex].recommendPerson}
-            </Typography>
+            </p>
 
             {/* Navigation Buttons for Mobile */}
             <Box
@@ -104,7 +108,7 @@ const ReviewSlider = ({ reviews }) => {
       <Box
         className="absolute right-1/4 transform translate-x-1/2 p-4 shadow-lg transition-opacity duration-300 hidden lg:block"
         style={{
-          opacity: 0.3, // More transparency for the side reviews
+          opacity: 0.3,
           width: "100%",
           maxWidth: "500px",
         }}
@@ -117,21 +121,24 @@ const ReviewSlider = ({ reviews }) => {
               sx={{ width: 50, height: 50, mb: 2 }}
               className="rounded-full"
             />
-            <Typography variant="h6" className="font-lora font-semibold dark:text-white">
+            <h5 className="text-lg font-lora font-semibold dark:text-white">
               {reviews[getNextIndex(activeIndex)].name}
-            </Typography>
-            <Typography variant="body2" className="font-lora mt-2 dark:text-white">
+            </h5>
+            <p className="text-sm font-lora mt-2 dark:text-white">
               {reviews[getNextIndex(activeIndex)].review}
-            </Typography>
-            <Typography variant="caption" className="font-lora font-semibold text-gray-500 mt-2 block dark:text-white">
+            </p>
+            <p className="text-sm font-lora font-semibold text-gray-500 mt-2 block dark:text-white">
+              Booked: {reviews[getNextIndex(activeIndex)].recommendation}
+            </p>
+            <p className="text-sm font-lora font-semibold text-gray-500 mt-2 block dark:text-white">
               Recommended to try: {reviews[getNextIndex(activeIndex)].recommendPerson}
-            </Typography>
+            </p>
           </CardContent>
         </Card>
       </Box>
 
       {/* Navigation Buttons for Larger Devices */}
-      <Box className="hidden lg:flex justify-between items-center w-full mt-0 absolute top-1/2 transform -translate-y-1/2 px-28 lg:px-[120px] xl:px-[200px] 2xl:px-[250px]"
+      <Box className="hidden lg:flex justify-between items-center w-full mt-0 absolute top-1/2 transform -translate-y-1/2 px-28 lg:px-[80px] xl:px-[150px] 2xl:px-[250px]"
       >
         <IconButton onClick={handlePrev} className="text-gray-500 dark:text-white">
           <ArrowBackIos />

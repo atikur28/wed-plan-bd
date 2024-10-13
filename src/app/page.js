@@ -9,13 +9,13 @@ import Image from "next/image";
 import Link from "next/link";
 
 const getCategories = async () => {
-  const res = await fetch("http://localhost:3005/api/categories");
+  const res = await fetch("http://localhost:3012/api/categories");
   const data = await res.json();
   return data.result;
 }
 
 const popularCenters = async () => {
-  const res = await fetch("http://localhost:3005/api/providers");
+  const res = await fetch("http://localhost:3012/api/providers");
   const data = await res.json();
 
   const filteredData = data.result
@@ -26,7 +26,7 @@ const popularCenters = async () => {
 }
 
 const getReviews = async () => {
-  const res = await fetch("http://localhost:3005/api/reviews");
+  const res = await fetch("http://localhost:3012/api/reviews");
   const data = await res.json();
   return data.result;
 }
@@ -43,8 +43,8 @@ export default async function Home() {
       {/* Browse By Category */}
       <section className="w-[98%] lg:w-[95%] xl:w-4/5 mx-auto my-10">
         <Box className="flex justify-between items-center">
-          <Typography className="md:text-lg xl:text-2xl font-lora font-semibold dark:text-white">Browse By Category</Typography>
-          <Typography className="text-sm md:text-base font-lora font-semibold dark:text-white">View All ({categories.length})</Typography>
+          <h3 className="md:text-lg xl:text-2xl font-lora font-semibold dark:text-white">Browse By Category</h3>
+          <p className="text-sm md:text-base font-lora font-semibold dark:text-white">View All ({categories.length})</p>
         </Box>
         {/* Category Lists */}
         <CategoryList categories={categories} />
@@ -53,8 +53,8 @@ export default async function Home() {
       {/* Popular Centers */}
       <section className="w-[98%] lg:w-[95%] xl:w-4/5 mx-auto my-10">
         <Box className="flex justify-between items-center">
-          <Typography className="md:text-lg xl:text-2xl font-lora font-semibold dark:text-white">Popular Centers</Typography>
-          <Typography className="text-sm md:text-base font-lora font-semibold dark:text-white">View All ({centers.length})</Typography>
+          <h3 className="md:text-lg xl:text-2xl font-lora font-semibold dark:text-white">Popular Centers</h3>
+          <p className="text-sm md:text-base font-lora font-semibold dark:text-white">View All ({centers.length})</p>
         </Box>
         {/* Centers Lists */}
         <CenterList centers={centers} />
@@ -67,7 +67,7 @@ export default async function Home() {
             backgroundImage: `url(${advertise.src})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
-            height: { xs: '350px', sm: '300px', md: '350px' },
+            height: { xs: '370px', sm: '350px', md: '350px' },
             display: "flex",
             alignItems: 'center',
             justifyContent: 'center',
@@ -79,13 +79,13 @@ export default async function Home() {
         >
           <Image className="hidden md:block w-[300px] md:mx-auto rounded" src={advertise2} width={400} height={400} alt="Advertise" />
           <Box className="lg:max-w-[60%]">
-            <Typography variant="h4" className="font-lora font-bold text-center md:text-left" sx={{ fontSize: { xs: '1.5rem', md: '2rem' } }}>
+            <h3 className="text-2xl lg:text-4xl font-lora font-bold text-center md:text-left">
               Plan Your Dream Wed with WedPlan BD!
-            </Typography>
-            <Typography className="font-lora font-semibold max-w-[90%] lg:max-w-[80%] mx-auto md:mx-0 text-center md:text-left mt-3 mb-8" variant="body1" sx={{ fontSize: { xs: '0.9rem', md: '1rem' } }}>
+            </h3>
+            <p className="font-lora font-semibold max-w-[90%] lg:max-w-[80%] mx-auto md:mx-0 text-center md:text-left mt-3 mb-8">
               Discover the best community centers, decorators, photographers & videographers, makeup artists, travels, attire & accessories and services all in one place.
               Let us help you create unforgettable memories on your special day!
-            </Typography>
+            </p>
             <section className="w-max mx-auto md:mx-0">
               <Link className="text-black font-lora font-bold bg-white px-5 py-1.5 rounded border-2 border-black hover:bg-gray-100 " href="/centers">Let&apos;s Go</Link>
             </section>
@@ -95,7 +95,7 @@ export default async function Home() {
 
       {/* Reviews */}
       <section className="w-[98%] lg:w-[95%] xl:w-4/5 mx-auto my-16">
-        <Typography className="md:text-lg xl:text-2xl font-lora font-semibold dark:text-white">Reviews</Typography>
+        <h3 className="md:text-lg xl:text-2xl font-lora font-semibold dark:text-white">Reviews</h3>
 
         {/* Slider */}
         <ReviewSlider reviews={reviews} />
