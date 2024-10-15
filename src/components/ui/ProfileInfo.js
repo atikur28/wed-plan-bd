@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, CircularProgress, Avatar, Typography, IconButton, Button, Snackbar, Alert } from "@mui/material";
+import { Box, CircularProgress, Avatar, IconButton, Button, Snackbar, Alert } from "@mui/material";
 import Image from "next/image";
 import { useEffect, useState, useRef } from "react";
 import PersonIcon from "@mui/icons-material/Person";
@@ -249,18 +249,7 @@ const ProfileInfo = ({ uploadData }) => {
 
             {/* Second Section */}
             <section className="md:w-[58%] lg:w-[73%] 3xl:w-[1400px]">
-                <Typography variant="h4" gutterBottom>
-                    {profile?.firstName} {profile?.lastName}
-                </Typography>
-                <Typography variant="body1" gutterBottom>
-                    Email: {profile?.email}
-                </Typography>
-                <Typography variant="body1" gutterBottom>
-                    Category: {profile?.userCategory}
-                </Typography>
-                <Typography variant="body1" gutterBottom>
-                    Status: {profile?.status}
-                </Typography>
+                
             </section>
 
             {/* Snackbar Alert for Success or Error */}

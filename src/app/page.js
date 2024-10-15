@@ -4,7 +4,7 @@ import CategoryList from "@/components/ui/CategoryList";
 import CenterList from "@/components/ui/CenterList";
 import CustomSlider from "@/components/ui/CustomSlider";
 import ReviewSlider from "@/components/ui/ReviewSlider";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
 

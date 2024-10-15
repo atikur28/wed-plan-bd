@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Box, Grid, Card, CardMedia, Typography, Pagination, PaginationItem } from "@mui/material";
+import { Box, Grid, Card, CardMedia, Pagination, PaginationItem } from "@mui/material";
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 import Link from "next/link";

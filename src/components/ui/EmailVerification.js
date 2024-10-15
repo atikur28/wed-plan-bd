@@ -39,9 +39,9 @@ const EmailVerification = () => {
 
     return (
         <Box className="pt-10 flex flex-col justify-center items-center">
-            <Typography className="text-2xl font-bold mb-4">
+            <h3 className="text-2xl font-bold mb-4">
                 Email Verification
-            </Typography>
+            </h3>
 
             {verified ? (
                 <Alert severity="success" className="w-full mb-4">
@@ -50,13 +50,13 @@ const EmailVerification = () => {
             ) : (
                 <>
                     {token ? (
-                        <Typography className="text-lg font-semibold text-center mt-2">
+                        <p className="text-lg font-semibold text-center mt-2">
                             Please click the button below to verify your email.
-                        </Typography>
+                        </p>
                     ) : (
-                        <Typography className="text-lg font-semibold text-center mt-2 text-red-600">
+                        <p className="text-lg font-semibold text-center mt-2 text-red-600">
                             Verification token is missing. Please check your email for the verification link.
-                        </Typography>
+                        </p>
                     )}
 
                     <Button

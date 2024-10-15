@@ -7,7 +7,7 @@ import photographer from "@/assets/slider/photography.png";
 import camera from "@/assets/slider/camera.png";
 import food from "@/assets/slider/food-1.png";
 import food2 from "@/assets/slider/food-2.png";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";

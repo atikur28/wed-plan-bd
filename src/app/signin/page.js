@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import img from "@/assets/signup/signup.svg";
 import Image from "next/image";
 import SignInForm from "@/components/ui/SignInUI";

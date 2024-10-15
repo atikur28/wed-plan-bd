@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, CardMedia, Grid, Typography } from "@mui/material";
+import { Box, Card, CardContent, CardMedia, Grid } from "@mui/material";
 
 const Category = async ({ params }) => {
     const res = await fetch(`http://localhost:3012/api/categories/${params.categoryId}`);
@@ -7,9 +7,9 @@ const Category = async ({ params }) => {
 
     return (
         <Box className="mt-8 w-[90%] mx-auto mb-10">
-            <Typography className="lg:text-lg xl:text-xl font-lora font-semibold mb-8 dark:text-white">
+            <h3 className="lg:text-lg xl:text-xl font-lora font-semibold mb-8 dark:text-white">
                 {providers[0]?.professionName}
-            </Typography>
+            </h3>
 
             {/* Providers Grid */}
             <Grid container spacing={4}>

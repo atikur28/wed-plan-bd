@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Box, Card, CardContent, Typography, IconButton, Avatar } from "@mui/material";
+import { Box, Card, CardContent, IconButton, Avatar } from "@mui/material";
 import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 
 const ReviewSlider = ({ reviews }) => {
