@@ -23,6 +23,7 @@ const ProfileInfo = ({ uploadData }) => {
 
     const [nameDialogOpen, setNameDialogOpen] = useState(false);
     const [professionDialogOpen, setProfessionDialogOpen] = useState(false);
+    const [ageDialogOpen, setAgeDialogOpen] = useState(false);
     const [bioDialogOpen, setBioDialogOpen] = useState(false);
 
     // Alert Code:
@@ -186,7 +187,7 @@ const ProfileInfo = ({ uploadData }) => {
         try {
             setLoading(true);
             if (name.length > 31) {
-                setAlertMessage("Name should be in 30 letter!");
+                setAlertMessage("Name should be under 30 letter!");
                 setAlertType("error");
                 setAlertOpen(true);
             } else {
@@ -253,7 +254,7 @@ const ProfileInfo = ({ uploadData }) => {
         try {
             setLoading(true);
             if (bio.length > 206) {
-                setAlertMessage("Bio message should be in 205 letter!");
+                setAlertMessage("Bio message should be under 205 letter!");
                 setAlertType("error");
                 setAlertOpen(true);
             } else {
@@ -305,7 +306,74 @@ const ProfileInfo = ({ uploadData }) => {
         } finally {
             setLoading(false);
         }
-    }
+    };
+
+    // Age Add & Changing Code:
+    const handleAgeOpen = () => {
+        setAgeDialogOpen(true);
+    };
+
+    const handleAgeClose = () => {
+        setAgeDialogOpen(false);
+    };
+
+    const handleAgeChange = async (age) => {
+        try {
+            setLoading(true);
+            if (age.length > 3) {
+                setAlertMessage("Age should be under 3 number!");
+                setAlertType("error");
+                setAlertOpen(true);
+            } else {
+                const updatedAgeData = {
+                    name: providerProfile.name,
+                    professionImage: providerProfile.professionImage,
+                    email: providerProfile.email,
+                    cost: providerProfile.cost,
+                    age: age,
+                    address: providerProfile.address,
+                    status: providerProfile.status,
+                    professionName: providerProfile.professionName,
+                    photos: providerProfile.photos,
+                    videos: providerProfile.videos,
+                    bio: providerProfile.bio,
+                    additionalInfo: providerProfile.additionalInfo,
+                    popularity: providerProfile.popularity
+                };
+
+                const response = await fetch("http://localhost:3013/api/providers/update-provider", {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(updatedAgeData),
+                });
+
+                const updatedResult = await response.json();
+                if (updatedResult.success) {
+                    setProviderProfile((prevProfile) => ({
+                        ...prevProfile,
+                        age: age,
+                    }));
+                    setAlertMessage("Age saved successfully!");
+                    setAlertType("success");
+                    setAlertOpen(true);
+                } else {
+                    console.log("Failed to save age");
+                    setAlertMessage("Failed to save age.");
+                    setAlertType("error");
+                    setAlertOpen(true);
+                }
+            }
+        } catch (error) {
+            console.log("Error saving profile's age", error);
+            setAlertMessage("Error saving profile's age.");
+            setAlertType("error");
+            setAlertOpen(true);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     if (loading) {
         return (
@@ -343,8 +411,8 @@ const ProfileInfo = ({ uploadData }) => {
                         />
                     ) : profile?.image ? (
                         <Image
-                            src={profile.image}
-                            alt={`${profile.firstName} ${profile.lastName}`}
+                            src={profile?.image}
+                            alt={`${profile?.firstName} ${profile?.lastName}`}
                             height={300}
                             width={300}
                             style={{
@@ -419,9 +487,9 @@ const ProfileInfo = ({ uploadData }) => {
 
                 {/* Provider's name showing and updating in both users and providers database */}
                 <Box className="flex justify-center items-center">
-                    <h4 className="text-2xl font-lora font-semibold">{providerProfile.name}</h4>
+                    <h4 className="text-2xl font-lora font-semibold">{providerProfile?.name}</h4>
                     <section>
-                        <p className="text-sm font-lora font-semibold text-blue-600 flex justify-start items-center gap-0.5 hover:cursor-pointer ml-5" onClick={handleNameOpen}>Edit..</p>
+                        <p className="text-sm font-lora font-semibold text-blue-600 flex justify-start items-center gap-0.5 hover:cursor-pointer select-none ml-5" onClick={handleNameOpen}>Edit..</p>
 
                         {/* Dialog */}
                         <Dialog
@@ -433,13 +501,13 @@ const ProfileInfo = ({ uploadData }) => {
                                     event.preventDefault();
                                     const formData = new FormData(event.currentTarget);
                                     const formJson = Object.fromEntries(formData.entries());
-                                    const name = formJson.name;
+                                    const name = formJson?.name;
                                     handleNameChange(name);
                                     handleNameClose();
                                 },
                             }}
                         >
-                            <DialogTitle sx={{ fontFamily: 'Lora, serif' }}>Add Your Profile&apos;s Name</DialogTitle>
+                            <DialogTitle sx={{ fontFamily: 'Lora, serif' }}>Edit Your Profile&apos;s Name</DialogTitle>
                             <DialogContent>
                                 <DialogContentText sx={{ fontFamily: 'Lora, serif' }}>
                                     Please enter your name and share your role or involvement in the wedding industry or event.
@@ -494,14 +562,14 @@ const ProfileInfo = ({ uploadData }) => {
                 </Box>
 
                 {/* Provider's profession name showing and updating in providers database */}
-                    <h4 className="font-lora font-semibold text-center">{providerProfile.professionName}</h4>
+                <h4 className="font-lora font-semibold text-center">{providerProfile?.professionName}</h4>
 
                 {/* Provider's bio showing and updating in providers database */}
-                {providerProfile.bio ? (
+                {providerProfile?.bio ? (
                     <Box className="flex flex-col justify-center items-center">
                         <section><ArrowDropDownIcon sx={{ fontSize: "50px", color: "orange" }} /><ArrowDropDownIcon sx={{ fontSize: "50px", color: "orange" }} /></section>
                         <section>
-                            <p className="font-lora font-semibold text-center px-2">{providerProfile.bio} <span className="ml-2 text-sm text-blue-600 hover:cursor-pointer" onClick={handleBioOpen}>Edit..</span></p>
+                            <p className="font-lora font-semibold text-center px-2">{providerProfile?.bio} <span className="ml-2 text-sm text-blue-600 hover:cursor-pointer" onClick={handleBioOpen}>Edit..</span></p>
 
                             {/* Dialog */}
                             <Dialog
@@ -513,13 +581,13 @@ const ProfileInfo = ({ uploadData }) => {
                                         event.preventDefault();
                                         const formData = new FormData(event.currentTarget);
                                         const formJson = Object.fromEntries(formData.entries());
-                                        const bio = formJson.bio;
+                                        const bio = formJson?.bio;
                                         handleBioChange(bio);
                                         handleBioClose();
                                     },
                                 }}
                             >
-                                <DialogTitle sx={{ fontFamily: 'Lora, serif' }}>Add Your Profile&apos;s Bio</DialogTitle>
+                                <DialogTitle sx={{ fontFamily: 'Lora, serif' }}>Edit Your Profile&apos;s Bio</DialogTitle>
                                 <DialogContent>
                                     <DialogContentText sx={{ fontFamily: 'Lora, serif' }}>
                                         Please enter a brief bio to display on your profile. Share your experience,
@@ -588,7 +656,7 @@ const ProfileInfo = ({ uploadData }) => {
                                     event.preventDefault();
                                     const formData = new FormData(event.currentTarget);
                                     const formJson = Object.fromEntries(formData.entries());
-                                    const bio = formJson.bio;
+                                    const bio = formJson?.bio;
                                     handleBioChange(bio);
                                     handleBioClose();
                                 },
@@ -648,6 +716,159 @@ const ProfileInfo = ({ uploadData }) => {
                         </Dialog>
                     </Box>
                 )}
+
+                {/* Others data */}
+                <Box className="w-[92%] md:w-[85%] mx-auto bg-gray-200 py-8 px-2 md:px-5">
+                    {/* Age add & changing in providers database */}
+                    {providerProfile?.age ? (
+                        <Box className="flex justify-between items-center">
+                            <p className='font-lora text-lg'><span className='font-bold'>Age:</span> {providerProfile?.age}</p>
+                            <p className='text-sm font-lora font-semibold text-blue-600 hover:cursor-pointer select-none' onClick={handleAgeOpen}>Edit..</p>
+
+                            {/* Dialog */}
+                            <Dialog
+                                open={ageDialogOpen}
+                                onClose={handleAgeClose}
+                                PaperProps={{
+                                    component: 'form',
+                                    onSubmit: (event) => {
+                                        event.preventDefault();
+                                        const formData = new FormData(event.currentTarget);
+                                        const formJson = Object.fromEntries(formData.entries());
+                                        const age = formJson?.age;
+                                        handleAgeChange(age);
+                                        handleAgeClose();
+                                    },
+                                }}
+                            >
+                                <DialogTitle sx={{ fontFamily: 'Lora, serif' }}>Edit Age</DialogTitle>
+                                <DialogContent>
+                                    <DialogContentText sx={{ fontFamily: 'Lora, serif' }}>
+                                        Please enter your age to display on your profile. This helps personalize your experience and connect with others in the wedding industry or event.
+                                    </DialogContentText>
+                                    <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+                                        <AccountCircleIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
+                                        <TextField
+                                            autoFocus
+                                            required
+                                            margin="dense"
+                                            id="age"
+                                            name="age"
+                                            label="Write your age"
+                                            type="number"
+                                            fullWidth
+                                            variant="standard"
+                                            InputLabelProps={{
+                                                sx: {
+                                                    fontFamily: 'Lora, serif',
+                                                    '&.Mui-focused': {
+                                                        color: '#06b6d4',
+                                                    },
+                                                },
+                                            }}
+                                            InputProps={{
+                                                sx: {
+                                                    fontFamily: 'Lora, serif',
+                                                    '&:after': {
+                                                        borderBottomColor: '#06b6d4',
+                                                    },
+                                                },
+                                            }}
+                                        />
+                                    </Box>
+                                </DialogContent>
+                                <DialogActions>
+                                    <p
+                                        className="px-2 py-0.5 bg-red-200 rounded font-lora font-medium border border-red-400 hover:cursor-pointer active:bg-red-100 active:border-red-300 active:shadow-inner transition-all duration-200 ease-in-out active:scale-75 select-none"
+                                        onClick={handleAgeClose}
+                                    >
+                                        Cancel
+                                    </p>
+                                    <button
+                                        type="submit"
+                                        className="text-white px-2 py-0.5 bg-cyan-500 rounded font-lora font-medium border border-cyan-600 hover:cursor-pointer active:bg-cyan-400 active:border-cyan-600 active:shadow-inner transition-all duration-200 ease-in-out active:scale-75 select-none"
+                                    >
+                                        Save Age
+                                    </button>
+                                </DialogActions>
+                            </Dialog>
+                        </Box>
+                    ) : (
+                        <section>
+                            <p className="font-lora font-semibold flex justify-between items-center">Age: <span className='text-sm text-blue-600 hover:cursor-pointer select-none' onClick={handleAgeOpen}>Add..</span></p>
+
+                            {/* Dialog */}
+                            <Dialog
+                                open={ageDialogOpen}
+                                onClose={handleAgeClose}
+                                PaperProps={{
+                                    component: 'form',
+                                    onSubmit: (event) => {
+                                        event.preventDefault();
+                                        const formData = new FormData(event.currentTarget);
+                                        const formJson = Object.fromEntries(formData.entries());
+                                        const age = formJson?.age;
+                                        handleAgeChange(age);
+                                        handleAgeClose();
+                                    },
+                                }}
+                            >
+                                <DialogTitle sx={{ fontFamily: 'Lora, serif' }}>Add Age</DialogTitle>
+                                <DialogContent>
+                                    <DialogContentText sx={{ fontFamily: 'Lora, serif' }}>
+                                        Please enter your age to display on your profile. This helps personalize your experience and connect with others in the wedding industry or event.
+                                    </DialogContentText>
+                                    <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+                                        <AccountCircleIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
+                                        <TextField
+                                            autoFocus
+                                            required
+                                            margin="dense"
+                                            id="age"
+                                            name="age"
+                                            label="Write your age"
+                                            type="number"
+                                            fullWidth
+                                            variant="standard"
+                                            InputLabelProps={{
+                                                sx: {
+                                                    fontFamily: 'Lora, serif',
+                                                    '&.Mui-focused': {
+                                                        color: '#06b6d4',
+                                                    },
+                                                },
+                                            }}
+                                            InputProps={{
+                                                sx: {
+                                                    fontFamily: 'Lora, serif',
+                                                    '&:after': {
+                                                        borderBottomColor: '#06b6d4',
+                                                    },
+                                                },
+                                            }}
+                                        />
+                                    </Box>
+                                </DialogContent>
+                                <DialogActions>
+                                    <p
+                                        className="px-2 py-0.5 bg-red-200 rounded font-lora font-medium border border-red-400 hover:cursor-pointer active:bg-red-100 active:border-red-300 active:shadow-inner transition-all duration-200 ease-in-out active:scale-75 select-none"
+                                        onClick={handleAgeClose}
+                                    >
+                                        Cancel
+                                    </p>
+                                    <button
+                                        type="submit"
+                                        className="text-white px-2 py-0.5 bg-cyan-500 rounded font-lora font-medium border border-cyan-600 hover:cursor-pointer active:bg-cyan-400 active:border-cyan-600 active:shadow-inner transition-all duration-200 ease-in-out active:scale-75 select-none"
+                                    >
+                                        Save Age
+                                    </button>
+                                </DialogActions>
+                            </Dialog>
+                        </section>
+                    )}
+
+                    
+                </Box>
             </section>
 
             {/* Second Section */}
