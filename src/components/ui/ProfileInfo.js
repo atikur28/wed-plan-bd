@@ -23,8 +23,9 @@ const ProfileInfo = ({ uploadData }) => {
 
     const [nameDialogOpen, setNameDialogOpen] = useState(false);
     const [professionDialogOpen, setProfessionDialogOpen] = useState(false);
-    const [ageDialogOpen, setAgeDialogOpen] = useState(false);
     const [bioDialogOpen, setBioDialogOpen] = useState(false);
+    const [ageDialogOpen, setAgeDialogOpen] = useState(false);
+    const [addressDialogOpen, setAddressDialogOpen] = useState(false);
 
     // Alert Code:
     const handleCloseAlert = (event, reason) => {
@@ -375,6 +376,73 @@ const ProfileInfo = ({ uploadData }) => {
         }
     };
 
+    // Address Add & Changing Code:
+    const handleAddressOpen = () => {
+        setAddressDialogOpen(true);
+    };
+
+    const handleAddressClose = () => {
+        setAddressDialogOpen(false);
+    };
+
+    const handleAddressChange = async (address) => {
+        try {
+            setLoading(true);
+            if (address.length > 50) {
+                setAlertMessage("Address should be under 50 letter!");
+                setAlertType("error");
+                setAlertOpen(true);
+            } else {
+                const updatedAddressData = {
+                    name: providerProfile.name,
+                    professionImage: providerProfile.professionImage,
+                    email: providerProfile.email,
+                    cost: providerProfile.cost,
+                    age: providerProfile.age,
+                    address: address,
+                    status: providerProfile.status,
+                    professionName: providerProfile.professionName,
+                    photos: providerProfile.photos,
+                    videos: providerProfile.videos,
+                    bio: providerProfile.bio,
+                    additionalInfo: providerProfile.additionalInfo,
+                    popularity: providerProfile.popularity
+                };
+
+                const response = await fetch("http://localhost:3013/api/providers/update-provider", {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(updatedAddressData),
+                });
+
+                const updatedResult = await response.json();
+                if (updatedResult.success) {
+                    setProviderProfile((prevProfile) => ({
+                        ...prevProfile,
+                        address: address,
+                    }));
+                    setAlertMessage("Address saved successfully!");
+                    setAlertType("success");
+                    setAlertOpen(true);
+                } else {
+                    console.log("Failed to save address");
+                    setAlertMessage("Failed to save address.");
+                    setAlertType("error");
+                    setAlertOpen(true);
+                }
+            }
+        } catch (error) {
+            console.log("Error saving profile's address", error);
+            setAlertMessage("Error saving profile's address.");
+            setAlertType("error");
+            setAlertOpen(true);
+        } finally {
+            setLoading(false);
+        }
+    }
+
     if (loading) {
         return (
             <Box className="mt-8 flex justify-center items-center h-[50vh]">
@@ -718,7 +786,7 @@ const ProfileInfo = ({ uploadData }) => {
                 )}
 
                 {/* Others data */}
-                <Box className="w-[92%] md:w-[85%] mx-auto bg-gray-200 py-8 px-2 md:px-5">
+                <Box className="w-[92%] md:w-[85%] mx-auto bg-gray-200 py-8 px-2 md:px-5 rounded-md">
                     {/* Age add & changing in providers database */}
                     {providerProfile?.age ? (
                         <Box className="flex justify-between items-center">
@@ -795,7 +863,7 @@ const ProfileInfo = ({ uploadData }) => {
                         </Box>
                     ) : (
                         <section>
-                            <p className="font-lora font-semibold flex justify-between items-center">Age: <span className='text-sm text-blue-600 hover:cursor-pointer select-none' onClick={handleAgeOpen}>Add..</span></p>
+                            <p className="text-lg font-lora font-bold flex justify-between items-center">Age: <span className='text-sm text-blue-600 hover:cursor-pointer select-none' onClick={handleAgeOpen}>Add..</span></p>
 
                             {/* Dialog */}
                             <Dialog
@@ -867,7 +935,153 @@ const ProfileInfo = ({ uploadData }) => {
                         </section>
                     )}
 
-                    
+                    {/* Address add & changing in providers database */}
+                    {providerProfile?.address ? (
+                        <Box className="flex justify-between items-center">
+                            <p className='font-lora text-lg'><span className='font-bold'>Address:</span> {providerProfile?.address}</p>
+                            <p className='text-sm font-lora font-semibold text-blue-600 hover:cursor-pointer select-none' onClick={handleAddressOpen}>Edit..</p>
+
+                            {/* Dialog */}
+                            <Dialog
+                                open={addressDialogOpen}
+                                onClose={handleAddressClose}
+                                PaperProps={{
+                                    component: 'form',
+                                    onSubmit: (event) => {
+                                        event.preventDefault();
+                                        const formData = new FormData(event.currentTarget);
+                                        const formJson = Object.fromEntries(formData.entries());
+                                        const address = formJson?.address;
+                                        handleAddressChange(address);
+                                        handleAddressClose();
+                                    },
+                                }}
+                            >
+                                <DialogTitle sx={{ fontFamily: 'Lora, serif' }}>Edit Address</DialogTitle>
+                                <DialogContent>
+                                    <DialogContentText sx={{ fontFamily: 'Lora, serif' }}>
+                                        Please enter your address to display on your profile. This helps personalize your experience and connect with local vendors or events in the wedding industry.
+                                    </DialogContentText>
+                                    <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+                                        <AccountCircleIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
+                                        <TextField
+                                            autoFocus
+                                            required
+                                            margin="dense"
+                                            id="address"
+                                            name="address"
+                                            label="Write your address"
+                                            type="text"
+                                            fullWidth
+                                            variant="standard"
+                                            InputLabelProps={{
+                                                sx: {
+                                                    fontFamily: 'Lora, serif',
+                                                    '&.Mui-focused': {
+                                                        color: '#06b6d4',
+                                                    },
+                                                },
+                                            }}
+                                            InputProps={{
+                                                sx: {
+                                                    fontFamily: 'Lora, serif',
+                                                    '&:after': {
+                                                        borderBottomColor: '#06b6d4',
+                                                    },
+                                                },
+                                            }}
+                                        />
+                                    </Box>
+                                </DialogContent>
+                                <DialogActions>
+                                    <p
+                                        className="px-2 py-0.5 bg-red-200 rounded font-lora font-medium border border-red-400 hover:cursor-pointer active:bg-red-100 active:border-red-300 active:shadow-inner transition-all duration-200 ease-in-out active:scale-75 select-none"
+                                        onClick={handleAddressClose}
+                                    >
+                                        Cancel
+                                    </p>
+                                    <button
+                                        type="submit"
+                                        className="text-white px-2 py-0.5 bg-cyan-500 rounded font-lora font-medium border border-cyan-600 hover:cursor-pointer active:bg-cyan-400 active:border-cyan-600 active:shadow-inner transition-all duration-200 ease-in-out active:scale-75 select-none"
+                                    >
+                                        Save Address
+                                    </button>
+                                </DialogActions>
+                            </Dialog>
+                        </Box>
+                    ) : (
+                        <section>
+                            <p className="text-lg font-lora font-bold flex justify-between items-center">Address: <span className='text-sm text-blue-600 hover:cursor-pointer select-none' onClick={handleAddressOpen}>Add..</span></p>
+
+                            {/* Dialog */}
+                            <Dialog
+                                open={addressDialogOpen}
+                                onClose={handleAddressClose}
+                                PaperProps={{
+                                    component: 'form',
+                                    onSubmit: (event) => {
+                                        event.preventDefault();
+                                        const formData = new FormData(event.currentTarget);
+                                        const formJson = Object.fromEntries(formData.entries());
+                                        const address = formJson?.address;
+                                        handleAddressChange(address);
+                                        handleAddressClose();
+                                    },
+                                }}
+                            >
+                                <DialogTitle sx={{ fontFamily: 'Lora, serif' }}>Add Address</DialogTitle>
+                                <DialogContent>
+                                    <DialogContentText sx={{ fontFamily: 'Lora, serif' }}>
+                                        Please enter your address to display on your profile. This helps personalize your experience and connect with local vendors or events in the wedding industry.
+                                    </DialogContentText>
+                                    <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+                                        <AccountCircleIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
+                                        <TextField
+                                            autoFocus
+                                            required
+                                            margin="dense"
+                                            id="address"
+                                            name="address"
+                                            label="Write your address"
+                                            type="text"
+                                            fullWidth
+                                            variant="standard"
+                                            InputLabelProps={{
+                                                sx: {
+                                                    fontFamily: 'Lora, serif',
+                                                    '&.Mui-focused': {
+                                                        color: '#06b6d4',
+                                                    },
+                                                },
+                                            }}
+                                            InputProps={{
+                                                sx: {
+                                                    fontFamily: 'Lora, serif',
+                                                    '&:after': {
+                                                        borderBottomColor: '#06b6d4',
+                                                    },
+                                                },
+                                            }}
+                                        />
+                                    </Box>
+                                </DialogContent>
+                                <DialogActions>
+                                    <p
+                                        className="px-2 py-0.5 bg-red-200 rounded font-lora font-medium border border-red-400 hover:cursor-pointer active:bg-red-100 active:border-red-300 active:shadow-inner transition-all duration-200 ease-in-out active:scale-75 select-none"
+                                        onClick={handleAddressClose}
+                                    >
+                                        Cancel
+                                    </p>
+                                    <button
+                                        type="submit"
+                                        className="text-white px-2 py-0.5 bg-cyan-500 rounded font-lora font-medium border border-cyan-600 hover:cursor-pointer active:bg-cyan-400 active:border-cyan-600 active:shadow-inner transition-all duration-200 ease-in-out active:scale-75 select-none"
+                                    >
+                                        Save Address
+                                    </button>
+                                </DialogActions>
+                            </Dialog>
+                        </section>
+                    )}
                 </Box>
             </section>
 
