@@ -1,12 +1,13 @@
 "use client";
 
-import { Box, CircularProgress, Avatar, IconButton, Button, Snackbar, Alert } from "@mui/material";
-import Image from "next/image";
-import { useEffect, useState, useRef } from "react";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import EditIcon from '@mui/icons-material/Edit';
 import PersonIcon from "@mui/icons-material/Person";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
-import EditIcon from '@mui/icons-material/Edit';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import { Alert, Avatar, Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Snackbar, TextField } from "@mui/material";
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 
 const ProfileInfo = ({ uploadData }) => {
     const [profile, setProfile] = useState(null);
@@ -20,6 +21,8 @@ const ProfileInfo = ({ uploadData }) => {
     const [alertOpen, setAlertOpen] = useState(false);
     const [alertMessage, setAlertMessage] = useState("");
     const [alertType, setAlertType] = useState("success");
+
+    const [dialogOpen, setDialogOpen] = useState(false);
 
     const handleCloseAlert = (event, reason) => {
         if (reason === 'clickaway') {
@@ -166,6 +169,72 @@ const ProfileInfo = ({ uploadData }) => {
         }
     };
 
+    const handleBioOpen = () => {
+        setDialogOpen(true);
+    };
+
+    const handleBioClose = () => {
+        setDialogOpen(false);
+    };
+
+    const handleBioChange = async (bio) => {
+        try {
+            setLoading(true);
+            if (bio.length > 206) {
+                setAlertMessage("Bio message should be in 205 letter!");
+                setAlertType("error");
+                setAlertOpen(true);
+            } else {
+                const updatedBioData = {
+                    name: providerProfile.name,
+                    professionImage: providerProfile.professionImage,
+                    email: providerProfile.email,
+                    cost: providerProfile.cost,
+                    age: providerProfile.age,
+                    address: providerProfile.address,
+                    status: providerProfile.status,
+                    professionName: providerProfile.professionName,
+                    photos: providerProfile.photos,
+                    videos: providerProfile.videos,
+                    bio: bio,
+                    additionalInfo: providerProfile.additionalInfo,
+                    popularity: providerProfile.popularity
+                };
+
+                const response = await fetch("http://localhost:3013/api/providers/update-provider", {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(updatedBioData),
+                });
+
+                const updatedResult = await response.json();
+                if (updatedResult.success) {
+                    setProviderProfile((prevProfile) => ({
+                        ...prevProfile,
+                        bio: bio,
+                    }));
+                    setAlertMessage("Bio saved successfully!");
+                    setAlertType("success");
+                    setAlertOpen(true);
+                } else {
+                    console.log("Failed to saved bio");
+                    setAlertMessage("Failed to saved bio.");
+                    setAlertType("error");
+                    setAlertOpen(true);
+                }
+            }
+        } catch (error) {
+            console.log("Error saving profile's bio", error);
+            setAlertMessage("Error saving profile's bio.");
+            setAlertType("error");
+            setAlertOpen(true);
+        } finally {
+            setLoading(false);
+        }
+    }
+
     if (loading) {
         return (
             <Box className="mt-8 flex justify-center items-center h-[50vh]">
@@ -290,14 +359,153 @@ const ProfileInfo = ({ uploadData }) => {
 
                 {/* Provider's bio showing and updating in providers database */}
                 {providerProfile.bio ? (
-                    <Box>
+                    <Box className="flex flex-col justify-center items-center">
                         <section><ArrowDropDownIcon sx={{ fontSize: "50px", color: "orange" }} /><ArrowDropDownIcon sx={{ fontSize: "50px", color: "orange" }} /></section>
-                        <p className="font-lora font-semibold text-center">{providerProfile.bio}</p>
+                        <section>
+                            <p className="font-lora font-semibold text-center px-2">{providerProfile.bio} <span className="ml-2 text-sm text-blue-600 hover:cursor-pointer" onClick={handleBioOpen}>Edit..</span></p>
+                            {/* Dialog */}
+                            <Dialog
+                                open={dialogOpen}
+                                onClose={handleBioClose}
+                                PaperProps={{
+                                    component: 'form',
+                                    onSubmit: (event) => {
+                                        event.preventDefault();
+                                        const formData = new FormData(event.currentTarget);
+                                        const formJson = Object.fromEntries(formData.entries());
+                                        const bio = formJson.bio;
+                                        handleBioChange(bio);
+                                        handleBioClose();
+                                    },
+                                }}
+                            >
+                                <DialogTitle sx={{ fontFamily: 'Lora, serif' }}>Add Your Profile&apos;s Bio</DialogTitle>
+                                <DialogContent>
+                                    <DialogContentText sx={{ fontFamily: 'Lora, serif' }}>
+                                        Please enter a brief bio to display on your profile. Share your experience,
+                                        passions, and role in the wedding industry or how you are involved in the event.
+                                    </DialogContentText>
+                                    <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+                                        <AccountCircleIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
+                                        <TextField
+                                            autoFocus
+                                            required
+                                            margin="dense"
+                                            id="bio"
+                                            name="bio"
+                                            label="Write your Bio"
+                                            type="text"
+                                            fullWidth
+                                            variant="standard"
+                                            InputLabelProps={{
+                                                sx: {
+                                                    fontFamily: 'Lora, serif',
+                                                    '&.Mui-focused': {
+                                                        color: '#06b6d4',
+                                                    },
+                                                },
+                                            }}
+                                            InputProps={{
+                                                sx: {
+                                                    fontFamily: 'Lora, serif',
+                                                    '&:after': {
+                                                        borderBottomColor: '#06b6d4',
+                                                    },
+                                                },
+                                            }}
+                                        />
+                                    </Box>
+                                </DialogContent>
+                                <DialogActions>
+                                    <p
+                                        className="px-2 py-0.5 bg-red-200 rounded font-lora font-medium border border-red-400 hover:cursor-pointer active:bg-red-100 active:border-red-300 active:shadow-inner transition-all duration-200 ease-in-out active:scale-75 select-none"
+                                        onClick={handleBioClose}
+                                    >
+                                        Cancel
+                                    </p>
+                                    <button
+                                        type="submit"
+                                        className="text-white px-2 py-0.5 bg-cyan-500 rounded font-lora font-medium border border-cyan-600 hover:cursor-pointer active:bg-cyan-400 active:border-cyan-600 active:shadow-inner transition-all duration-200 ease-in-out active:scale-75 select-none"
+                                    >
+                                        Save Bio
+                                    </button>
+                                </DialogActions>
+                            </Dialog>
+                        </section>
                     </Box>
                 ) : (
                     <Box className="flex flex-col justify-center items-center">
                         <section><ArrowDropDownIcon sx={{ fontSize: "50px", color: "orange" }} /><ArrowDropDownIcon sx={{ fontSize: "50px", color: "orange" }} /></section>
-                        <p className="bg-gray-200 font-lora font-semibold px-5 py-1 rounded-md border-2 border-gray-400 hover:bg-gray-300 hover:cursor-pointer active:bg-gray-400 active:border-gray-500 active:shadow-inner transition-all duration-200 ease-in-out active:scale-95 w-max mx-auto select-none">Write your bio</p>
+                        <p className="bg-gray-200 font-lora font-semibold px-5 py-1 rounded-md border-2 border-gray-400 hover:bg-gray-300 hover:cursor-pointer active:bg-gray-400 active:border-gray-500 active:shadow-inner transition-all duration-200 ease-in-out active:scale-75 w-max mx-auto select-none" onClick={handleBioOpen}>Add your bio</p>
+
+                        {/* Dialog */}
+                        <Dialog
+                            open={dialogOpen}
+                            onClose={handleBioClose}
+                            PaperProps={{
+                                component: 'form',
+                                onSubmit: (event) => {
+                                    event.preventDefault();
+                                    const formData = new FormData(event.currentTarget);
+                                    const formJson = Object.fromEntries(formData.entries());
+                                    const bio = formJson.bio;
+                                    handleBioChange(bio);
+                                    handleBioClose();
+                                },
+                            }}
+                        >
+                            <DialogTitle sx={{ fontFamily: 'Lora, serif' }}>Add Your Profile&apos;s Bio</DialogTitle>
+                            <DialogContent>
+                                <DialogContentText sx={{ fontFamily: 'Lora, serif' }}>
+                                    Please enter a brief bio to display on your profile. Share your experience,
+                                    passions, and role in the wedding industry or how you are involved in the event.
+                                </DialogContentText>
+                                <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+                                    <AccountCircleIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
+                                    <TextField
+                                        autoFocus
+                                        required
+                                        margin="dense"
+                                        id="bio"
+                                        name="bio"
+                                        label="Write your Bio"
+                                        type="text"
+                                        fullWidth
+                                        variant="standard"
+                                        InputLabelProps={{
+                                            sx: {
+                                                fontFamily: 'Lora, serif',
+                                                '&.Mui-focused': {
+                                                    color: '#06b6d4',
+                                                },
+                                            },
+                                        }}
+                                        InputProps={{
+                                            sx: {
+                                                fontFamily: 'Lora, serif',
+                                                '&:after': {
+                                                    borderBottomColor: '#06b6d4',
+                                                },
+                                            },
+                                        }}
+                                    />
+                                </Box>
+                            </DialogContent>
+                            <DialogActions>
+                                <p
+                                    className="px-2 py-0.5 bg-red-200 rounded font-lora font-medium border border-red-400 hover:cursor-pointer active:bg-red-100 active:border-red-300 active:shadow-inner transition-all duration-200 ease-in-out active:scale-75 select-none"
+                                    onClick={handleBioClose}
+                                >
+                                    Cancel
+                                </p>
+                                <button
+                                    type="submit"
+                                    className="text-white px-2 py-0.5 bg-cyan-500 rounded font-lora font-medium border border-cyan-600 hover:cursor-pointer active:bg-cyan-400 active:border-cyan-600 active:shadow-inner transition-all duration-200 ease-in-out active:scale-75 select-none"
+                                >
+                                    Save Bio
+                                </button>
+                            </DialogActions>
+                        </Dialog>
                     </Box>
                 )}
 

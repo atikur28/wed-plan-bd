@@ -18,10 +18,10 @@ export async function PUT(req) {
             return NextResponse.json({ success: false, message: "User not found" }, { status: 404 });
         }
 
-        user.firstName = firstName;
-        user.lastName = lastName;
+        user.firstName = firstName || user.firstName;
+        user.lastName = lastName || user.lastName;
         user.image = image;
-        user.email = email;
+        user.email = user.email;
         user.password = user.password;
         user.userCategory = userCategory || user.userCategory;
         user.status = status || user.status;
