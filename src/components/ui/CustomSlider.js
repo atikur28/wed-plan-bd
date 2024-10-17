@@ -84,23 +84,23 @@ const CustomSlider = () => {
         >
           <Box className="flex justify-evenly items-center h-full">
             <Box className="w-[150px] md:w-[200px] lg:w-[350px] xl:w-[600px] mx-2 md:mx-0">
-              <Image src={camera} width={600} height={600} alt="Camera" />
+              <Image className="select-none" src={camera} width={600} height={600} alt="Camera" />
             </Box>
             <Box>
               <h1>
-                <span className="bg-[#ffe500] md:text-4xl xl:text-8xl text-black font-lora font-semibold pl-5">
+                <span className="bg-[#ffe500] md:text-4xl xl:text-8xl text-black font-lora font-semibold pl-5 select-none">
                   PHOTO
                 </span>
-                <span className="md:text-4xl xl:text-8xl text-white font-lora font-semibold border-b-4 border-[#ffe500] ml-0.5">
+                <span className="md:text-4xl xl:text-8xl text-white font-lora font-semibold border-b-4 border-[#ffe500] ml-0.5 select-none">
                   GRAPHY
                 </span>
               </h1>
-              <p className="text-[10px] md:text-xl xl:text-3xl font-lora font-medium text-white mt-3 lg:mt-10 mb-2 lg:mb-7 md:max-w-[450px] lg:max-w-[600px]">
+              <p className="text-[10px] md:text-xl xl:text-3xl font-lora font-medium text-white mt-3 lg:mt-10 mb-2 lg:mb-7 md:max-w-[450px] lg:max-w-[600px] select-none">
                 Capture every beautiful moment with our professional
                 photographers.
               </p>
               <Link href="/category/photography">
-                <Button className="text-[10px] md:text-base px-4 bg-white text-black font-semibold font-lora">
+                <Button className="text-[10px] md:text-base px-4 bg-white text-black font-semibold font-lora select-none">
                   Photographer
                 </Button>
               </Link>
@@ -123,14 +123,14 @@ const CustomSlider = () => {
         >
           <Box className="flex items-center pl-3 lg:pl-10 h-full bg-black bg-opacity-30">
             <Box>
-              <h1 className="md:text-4xl xl:text-8xl text-white font-lora font-semibold">
+              <h1 className="md:text-4xl xl:text-8xl text-white font-lora font-semibold select-none">
                 Honeymoon Plan
               </h1>
-              <p className="text-[10px] md:text-xl xl:text-3xl font-lora font-medium text-white mt-3 lg:mt-10 mb-2 lg:mb-7 md:max-w-[450px] lg:max-w-[600px]">
+              <p className="text-[10px] md:text-xl xl:text-3xl font-lora font-medium text-white mt-3 lg:mt-10 mb-2 lg:mb-7 md:max-w-[450px] lg:max-w-[600px] select-none">
                 Plan the perfect honeymoon with our exclusive packages.
               </p>
               <Link href="/category/travel">
-                <Button className="text-[10px] md:text-base px-4 bg-white text-black font-semibold font-lora">
+                <Button className="text-[10px] md:text-base px-4 bg-white text-black font-semibold font-lora select-none">
                   Travel
                 </Button>
               </Link>
@@ -153,7 +153,7 @@ const CustomSlider = () => {
         >
           <Box className="flex justify-evenly items-center h-full">
             <Image
-              className="w-[80px] md:w-[150px] lg:w-[300px] xl:w-[400px]"
+              className="w-[80px] md:w-[150px] lg:w-[300px] xl:w-[400px] select-none"
               src={food}
               width={400}
               height={400}
@@ -161,10 +161,10 @@ const CustomSlider = () => {
             />
             <Box className="flex flex-col max-w-[200px] md:max-w-[400px] lg:max-w-[650px]">
               <Box>
-                <h2 className="text-[12px] md:text-xl lg:text-2xl 2xl:text-5xl font-lora font-semibold text-start text-[#60422d]">
+                <h2 className="text-[12px] md:text-xl lg:text-2xl 2xl:text-5xl font-lora font-semibold text-start text-[#60422d] select-none">
                   WHAT – The Wedding Food and Drink
                 </h2>
-                <p className="text-[8px] md:text-[12px] lg:text-[14px] 2xl:text-xl text-start font-lora font-medium text-[#60422d] lg:mt-3 xl:mt-5 lg:mb-2 xl:mb-10">
+                <p className="text-[8px] md:text-[12px] lg:text-[14px] 2xl:text-xl text-start font-lora font-medium text-[#60422d] lg:mt-3 xl:mt-5 lg:mb-2 xl:mb-10 select-none">
                   Delight your guests with exquisite cuisine and crafted
                   cocktails! Choose from elegant hors d&apos;oeuvres, a stunning
                   wedding cake, and a personalized menu that reflects your
@@ -172,7 +172,7 @@ const CustomSlider = () => {
                 </p>
               </Box>
               <Image
-                className="w-[60px] md:w-[150px] lg:w-[250px] xl:w-[400px]"
+                className="w-[60px] md:w-[150px] lg:w-[250px] xl:w-[400px] select-none"
                 src={food2}
                 width={300}
                 height={300}
@@ -196,10 +196,10 @@ const CustomSlider = () => {
           }}
         >
           <Box className="flex flex-col justify-center h-full md:max-w-[500px] xl:max-w-[800px] ml-2 xl:ml-20">
-            <h1 className="text-[14px] md:text-xl lg:text-2xl xl:text-5xl font-lora font-semibold text-white">
+            <h1 className="text-[14px] md:text-xl lg:text-2xl xl:text-5xl font-lora font-semibold text-white select-none">
               Transform Your Wedding with Stunning Decor!
             </h1>
-            <p className="text-[10px] md:text-[14px] xl:text-2xl text-start font-lora font-medium text-white mt-3 xl:mt-10 mb-2 xl:mb-16">
+            <p className="text-[10px] md:text-[14px] xl:text-2xl text-start font-lora font-medium text-white mt-3 xl:mt-10 mb-2 xl:mb-16 select-none">
               Delight your guests with exquisite cuisine and crafted cocktails!
               Choose from elegant hors d&apos;oeuvres, a stunning wedding cake,
               and a personalized menu that reflects your taste. Make your
