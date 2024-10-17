@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const getCategories = async () => {
-    const res = await fetch("http://localhost:3012/api/categories");
+    const res = await fetch("http://localhost:3013/api/categories");
     const data = await res.json();
     return data.result;
 };
@@ -117,7 +117,7 @@ export default function SignUpForm() {
             }
 
             try {
-                let res = await fetch("http://localhost:3012/api/users/signup", {
+                let res = await fetch("http://localhost:3013/api/users/signup", {
                     method: "POST",
                     body: JSON.stringify(user),
                     headers: {
@@ -126,7 +126,7 @@ export default function SignUpForm() {
                 });
                 res = await res.json();
 
-                let response = await fetch("http://localhost:3012/api/providers/provider-post", {
+                let response = await fetch("http://localhost:3013/api/providers/provider-post", {
                     method: "POST",
                     body: JSON.stringify(provider),
                     headers: {
