@@ -5,10 +5,10 @@ import { NextResponse } from "next/server";
 mongoDbConnect();
 
 export async function PUT(req) {
-    const { firstName, lastName, image, email, userCategory, status } = await req.json();
+    const { name, image, email, userCategory, status } = await req.json();
 
     try {
-        if (!firstName || !lastName || !image || !email || !userCategory) {
+        if (!name || !image || !email || !userCategory) {
             return NextResponse.json({ success: false, message: "Missing required fields" }, { status: 400 });
         }
 
@@ -18,9 +18,8 @@ export async function PUT(req) {
             return NextResponse.json({ success: false, message: "User not found" }, { status: 404 });
         }
 
-        user.firstName = firstName || user.firstName;
-        user.lastName = lastName || user.lastName;
-        user.image = image;
+        user.name = name || user.name;
+        user.image = image || user.image;
         user.email = user.email;
         user.password = user.password;
         user.userCategory = userCategory || user.userCategory;

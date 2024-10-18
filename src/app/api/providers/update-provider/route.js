@@ -7,7 +7,7 @@ mongoDbConnect();
 
 export async function PUT(req) {
   try {
-    const { name, professionImage, email, cost, age, address, status, professionName, photos, videos, bio, additionalInfo, popularity } = await req.json();
+    const { name, posts, email, cost, age, address, status, professionName, photos, videos, bio, additionalInfo, popularity } = await req.json();
 
     if (!email) {
       return NextResponse.json({ error: "Invalid provider Email." }, { status: 400 });
@@ -19,7 +19,7 @@ export async function PUT(req) {
     }
 
     provider.name = name || provider.name;
-    provider.professionImage = professionImage || provider.professionImage;
+    provider.posts = posts || provider.posts;
     provider.email = provider.email;
     provider.cost = cost || provider.cost;
     provider.age = age || provider.age;

@@ -6,7 +6,7 @@ mongoDbConnect();
 
 export async function POST(req) {
   try {
-    const { name, professionImage, email, cost, age, address, status, professionName, photos, videos, bio, additionalInfo, popularity } = await req.json();
+    const { name, posts, email, cost, age, address, status, professionName, photos, videos, bio, additionalInfo, popularity } = await req.json();
 
     if (!name || !email) {
       return NextResponse.json({ error: "Name and email are required fields." }, { status: 400 });
@@ -14,7 +14,7 @@ export async function POST(req) {
 
     const newProvider = new Provider({
       name,
-      professionImage,
+      posts,
       email,
       cost,
       age,

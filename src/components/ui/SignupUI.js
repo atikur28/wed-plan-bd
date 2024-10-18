@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const getCategories = async () => {
-    const res = await fetch("http://localhost:3013/api/categories");
+    const res = await fetch("http://localhost:3015/api/categories");
     const data = await res.json();
     return data.result;
 };
@@ -20,8 +20,7 @@ const getCategories = async () => {
 export default function SignUpForm() {
     const router = useRouter();
 
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
+    const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -48,12 +47,8 @@ export default function SignUpForm() {
     const validateForm = () => {
         const newErrors = {};
 
-        if (!firstName.trim()) {
-            newErrors.firstName = "First name is required";
-        }
-
-        if (!lastName.trim()) {
-            newErrors.lastName = "Last name is required";
+        if (!name.trim()) {
+            newErrors.name = "Full name is required";
         }
 
         if (!email.trim()) {
@@ -88,8 +83,7 @@ export default function SignUpForm() {
         if (validateForm()) {
             setLoading(true);
             const user = {
-                firstName,
-                lastName,
+                name,
                 image: "",
                 email,
                 password,
@@ -101,8 +95,8 @@ export default function SignUpForm() {
             const profession = professionFinder?.name;
 
             const provider = {
-                name: firstName + " " + lastName,
-                professionImage: "",
+                name: name,
+                posts: [],
                 email: email,
                 cost: "",
                 age: "",
@@ -117,7 +111,7 @@ export default function SignUpForm() {
             }
 
             try {
-                let res = await fetch("http://localhost:3013/api/users/signup", {
+                let res = await fetch("http://localhost:3015/api/users/signup", {
                     method: "POST",
                     body: JSON.stringify(user),
                     headers: {
@@ -126,7 +120,7 @@ export default function SignUpForm() {
                 });
                 res = await res.json();
 
-                let response = await fetch("http://localhost:3013/api/providers/provider-post", {
+                let response = await fetch("http://localhost:3015/api/providers/provider-post", {
                     method: "POST",
                     body: JSON.stringify(provider),
                     headers: {
@@ -141,8 +135,7 @@ export default function SignUpForm() {
                     setAlertType("success");
                     setAlertOpen(true);
                     setErrors({});
-                    setFirstName("");
-                    setLastName("");
+                    setName("");
                     setEmail("");
                     setPassword("");
                     setConfirmPassword("");
@@ -180,57 +173,16 @@ export default function SignUpForm() {
                     {loading ? "Processing" : "Sign Up"}
                 </h3>
                 <form className="space-y-4">
-                    {/* First Name */}
+                    {/* Full Name */}
                     <TextField
-                        label="First Name"
+                        label="Full name"
                         fullWidth
                         required
-                        name="firstName"
-                        value={firstName}
-                        onChange={(e) => setFirstName(e.target.value)}
-                        error={!!errors.firstName}
-                        helperText={errors.firstName}
-                        sx={{ mt: 2 }}
-                        InputProps={{
-                            startAdornment: (
-                                <InputAdornment position="start">
-                                    <AccountCircleIcon className="dark:text-white" />
-                                </InputAdornment>
-                            ),
-                            sx: {
-                                fontFamily: "Lora, serif",
-                                color: "black",
-                                ".Mui-focused": {
-                                    color: "black",
-                                },
-                                ".MuiInputBase-root": {
-                                    color: "white",
-                                },
-                            },
-                            className: "dark:text-white",
-                        }}
-                        InputLabelProps={{
-                            sx: {
-                                fontFamily: "Lora, serif",
-                                color: "black",
-                                ".Mui-focused": {
-                                    color: "black",
-                                },
-                            },
-                            className: "dark:text-white",
-                        }}
-                    />
-
-                    {/* Last Name */}
-                    <TextField
-                        label="Last Name"
-                        variant="outlined"
-                        fullWidth
-                        name="lastName"
-                        value={lastName}
-                        onChange={(e) => setLastName(e.target.value)}
-                        error={!!errors.lastName}
-                        helperText={errors.lastName}
+                        name="name"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        error={!!errors.name}
+                        helperText={errors.name}
                         sx={{ mt: 2 }}
                         InputProps={{
                             startAdornment: (

@@ -39,7 +39,7 @@ const ProfileInfo = ({ uploadData }) => {
     useEffect(() => {
         const fetchProfile = async () => {
             try {
-                const profileResponse = await fetch("http://localhost:3013/api/users/profile", {
+                const profileResponse = await fetch("http://localhost:3015/api/users/profile", {
                     method: "POST",
                     credentials: "include",
                 });
@@ -49,7 +49,7 @@ const ProfileInfo = ({ uploadData }) => {
 
                 if (profileData.success) {
                     // User info setup
-                    const usersResponse = await fetch("http://localhost:3013/api/users", {
+                    const usersResponse = await fetch("http://localhost:3015/api/users", {
                         method: "GET",
                         credentials: "include",
                     });
@@ -67,7 +67,7 @@ const ProfileInfo = ({ uploadData }) => {
                     }
 
                     // Provider info setup
-                    const providersResponse = await fetch("http://localhost:3013/api/providers", {
+                    const providersResponse = await fetch("http://localhost:3015/api/providers", {
                         method: "GET",
                         credentials: "include",
                     });
@@ -128,15 +128,14 @@ const ProfileInfo = ({ uploadData }) => {
                 console.log("Image uploaded successfully");
 
                 const updatedProfileData = {
-                    firstName: profile.firstName,
-                    lastName: profile.lastName,
+                    name: profile.name,
                     image: data.url,
                     email: profile.email,
                     userCategory: profile.userCategory,
                     status: profile.status,
                 };
 
-                const updateResponse = await fetch("http://localhost:3013/api/users/profile/update-profile", {
+                const updateResponse = await fetch("http://localhost:3015/api/users/profile/update-profile", {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
@@ -192,9 +191,9 @@ const ProfileInfo = ({ uploadData }) => {
                 setAlertType("error");
                 setAlertOpen(true);
             } else {
-                const updatedNameData = {
+                const updatedProviderData = {
                     name: name,
-                    professionImage: providerProfile.professionImage,
+                    posts: providerProfile.posts,
                     email: providerProfile.email,
                     cost: providerProfile.cost,
                     age: providerProfile.age,
@@ -208,16 +207,35 @@ const ProfileInfo = ({ uploadData }) => {
                     popularity: providerProfile.popularity
                 };
 
-                const response = await fetch("http://localhost:3013/api/providers/update-provider", {
+                const updatedProfileData = {
+                    name: name,
+                    image: profile.image,
+                    email: profile.email,
+                    userCategory: profile.userCategory,
+                    status: profile.status,
+                };
+
+                const providerResponse = await fetch("http://localhost:3015/api/providers/update-provider", {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify(updatedNameData),
+                    body: JSON.stringify(updatedProviderData),
                 });
 
-                const updatedResult = await response.json();
-                if (updatedResult.success) {
+                const providerResult = await providerResponse.json();
+
+                const userResponse = await fetch("http://localhost:3015/api/users/profile/update-profile", {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(updatedProfileData),
+                });
+
+                const userResult = await userResponse.json();
+
+                if (providerResult.success && userResult.success) {
                     setProviderProfile((prevProfile) => ({
                         ...prevProfile,
                         name: name,
@@ -261,7 +279,7 @@ const ProfileInfo = ({ uploadData }) => {
             } else {
                 const updatedBioData = {
                     name: providerProfile.name,
-                    professionImage: providerProfile.professionImage,
+                    posts: providerProfile.posts,
                     email: providerProfile.email,
                     cost: providerProfile.cost,
                     age: providerProfile.age,
@@ -275,7 +293,7 @@ const ProfileInfo = ({ uploadData }) => {
                     popularity: providerProfile.popularity
                 };
 
-                const response = await fetch("http://localhost:3013/api/providers/update-provider", {
+                const response = await fetch("http://localhost:3015/api/providers/update-provider", {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
@@ -328,7 +346,7 @@ const ProfileInfo = ({ uploadData }) => {
             } else {
                 const updatedAgeData = {
                     name: providerProfile.name,
-                    professionImage: providerProfile.professionImage,
+                    posts: providerProfile.posts,
                     email: providerProfile.email,
                     cost: providerProfile.cost,
                     age: age,
@@ -342,7 +360,7 @@ const ProfileInfo = ({ uploadData }) => {
                     popularity: providerProfile.popularity
                 };
 
-                const response = await fetch("http://localhost:3013/api/providers/update-provider", {
+                const response = await fetch("http://localhost:3015/api/providers/update-provider", {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
@@ -395,7 +413,7 @@ const ProfileInfo = ({ uploadData }) => {
             } else {
                 const updatedAddressData = {
                     name: providerProfile.name,
-                    professionImage: providerProfile.professionImage,
+                    posts: providerProfile.posts,
                     email: providerProfile.email,
                     cost: providerProfile.cost,
                     age: providerProfile.age,
@@ -409,7 +427,7 @@ const ProfileInfo = ({ uploadData }) => {
                     popularity: providerProfile.popularity
                 };
 
-                const response = await fetch("http://localhost:3013/api/providers/update-provider", {
+                const response = await fetch("http://localhost:3015/api/providers/update-provider", {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
@@ -452,9 +470,9 @@ const ProfileInfo = ({ uploadData }) => {
     }
 
     return (
-        <Box className="flex flex-col md:flex-row justify-center gap-[2%] px-2 md:px-8 pb-2">
+        <Box className="flex flex-col md:flex-row justify-center gap-5 md:gap-[2%] px-2 md:px-8 pb-2">
             {/* First Section: Profile Info */}
-            <section className="md:w-[40%] lg:w-[35%] 3xl:w-[700px] flex flex-col justify-center items-center gap-4 bg-slate-50 md:pt-6 md:pb-8 rounded-lg">
+            <section className="md:w-[40%] lg:w-[35%] 3xl:w-[700px] flex flex-col justify-center items-center gap-4 bg-slate-50 md:pt-6 md:pb-8 px-1 rounded-lg">
                 {/* Profile image changing process and showing updated image */}
                 <Box sx={{
                     display: "flex",
@@ -592,6 +610,7 @@ const ProfileInfo = ({ uploadData }) => {
                                         type="text"
                                         fullWidth
                                         variant="standard"
+                                        defaultValue={providerProfile?.name}
                                         InputLabelProps={{
                                             sx: {
                                                 fontFamily: 'Lora, serif',
@@ -628,6 +647,9 @@ const ProfileInfo = ({ uploadData }) => {
                         </Dialog>
                     </section>
                 </Box>
+
+                {/* Email address */}
+                <p className="font-lora font-medium text-center">{providerProfile?.email}</p>
 
                 {/* Provider's profession name showing and updating in providers database */}
                 <h4 className="font-lora font-semibold text-center">{providerProfile?.professionName}</h4>
@@ -673,6 +695,7 @@ const ProfileInfo = ({ uploadData }) => {
                                             type="text"
                                             fullWidth
                                             variant="standard"
+                                            defaultValue={providerProfile?.bio}
                                             InputLabelProps={{
                                                 sx: {
                                                     fontFamily: 'Lora, serif',
@@ -789,8 +812,8 @@ const ProfileInfo = ({ uploadData }) => {
                 <Box className="w-[92%] md:w-[85%] mx-auto bg-gray-200 py-8 px-2 md:px-5 rounded-md">
                     {/* Age add & changing in providers database */}
                     {providerProfile?.age ? (
-                        <Box className="flex justify-between items-center">
-                            <p className='font-lora text-lg'><span className='font-bold'>Age:</span> {providerProfile?.age}</p>
+                        <Box className="flex justify-between items-center mb-3">
+                            <p className='font-lora text-lg'><span className='font-bold'>Age:</span> {providerProfile?.age}.</p>
                             <p className='text-sm font-lora font-semibold text-blue-600 hover:cursor-pointer select-none' onClick={handleAgeOpen}>Edit..</p>
 
                             {/* Dialog */}
@@ -826,6 +849,7 @@ const ProfileInfo = ({ uploadData }) => {
                                             type="number"
                                             fullWidth
                                             variant="standard"
+                                            defaultValue={providerProfile?.age}
                                             InputLabelProps={{
                                                 sx: {
                                                     fontFamily: 'Lora, serif',
@@ -862,7 +886,7 @@ const ProfileInfo = ({ uploadData }) => {
                             </Dialog>
                         </Box>
                     ) : (
-                        <section>
+                        <section className='mb-3'>
                             <p className="text-lg font-lora font-bold flex justify-between items-center">Age: <span className='text-sm text-blue-600 hover:cursor-pointer select-none' onClick={handleAgeOpen}>Add..</span></p>
 
                             {/* Dialog */}
@@ -937,8 +961,8 @@ const ProfileInfo = ({ uploadData }) => {
 
                     {/* Address add & changing in providers database */}
                     {providerProfile?.address ? (
-                        <Box className="flex justify-between items-center">
-                            <p className='font-lora text-lg'><span className='font-bold'>Address:</span> {providerProfile?.address}</p>
+                        <Box className="flex justify-between items-center mb-3">
+                            <p className='font-lora text-lg'><span className='font-bold'>Address:</span> {providerProfile?.address}.</p>
                             <p className='text-sm font-lora font-semibold text-blue-600 hover:cursor-pointer select-none' onClick={handleAddressOpen}>Edit..</p>
 
                             {/* Dialog */}
@@ -974,6 +998,7 @@ const ProfileInfo = ({ uploadData }) => {
                                             type="text"
                                             fullWidth
                                             variant="standard"
+                                            defaultValue={providerProfile?.address}
                                             InputLabelProps={{
                                                 sx: {
                                                     fontFamily: 'Lora, serif',
@@ -1010,7 +1035,7 @@ const ProfileInfo = ({ uploadData }) => {
                             </Dialog>
                         </Box>
                     ) : (
-                        <section>
+                        <section className='mb-3'>
                             <p className="text-lg font-lora font-bold flex justify-between items-center">Address: <span className='text-sm text-blue-600 hover:cursor-pointer select-none' onClick={handleAddressOpen}>Add..</span></p>
 
                             {/* Dialog */}
@@ -1082,12 +1107,17 @@ const ProfileInfo = ({ uploadData }) => {
                             </Dialog>
                         </section>
                     )}
+
+                    {/* Popularity */}
+                    <p className='font-lora text-lg mb-3'><span className='font-bold'>Like:</span> {providerProfile?.popularity?.length} liked.</p>
+
+                    {/* Additional info */}
                 </Box>
             </section>
 
             {/* Second Section */}
             <section className="md:w-[58%] lg:w-[73%] 3xl:w-[1400px]">
-
+                
             </section>
 
             {/* Snackbar Alert for Success or Error */}

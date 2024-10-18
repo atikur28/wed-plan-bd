@@ -29,8 +29,7 @@ export async function POST(request) {
 
         const tokenPayload = {
             id: user._id,
-            firstName: user.firstName,
-            lastName: user.lastName,
+            name: user.name,
             image: user.image,
             email: user.email
         };

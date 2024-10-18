@@ -5,7 +5,7 @@ const providerModel = new mongoose.Schema({
         type: String,
         required: [true, "Please provide your name"]
     },
-    professionImage: String,
+    posts: Array,
     email: {
         type: String,
         required: [true, "Please provide an email"]
