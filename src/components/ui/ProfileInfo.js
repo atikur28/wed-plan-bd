@@ -4,28 +4,35 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import PersonIcon from "@mui/icons-material/Person";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
+import CloseIcon from '@mui/icons-material/Close';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { Alert, Avatar, Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Snackbar, TextField } from "@mui/material";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 const ProfileInfo = ({ uploadData }) => {
+    // States Code:
     const [profile, setProfile] = useState(null);
     const [providerProfile, setProviderProfile] = useState(null);
     const [loading, setLoading] = useState(true);
     const [selectedImage, setSelectedImage] = useState(null);
     const [imageFile, setImageFile] = useState(null);
     const [uploading, setUploading] = useState(false);
+    const [othersInfoList, setOthersInfoList] = useState([{ property: '', info: '' }]);
     const fileInputRef = useRef(null);
 
+    // Alert Code:
     const [alertOpen, setAlertOpen] = useState(false);
     const [alertMessage, setAlertMessage] = useState("");
     const [alertType, setAlertType] = useState("success");
 
+    // Dialogs States Code:
     const [nameDialogOpen, setNameDialogOpen] = useState(false);
     const [professionDialogOpen, setProfessionDialogOpen] = useState(false);
     const [bioDialogOpen, setBioDialogOpen] = useState(false);
     const [ageDialogOpen, setAgeDialogOpen] = useState(false);
     const [addressDialogOpen, setAddressDialogOpen] = useState(false);
+    const [othersInfoDialogOpen, setOthersInfoDialogOpen] = useState(false);
 
     // Alert Code:
     const handleCloseAlert = (event, reason) => {
@@ -461,6 +468,87 @@ const ProfileInfo = ({ uploadData }) => {
         }
     }
 
+    // Others Info Adding Code:
+    const handleOtherInfoOpen = () => {
+        setOthersInfoList(providerProfile?.additionalInfo || [{ property: '', info: '' }]);
+        setOthersInfoDialogOpen(true);
+    };
+
+    const handleOtherInfoClose = () => {
+        setOthersInfoDialogOpen(false);
+    };
+
+    const handleOthersInfoInputChange = (index, event) => {
+        const { name, value } = event.target;
+        const list = [...othersInfoList];
+        list[index][name] = value;
+        setOthersInfoList(list);
+    };
+
+    const handleAddMoreOthersInfo = () => {
+        setOthersInfoList([...othersInfoList, { property: '', info: '' }]);
+    };
+
+    const handleDeleteOthersInfo = (index) => {
+        const list = [...othersInfoList];
+        list.splice(index, 1);
+        setOthersInfoList(list);
+    };
+
+    const handleSaveOthersInfo = async () => {
+        try {
+            setLoading(true);
+            const updatedAdditionalInfo = [...othersInfoList];
+
+            const updatedAdditionalInfoData = {
+                name: providerProfile.name,
+                posts: providerProfile.posts,
+                email: providerProfile.email,
+                cost: providerProfile.cost,
+                age: providerProfile.age,
+                address: providerProfile.address,
+                status: providerProfile.status,
+                professionName: providerProfile.professionName,
+                photos: providerProfile.photos,
+                videos: providerProfile.videos,
+                bio: providerProfile.bio,
+                additionalInfo: updatedAdditionalInfo,
+                popularity: providerProfile.popularity,
+            };
+
+            const additionalInfoResponse = await fetch("http://localhost:3015/api/providers/update-provider", {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(updatedAdditionalInfoData),
+            });
+
+            const updatedAdditionalInfoResult = await additionalInfoResponse.json();
+
+            if (updatedAdditionalInfoResult.success) {
+                setProviderProfile((prevProfile) => ({
+                    ...prevProfile,
+                    additionalInfo: updatedAdditionalInfo,
+                }));
+                setAlertMessage("Additional info updated successfully!");
+                setAlertType("success");
+                setAlertOpen(true);
+            } else {
+                console.error("Failed to update additional info.");
+                setAlertMessage("Error saving provider's additional info.");
+                setAlertType("error");
+                setAlertOpen(true);
+            }
+
+            handleOtherInfoClose();
+        } catch (error) {
+            console.error("Error saving additional info:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     if (loading) {
         return (
             <Box className="mt-8 flex justify-center items-center h-[50vh]">
@@ -575,7 +663,7 @@ const ProfileInfo = ({ uploadData }) => {
                 <Box className="flex justify-center items-center">
                     <h4 className="text-2xl font-lora font-semibold">{providerProfile?.name}</h4>
                     <section>
-                        <p className="text-sm font-lora font-semibold text-blue-600 flex justify-start items-center gap-0.5 hover:cursor-pointer select-none ml-5" onClick={handleNameOpen}>Edit..</p>
+                        <p className="text-sm font-lora font-semibold text-blue-600 flex justify-start items-center gap-0.5 hover:cursor-pointer transition-all duration-200 ease-in-out active:scale-75 select-none ml-5" onClick={handleNameOpen}>Edit..</p>
 
                         {/* Dialog */}
                         <Dialog
@@ -814,7 +902,7 @@ const ProfileInfo = ({ uploadData }) => {
                     {providerProfile?.age ? (
                         <Box className="flex justify-between items-center mb-3">
                             <p className='font-lora text-lg'><span className='font-bold'>Age:</span> {providerProfile?.age}.</p>
-                            <p className='text-sm font-lora font-semibold text-blue-600 hover:cursor-pointer select-none' onClick={handleAgeOpen}>Edit..</p>
+                            <p className='text-sm font-lora font-semibold text-blue-600 hover:cursor-pointer transition-all duration-200 ease-in-out active:scale-75 select-none' onClick={handleAgeOpen}>Edit..</p>
 
                             {/* Dialog */}
                             <Dialog
@@ -887,7 +975,7 @@ const ProfileInfo = ({ uploadData }) => {
                         </Box>
                     ) : (
                         <section className='mb-3'>
-                            <p className="text-lg font-lora font-bold flex justify-between items-center">Age: <span className='text-sm text-blue-600 hover:cursor-pointer select-none' onClick={handleAgeOpen}>Add..</span></p>
+                            <p className="text-lg font-lora font-bold flex justify-between items-center">Age: <span className='text-sm text-blue-600 hover:cursor-pointer transition-all duration-200 ease-in-out active:scale-75 select-none' onClick={handleAgeOpen}>Add..</span></p>
 
                             {/* Dialog */}
                             <Dialog
@@ -963,7 +1051,7 @@ const ProfileInfo = ({ uploadData }) => {
                     {providerProfile?.address ? (
                         <Box className="flex justify-between items-center mb-3">
                             <p className='font-lora text-lg'><span className='font-bold'>Address:</span> {providerProfile?.address}.</p>
-                            <p className='text-sm font-lora font-semibold text-blue-600 hover:cursor-pointer select-none' onClick={handleAddressOpen}>Edit..</p>
+                            <p className='text-sm font-lora font-semibold text-blue-600 hover:cursor-pointer transition-all duration-200 ease-in-out active:scale-75 select-none' onClick={handleAddressOpen}>Edit..</p>
 
                             {/* Dialog */}
                             <Dialog
@@ -1036,7 +1124,7 @@ const ProfileInfo = ({ uploadData }) => {
                         </Box>
                     ) : (
                         <section className='mb-3'>
-                            <p className="text-lg font-lora font-bold flex justify-between items-center">Address: <span className='text-sm text-blue-600 hover:cursor-pointer select-none' onClick={handleAddressOpen}>Add..</span></p>
+                            <p className="text-lg font-lora font-bold flex justify-between items-center">Address: <span className='text-sm text-blue-600 hover:cursor-pointer transition-all duration-200 ease-in-out active:scale-75 select-none' onClick={handleAddressOpen}>Add..</span></p>
 
                             {/* Dialog */}
                             <Dialog
@@ -1112,12 +1200,132 @@ const ProfileInfo = ({ uploadData }) => {
                     <p className='font-lora text-lg mb-3'><span className='font-bold'>Like:</span> {providerProfile?.popularity?.length} liked.</p>
 
                     {/* Additional info */}
+                    <section>
+                        {providerProfile?.additionalInfo?.length < 1 ? (
+                            <Box className="flex justify-between items-center">
+                                <p className="font-lora font-bold text-lg">Others info:</p>
+                                <p
+                                    className="font-lora font-semibold text-sm text-blue-600 hover:cursor-pointer transition-all duration-200 ease-in-out active:scale-75 select-none"
+                                    onClick={handleOtherInfoOpen}
+                                >
+                                    Add..
+                                </p>
+                            </Box>
+                        ) : (
+                            <Box>
+                                <section className='flex justify-between items-center'>
+                                    <p className="font-lora font-bold text-lg">Others info:</p>
+                                    <p
+                                        className="font-lora font-semibold text-sm text-blue-600 hover:cursor-pointer transition-all duration-200 ease-in-out active:scale-75 select-none"
+                                        onClick={handleOtherInfoOpen}
+                                    >
+                                        Edit..
+                                    </p>
+                                </section>
+                                <Box>
+                                    <ul className='px-2 py-2 mt-2 bg-gray-300 rounded-md'>
+                                        {providerProfile?.additionalInfo?.map((info, index) => (
+                                            <li key={index} className="">
+                                                <strong className="font-semibold">{info.property}:</strong> {info.info}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </Box>
+                            </Box>
+                        )}
+
+                        {/* Dialog for adding/editing info */}
+                        <Dialog open={othersInfoDialogOpen} onClose={handleOtherInfoClose} fullWidth maxWidth="sm">
+                            <DialogTitle>
+                                <div className="flex justify-between items-center">
+                                    <span className='font-lora'>Others Info</span>
+                                    <IconButton onClick={handleOtherInfoClose}>
+                                        <CloseIcon />
+                                    </IconButton>
+                                </div>
+                            </DialogTitle>
+
+                            <DialogContent>
+                                <p className="font-lora mb-4">Please provide additional info below:</p>
+                                {othersInfoList.map((item, index) => (
+                                    <div key={index} className="mb-3 flex space-x-4">
+                                        <TextField
+                                            required
+                                            margin="dense"
+                                            fullWidth
+                                            label="Name of info"
+                                            name="property"
+                                            value={item.property}
+                                            variant='standard'
+                                            onChange={(event) => handleOthersInfoInputChange(index, event)}
+                                            InputLabelProps={{
+                                                sx: {
+                                                    fontFamily: 'Lora, serif',
+                                                    '&.Mui-focused': {
+                                                        color: '#06b6d4',
+                                                    },
+                                                },
+                                            }}
+                                            InputProps={{
+                                                sx: {
+                                                    fontFamily: 'Lora, serif',
+                                                    '&:after': {
+                                                        borderColor: '#06b6d4',
+                                                    },
+                                                },
+                                            }}
+                                        />
+                                        <TextField
+                                            required
+                                            margin="dense"
+                                            fullWidth
+                                            label="Info of name"
+                                            name="info"
+                                            value={item.info}
+                                            variant='standard'
+                                            onChange={(event) => handleOthersInfoInputChange(index, event)}
+                                            InputLabelProps={{
+                                                sx: {
+                                                    fontFamily: 'Lora, serif',
+                                                    '&.Mui-focused': {
+                                                        color: '#06b6d4',
+                                                    },
+                                                },
+                                            }}
+                                            InputProps={{
+                                                sx: {
+                                                    fontFamily: 'Lora, serif',
+                                                    '&:after': {
+                                                        borderColor: '#06b6d4',
+                                                    },
+                                                },
+                                            }}
+                                        />
+                                        {othersInfoList.length > 1 && (
+                                            <button className='px-3 bg-red-600 text-white rounded-md' onClick={() => handleDeleteOthersInfo(index)} title='Delete'>
+                                                <DeleteIcon />
+                                            </button>
+                                        )}
+                                    </div>
+                                ))}
+                            </DialogContent>
+
+                            <DialogActions>
+                                <button className='text-white px-2 py-0.5 bg-green-600 rounded font-lora font-medium border border-green-700 hover:cursor-pointer active:bg-green-500 active:border-green-700 active:shadow-inner transition-all duration-200 ease-in-out active:scale-75 select-none' onClick={handleAddMoreOthersInfo}>
+                                    Add More
+                                </button>
+                                <button className='text-white px-2 py-0.5 bg-cyan-500 rounded font-lora font-medium border border-cyan-600 hover:cursor-pointer active:bg-cyan-400 active:border-cyan-600 active:shadow-inner transition-all duration-200 ease-in-out active:scale-75 select-none' onClick={handleSaveOthersInfo}>
+                                    Save
+                                </button>
+                            </DialogActions>
+                        </Dialog>
+                    </section>
                 </Box>
             </section>
 
             {/* Second Section */}
             <section className="md:w-[58%] lg:w-[73%] 3xl:w-[1400px]">
-                
+
             </section>
 
             {/* Snackbar Alert for Success or Error */}
