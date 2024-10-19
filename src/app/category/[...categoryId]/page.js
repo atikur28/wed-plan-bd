@@ -56,3 +56,13 @@ const Category = async ({ params }) => {
 };
 
 export default Category;
+
+export function generateMetadata({ params }) {
+    const categoryId = params.categoryId[0];
+    const name = categoryId.charAt(0).toUpperCase() + categoryId.slice(1);
+
+    return {
+        title: `${name} - WedPlan BD`,
+        description: `Discover the best options for ${name} to help you plan your perfect wedding on WedPlan BD. Find and connect with top vendors to make your big day special.`
+    }
+}

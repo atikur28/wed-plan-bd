@@ -16,3 +16,10 @@ const Profile = () => {
 };
 
 export default Profile;
+
+export function generateMetadata() {
+    return {
+        title: "Profile - WedPlan BD",
+        description: "Manage your personal information, view your wedding planning progress, and update your preferences on your WedPlan BD profile."
+    }
+}

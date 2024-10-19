@@ -13,3 +13,10 @@ const SignUp = () => {
 };
 
 export default SignUp;
+
+export function generateMetadata() {
+    return {
+        title: "Sign Up - WedPlan BD",
+        description: "Create your account on WedPlan BD to start planning your dream wedding effortlessly. Join us to access exclusive services, connect with trusted vendors, and manage your wedding details all in one place."
+    }
+}

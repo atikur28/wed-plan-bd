@@ -10,3 +10,10 @@ const VerifyEmail = () => {
 };
 
 export default VerifyEmail;
+
+export function generateMetadata() {
+    return {
+        title: "Verify Email - WedPlan BD",
+        description: "Verify your email address to complete your registration on WedPlan BD. This step ensures the security of your account and allows you to access all our wedding planning services."
+    }
+}

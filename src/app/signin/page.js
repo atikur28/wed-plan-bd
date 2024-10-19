@@ -13,3 +13,10 @@ const SignIn = () => {
 };
 
 export default SignIn;
+
+export function generateMetadata() {
+    return {
+        title: "Sign In - WedPlan BD",
+        description: "Sign in to WedPlan BD to access your personalized wedding planning dashboard, manage your bookings, and connect with top vendors for your special day."
+    }
+}

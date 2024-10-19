@@ -2,11 +2,11 @@
 
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import PersonIcon from "@mui/icons-material/Person";
-import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import CloseIcon from '@mui/icons-material/Close';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Alert, Avatar, Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Snackbar, TextField } from "@mui/material";
+import PersonIcon from "@mui/icons-material/Person";
+import PhotoCamera from "@mui/icons-material/PhotoCamera";
+import { Alert, Avatar, Box, Button, Card, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Snackbar, TextField } from "@mui/material";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
@@ -20,6 +20,17 @@ const ProfileInfo = ({ uploadData }) => {
     const [uploading, setUploading] = useState(false);
     const [othersInfoList, setOthersInfoList] = useState([{ property: '', info: '' }]);
     const fileInputRef = useRef(null);
+    const [selectedPostImage, setSelectedPostImage] = useState(null);
+    const [postImageFile, setPostImageFile] = useState(null);
+    const [postFormData, setPostFormData] = useState({
+        serviceName: '',
+        serviceDescription: '',
+        contactNumber: '',
+        priceRange: '',
+        location: '',
+        availabilityDays: '',
+        emailAddress: '',
+    });
 
     // Alert Code:
     const [alertOpen, setAlertOpen] = useState(false);
@@ -547,6 +558,31 @@ const ProfileInfo = ({ uploadData }) => {
         } finally {
             setLoading(false);
         }
+    };
+
+    // Post Posting Code:
+    const handlePostImageChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            setSelectedPostImage(URL.createObjectURL(file));
+            setPostImageFile(file);
+        }
+    };
+
+    const handleInputChange = (e) => {
+        setPostFormData({ ...postFormData, [e.target.name]: e.target.value });
+    };
+
+    const handlePostUpload = () => {
+        if (!postImageFile) {
+            setAlertMessage('Please select an image before posting.');
+            setAlertType("error");
+            setAlertOpen(true);
+            return;
+        }
+
+        console.log('Image File:', postImageFile);
+        console.log('Form Data:', postFormData);
     };
 
     if (loading) {
@@ -1325,7 +1361,264 @@ const ProfileInfo = ({ uploadData }) => {
 
             {/* Second Section */}
             <section className="md:w-[58%] lg:w-[73%] 3xl:w-[1400px]">
+                <Box
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'flex-start',
+                        paddingLeft: { xs: 1, sm: 3, md: 5 },
+                    }}
+                >
+                    <Card
+                        sx={{
+                            width: { xs: '100%', md: '100%', lg: '50%' },
+                            p: 3,
+                            borderRadius: '16px',
+                            boxShadow: '0 8px 16px rgba(0, 0, 0, 0.1)',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: 3,
+                            backgroundColor: '#fff',
+                            transition: 'box-shadow 0.3s ease-in-out',
+                            '&:hover': {
+                                boxShadow: '0 12px 24px rgba(0, 0, 0, 0.2)',
+                            },
+                        }}
+                    >
+                        {/* Image Upload Section */}
+                        <Box
+                            sx={{
+                                position: 'relative',
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                borderRadius: '12px',
+                                overflow: 'hidden',
+                                height: { xs: 200, sm: 250, md: 300 },
+                                backgroundColor: '#f0f0f0',
+                            }}
+                        >
+                            <input
+                                accept="image/*"
+                                type="file"
+                                onChange={handlePostImageChange}
+                                style={{
+                                    position: 'absolute',
+                                    inset: 0,
+                                    opacity: 0,
+                                    cursor: 'pointer',
+                                    width: '100%',
+                                    height: '100%',
+                                }}
+                            />
+                            {selectedPostImage ? (
+                                <Image
+                                    src={selectedPostImage}
+                                    alt="Selected"
+                                    style={{
+                                        width: '100%',
+                                        height: '100%',
+                                        objectFit: 'cover',
+                                    }}
+                                />
+                            ) : (
+                                <p className="text-center font-lora font-medium">
+                                    Click to select an image
+                                </p>
+                            )}
+                            <IconButton
+                                sx={{
+                                    position: 'absolute',
+                                    bottom: 16,
+                                    right: 16,
+                                    backgroundColor: '#fff',
+                                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+                                }}
+                            >
+                                <PhotoCamera />
+                            </IconButton>
+                        </Box>
 
+                        {/* Static Property-Value Fields */}
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                gap: 2,
+                            }}
+                        >
+                            {/* Service Name & Email Address */}
+                            <Box sx={{ display: 'flex', gap: 2 }}>
+                                <TextField
+                                    fullWidth
+                                    label="Service Name"
+                                    name="serviceName"
+                                    variant="outlined"
+                                    value={postFormData.serviceName}
+                                    onChange={handleInputChange}
+                                    InputLabelProps={{
+                                        style: { fontFamily: 'Lora' },
+                                    }}
+                                    InputProps={{
+                                        style: { fontFamily: 'Lora' },
+                                    }}
+                                    sx={{
+                                        '& .MuiOutlinedInput-root': {
+                                            '&:hover fieldset': { borderColor: '#06b6d4' },
+                                            '&.Mui-focused fieldset': { borderColor: '#06b6d4' },
+                                        },
+                                        '& label.Mui-focused': { color: '#06b6d4' },
+                                    }}
+                                />
+                                <TextField
+                                    fullWidth
+                                    label="Email Address"
+                                    name="emailAddress"
+                                    variant="outlined"
+                                    value={postFormData.emailAddress}
+                                    onChange={handleInputChange}
+                                    InputLabelProps={{
+                                        style: { fontFamily: 'Lora' },
+                                    }}
+                                    InputProps={{
+                                        style: { fontFamily: 'Lora' },
+                                    }}
+                                    sx={{
+                                        '& .MuiOutlinedInput-root': {
+                                            '&:hover fieldset': { borderColor: '#06b6d4' },
+                                            '&.Mui-focused fieldset': { borderColor: '#06b6d4' },
+                                        },
+                                        '& label.Mui-focused': { color: '#06b6d4' },
+                                    }}
+                                />
+                            </Box>
+
+                            {/* Contact Number & Price Range */}
+                            <Box sx={{ display: 'flex', gap: 2 }}>
+                                <TextField
+                                    fullWidth
+                                    label="Contact Number"
+                                    name="contactNumber"
+                                    variant="outlined"
+                                    value={postFormData.contactNumber}
+                                    onChange={handleInputChange}
+                                    InputLabelProps={{
+                                        style: { fontFamily: 'Lora' },
+                                    }}
+                                    InputProps={{
+                                        style: { fontFamily: 'Lora' },
+                                    }}
+                                    sx={{
+                                        '& .MuiOutlinedInput-root': {
+                                            '&:hover fieldset': { borderColor: '#06b6d4' },
+                                            '&.Mui-focused fieldset': { borderColor: '#06b6d4' },
+                                        },
+                                        '& label.Mui-focused': { color: '#06b6d4' },
+                                    }}
+                                />
+                                <TextField
+                                    fullWidth
+                                    label="Price Range"
+                                    name="priceRange"
+                                    variant="outlined"
+                                    value={postFormData.priceRange}
+                                    onChange={handleInputChange}
+                                    InputLabelProps={{
+                                        style: { fontFamily: 'Lora' },
+                                    }}
+                                    InputProps={{
+                                        style: { fontFamily: 'Lora' },
+                                    }}
+                                    sx={{
+                                        '& .MuiOutlinedInput-root': {
+                                            '&:hover fieldset': { borderColor: '#06b6d4' },
+                                            '&.Mui-focused fieldset': { borderColor: '#06b6d4' },
+                                        },
+                                        '& label.Mui-focused': { color: '#06b6d4' },
+                                    }}
+                                />
+                            </Box>
+
+                            {/* Location & Availability Days */}
+                            <Box sx={{ display: 'flex', gap: 2 }}>
+                                <TextField
+                                    fullWidth
+                                    label="Location"
+                                    name="location"
+                                    variant="outlined"
+                                    value={postFormData.location}
+                                    onChange={handleInputChange}
+                                    InputLabelProps={{
+                                        style: { fontFamily: 'Lora' },
+                                    }}
+                                    InputProps={{
+                                        style: { fontFamily: 'Lora' },
+                                    }}
+                                    sx={{
+                                        '& .MuiOutlinedInput-root': {
+                                            '&:hover fieldset': { borderColor: '#06b6d4' },
+                                            '&.Mui-focused fieldset': { borderColor: '#06b6d4' },
+                                        },
+                                        '& label.Mui-focused': { color: '#06b6d4' },
+                                    }}
+                                />
+                                <TextField
+                                    fullWidth
+                                    label="Availability Days"
+                                    name="availabilityDays"
+                                    variant="outlined"
+                                    value={postFormData.availabilityDays}
+                                    onChange={handleInputChange}
+                                    InputLabelProps={{
+                                        style: { fontFamily: 'Lora' },
+                                    }}
+                                    InputProps={{
+                                        style: { fontFamily: 'Lora' },
+                                    }}
+                                    sx={{
+                                        '& .MuiOutlinedInput-root': {
+                                            '&:hover fieldset': { borderColor: '#06b6d4' },
+                                            '&.Mui-focused fieldset': { borderColor: '#06b6d4' },
+                                        },
+                                        '& label.Mui-focused': { color: '#06b6d4' },
+                                    }}
+                                />
+                            </Box>
+
+                            {/* Service Description */}
+                            <Box sx={{ display: 'flex', gap: 2 }}>
+                                <TextField
+                                    fullWidth
+                                    label="Service Description"
+                                    name="serviceDescription"
+                                    variant="outlined"
+                                    value={postFormData.serviceDescription}
+                                    onChange={handleInputChange}
+                                    InputLabelProps={{
+                                        style: { fontFamily: 'Lora' },
+                                    }}
+                                    InputProps={{
+                                        style: { fontFamily: 'Lora' },
+                                    }}
+                                    sx={{
+                                        '& .MuiOutlinedInput-root': {
+                                            '&:hover fieldset': { borderColor: '#06b6d4' },
+                                            '&.Mui-focused fieldset': { borderColor: '#06b6d4' },
+                                        },
+                                        '& label.Mui-focused': { color: '#06b6d4' },
+                                    }}
+                                />
+                            </Box>
+                        </Box>
+
+                        {/* Post Button */}
+                        <button
+                            onClick={handlePostUpload}
+                            className="px-4 py-2 mt-4 text-white bg-cyan-500 hover:bg-cyan-600 rounded-lg shadow-sm transition-all duration-200 ease-in-out active:scale-90 select-none"
+                        >
+                            Post
+                        </button>
+                    </Card>
+                </Box>
             </section>
 
             {/* Snackbar Alert for Success or Error */}
