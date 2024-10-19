@@ -63,7 +63,7 @@ const CategoryList = ({ categories }) => {
               backgroundColor: "#edf2f7",
             },
             "& .Mui-selected": {
-              backgroundColor: "#9CA3AF",
+              backgroundColor: "#9CA3AF !important",
               color: "#000",
             },
             "& .MuiPaginationItem-root:hover": {

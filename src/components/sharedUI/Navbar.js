@@ -163,143 +163,153 @@ export default function Navbar() {
     return pathName === path;
   }
 
+  const isDashboard = pathName === '/dashboard';
+
   return (
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      <AppBar className="fixed 3xl:static bg-white dark:bg-dark pt-3" open={open}>
-        <Box className="flex justify-end items-center gap-2 md:gap-8 mr-5 lg:mr-8">
-          <ThemeToggle />
-          {
-            !isLoggedIn ? (
-              <>
-                <Link href="/signin" className={`text-[12px] md:text-base text-black dark:text-white dark:hover:text-black font-lora font-medium px-2 md:px-10 py-1.5 border rounded-sm ${isActive("/signin") ? `font-semibold bg-[#e1e1e1]` : `hover:bg-[#e1e1e1]`}`}>SIGN IN</Link>
-                <Link href="/signup" className={`text-[12px] md:text-base text-black dark:text-white dark:hover:text-black font-lora font-medium px-2 md:px-10 py-1.5 hover:bg-[#e1e1e1] border rounded-sm ${isActive("/signup") ? `font-semibold bg-[#e1e1e1] border rounded-sm` : ``}`}>SIGNUP</Link>
-              </>
-            ) : (
-              <p onClick={signout} className={`text-[12px] md:text-base text-black dark:text-white dark:hover:text-black font-lora font-medium px-2 md:px-10 py-1.5 border hover:cursor-pointer rounded-sm ${isActive("/signout") ? `font-semibold bg-[#e1e1e1]` : `hover:bg-[#e1e1e1]`}`}>SIGN OUT</p>
-            )
-          }
-        </Box>
-        <Box className="flex items-center justify-between">
-          <Toolbar>
-            <IconButton
-              className="text-black dark:text-white lg:hidden"
-              title="Open menu"
-              aria-label="open drawer"
-              onClick={handleDrawerOpen}
-              edge="start"
-              sx={[
-                {
-                  mr: 2,
-                },
-                open && { display: 'none' },
-              ]}
-            >
-              <MenuIcon className="md:text-3xl" />
-            </IconButton>
-            <h3 className="text-xl 2xl:text-2xl font-bold font-lora text-black dark:text-white" noWrap component="div">
-              <Link href="/">WedPlan BD</Link>
-            </h3>
-          </Toolbar>
-          <Box className="flex justify-end items-center">
-            <section className="hidden xl:flex items-center justify-end">
-              {menus.map((menu) => (
-                <Link href={menu.pathName} key={menu.route} className={`font-lora font-medium mr-10 dark:text-white ${isActive(menu.pathName) ? `font-semibold text-black underline` : `text-[#6f6f6f] hover:underline`}`}>
-                  {menu.route}
-                </Link>
-              ))}
-            </section>
-            {isLoggedIn && (
-              <section>
+    <>
+      {!isDashboard ? (
+        <Box sx={{ display: 'flex' }}>
+          <CssBaseline />
+          <AppBar className="fixed 3xl:static bg-white dark:bg-dark pt-3" open={open}>
+            <Box className="flex justify-end items-center gap-2 md:gap-8 mr-5 lg:mr-8">
+              <ThemeToggle />
+              {
+                !isLoggedIn ? (
+                  <>
+                    <Link href="/signin" className={`text-[12px] md:text-base text-black dark:text-white dark:hover:text-black font-lora font-medium px-2 md:px-10 py-1.5 border rounded-sm ${isActive("/signin") ? `font-semibold bg-[#e1e1e1]` : `hover:bg-[#e1e1e1]`}`}>SIGN IN</Link>
+                    <Link href="/signup" className={`text-[12px] md:text-base text-black dark:text-white dark:hover:text-black font-lora font-medium px-2 md:px-10 py-1.5 hover:bg-[#e1e1e1] border rounded-sm ${isActive("/signup") ? `font-semibold bg-[#e1e1e1] border rounded-sm` : ``}`}>SIGNUP</Link>
+                  </>
+                ) : (
+                  <p onClick={signout} className={`text-[12px] md:text-base text-black dark:text-white dark:hover:text-black font-lora font-medium px-2 md:px-10 py-1.5 border hover:cursor-pointer rounded-sm ${isActive("/signout") ? `font-semibold bg-[#e1e1e1]` : `hover:bg-[#e1e1e1]`}`}>SIGN OUT</p>
+                )
+              }
+            </Box>
+            <Box className="flex items-center justify-between">
+              <Toolbar>
                 <IconButton
-                  className="mr-2 lg:mr-5"
-                  title="Account of current user"
-                  aria-label="account of current user"
-                  aria-controls="menu-appbar"
-                  aria-haspopup="true"
-                  onClick={handleMenu}
-                  color="inherit"
+                  className="text-black dark:text-white lg:hidden"
+                  title="Open menu"
+                  aria-label="open drawer"
+                  onClick={handleDrawerOpen}
+                  edge="start"
+                  sx={[
+                    {
+                      mr: 2,
+                    },
+                    open && { display: 'none' },
+                  ]}
                 >
-                  <AccountCircle className="text-black dark:text-white text-4xl" />
+                  <MenuIcon className="md:text-3xl" />
                 </IconButton>
-                <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorEl}
-                  anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-                >
-                  {settings.map((setting) => (
-                    <MenuItem key={setting.route} onClick={handleClose}>
-                      <Link href={setting.pathName}
-                        className={`font-medium font-lora ${isActive(setting.pathName) ? `font-semibold underline` : `hover:underline`}`}
-                        textAlign="center">
-                        <setting.icon className='mr-2' />
-                        {setting.route}
-                      </Link>
-                    </MenuItem>
+                <h3 className="text-xl 2xl:text-2xl font-bold font-lora text-black dark:text-white" noWrap component="div">
+                  <Link href="/">WedPlan BD</Link>
+                </h3>
+              </Toolbar>
+              <Box className="flex justify-end items-center">
+                <section className="hidden xl:flex items-center justify-end">
+                  {menus.map((menu) => (
+                    <Link href={menu.pathName} key={menu.route} className={`font-lora font-medium mr-10 dark:text-white ${isActive(menu.pathName) ? `font-semibold text-black underline` : `text-[#6f6f6f] hover:underline`}`}>
+                      {menu.route}
+                    </Link>
                   ))}
-                </Menu>
-              </section>
-            )}
-          </Box>
+                </section>
+                {isLoggedIn && (
+                  <section>
+                    <IconButton
+                      className="mr-2 lg:mr-5"
+                      title="Account of current user"
+                      aria-label="account of current user"
+                      aria-controls="menu-appbar"
+                      aria-haspopup="true"
+                      onClick={handleMenu}
+                      color="inherit"
+                    >
+                      <AccountCircle className="text-black dark:text-white text-4xl" />
+                    </IconButton>
+                    <Menu
+                      id="menu-appbar"
+                      anchorEl={anchorEl}
+                      anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                      }}
+                      keepMounted
+                      transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                      }}
+                      open={Boolean(anchorEl)}
+                      onClose={handleClose}
+                    >
+                      {settings.map((setting) => (
+                        <MenuItem key={setting.route} onClick={handleClose}>
+                          <Link href={setting.pathName}
+                            className={`font-medium font-lora ${isActive(setting.pathName) ? `font-semibold underline` : `hover:underline`}`}
+                            textAlign="center">
+                            <setting.icon className='mr-2' />
+                            {setting.route}
+                          </Link>
+                        </MenuItem>
+                      ))}
+                    </Menu>
+                  </section>
+                )}
+              </Box>
+            </Box>
+          </AppBar>
+          <Drawer
+            sx={{
+              width: drawerWidth,
+              flexShrink: 0,
+              '& .MuiDrawer-paper': {
+                width: drawerWidth,
+                boxSizing: 'border-box',
+              },
+            }}
+            variant="persistent"
+            anchor="left"
+            open={open}
+          >
+            <DrawerHeader>
+              <IconButton onClick={handleDrawerClose}>
+                {theme.direction === 'ltr' ? <KeyboardBackspaceIcon /> : <EastIcon />}
+              </IconButton>
+            </DrawerHeader>
+            <Divider />
+            <List>
+              {menus.map((menu, index) => (
+                <ListItem key={menu.route} disablePadding>
+                  <Link href={menu.pathName} className={`w-full font-medium font-lora`}>
+                    <ListItemButton className={`${isActive(menu.pathName) ? `font-extrabold bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4]` : `hover:bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4] hover:underline`}`} onClick={handleDrawerClose}>
+                      <ListItemIcon>
+                        <menu.icon />
+                      </ListItemIcon>
+                      {menu.route}
+                    </ListItemButton>
+                  </Link>
+                </ListItem>
+              ))}
+            </List>
+          </Drawer>
+          <Main open={open}>
+            <DrawerHeader />
+          </Main>
+          <Snackbar
+            open={snackbarOpen}
+            autoHideDuration={4000}
+            onClose={handleSnackbarClose}
+            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+          >
+            <Alert onClose={handleSnackbarClose} severity={snackbarMessage.includes("Successfully") ? "success" : "error"}>
+              {snackbarMessage}
+            </Alert>
+          </Snackbar>
         </Box>
-      </AppBar>
-      <Drawer
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
-            width: drawerWidth,
-            boxSizing: 'border-box',
-          },
-        }}
-        variant="persistent"
-        anchor="left"
-        open={open}
-      >
-        <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'ltr' ? <KeyboardBackspaceIcon /> : <EastIcon />}
-          </IconButton>
-        </DrawerHeader>
-        <Divider />
-        <List>
-          {menus.map((menu, index) => (
-            <ListItem key={menu.route} disablePadding>
-              <Link href={menu.pathName} className={`w-full font-medium font-lora`}>
-                <ListItemButton className={`${isActive(menu.pathName) ? `font-extrabold bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4]` : `hover:bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4] hover:underline`}`} onClick={handleDrawerClose}>
-                  <ListItemIcon>
-                    <menu.icon />
-                  </ListItemIcon>
-                  {menu.route}
-                </ListItemButton>
-              </Link>
-            </ListItem>
-          ))}
-        </List>
-      </Drawer>
-      <Main open={open}>
-        <DrawerHeader />
-      </Main>
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={4000}
-        onClose={handleSnackbarClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-      >
-        <Alert onClose={handleSnackbarClose} severity={snackbarMessage.includes("Successfully") ? "success" : "error"}>
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
-    </Box>
+      ) : (
+        <Box>
+
+        </Box>
+      )}
+    </>
   );
 }
