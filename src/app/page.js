@@ -1,5 +1,6 @@
 import advertise2 from "@/assets/home/advertise-image-2.png";
 import advertise from "@/assets/home/advertise-image.png";
+import Footer from "@/components/sharedUI/Footer";
 import CategoryList from "@/components/ui/CategoryList";
 import CenterList from "@/components/ui/CenterList";
 import CustomSlider from "@/components/ui/CustomSlider";
@@ -100,6 +101,8 @@ export default async function Home() {
         {/* Slider */}
         <ReviewSlider reviews={reviews} />
       </section>
+
+      <Footer />
     </main>
   );
 }

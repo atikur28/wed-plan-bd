@@ -1,4 +1,3 @@
-import Footer from "@/components/sharedUI/Footer";
 import Navbar from "@/components/sharedUI/Navbar";
 import { Gupter, Lora } from "next/font/google";
 import "./globals.css";
@@ -25,10 +24,9 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={`${lora.variable} ${gupter.variable} dark:bg-medium max-w-[2560px] mx-auto`}>
         <Navbar />
-        <section className="min-h-[60vh]">
+        <section className="min-h-[70vh]">
           {children}
         </section>
-        <Footer />
       </body>
     </html>
   );

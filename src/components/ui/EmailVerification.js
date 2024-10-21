@@ -17,7 +17,7 @@ const EmailVerification = () => {
             const response = await axios.post("/api/users/verifyemail", { token });
             setVerified(true);
             setSnackbarOpen(true);
-            setError(""); // Clear any previous errors
+            setError("");
         } catch (err) {
             setError(err.response?.data || "Verification failed!");
             setSnackbarOpen(true);

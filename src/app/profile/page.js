@@ -1,3 +1,4 @@
+import Footer from "@/components/sharedUI/Footer";
 import ProfileInfo from "@/components/ui/ProfileInfo";
 import { Box } from "@mui/material";
 
@@ -9,9 +10,12 @@ const Profile = () => {
     const uploadData = { IMAGE_UPLOAD_URL, IMAGE_UPLOAD_PRESET, IMAGE_UPLOAD_FOLDER }
 
     return (
-        <Box className="mt-8">
-            <ProfileInfo uploadData={uploadData} />
-        </Box>
+        <>
+            <Box className="mt-8 min-h-[70vh]">
+                <ProfileInfo uploadData={uploadData} />
+            </Box>
+            <Footer />
+        </>
     );
 };
 

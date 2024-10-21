@@ -1,10 +1,12 @@
+import Footer from "@/components/sharedUI/Footer";
 import EmailVerification from "@/components/ui/EmailVerification";
 import { Box } from "@mui/material";
 
 const VerifyEmail = () => {
     return (
-        <Box>
+        <Box className="min-h-[70vh]">
             <EmailVerification />
+            <Footer />
         </Box>
     );
 };
