@@ -41,8 +41,8 @@ export const sendMail = async ({ email, emailType, userId }) => {
             from: 'imposter45683@gmail.com',
             to: email,
             subject: emailType === "VERIFY" ? "Verify your account" : "Reset your Password",
-            html: `<p>Click <a href="http://localhost:3015/verifyemail?token=${hashedToken}">here</a> to ${emailType === "VERIFY" ? "verify your email" : "reset your password"} or copy and paste the link below in your browser.
-                  <br> http://localhost:3015/verifyemail?token=${hashedToken}
+            html: `<p>Click <a href="http://localhost:3016/verifyemail?token=${hashedToken}">here</a> to ${emailType === "VERIFY" ? "verify your email" : "reset your password"} or copy and paste the link below in your browser.
+                  <br> http://localhost:3016/verifyemail?token=${hashedToken}
                   </p>`,
         }
 

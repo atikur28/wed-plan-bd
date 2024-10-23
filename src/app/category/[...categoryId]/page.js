@@ -2,7 +2,7 @@ import Footer from "@/components/sharedUI/Footer";
 import { Box, Card, CardContent, CardMedia, Grid } from "@mui/material";
 
 const Category = async ({ params }) => {
-    const res = await fetch(`http://localhost:3015/api/categories/${params.categoryId}`);
+    const res = await fetch(`http://localhost:3016/api/categories/${params.categoryId}`);
     const data = await res.json();
     const providers = data.result;
 

@@ -57,7 +57,7 @@ const ProfileInfo = ({ uploadData }) => {
     useEffect(() => {
         const fetchProfile = async () => {
             try {
-                const profileResponse = await fetch("http://localhost:3015/api/users/profile", {
+                const profileResponse = await fetch("http://localhost:3016/api/users/profile", {
                     method: "POST",
                     credentials: "include",
                 });
@@ -67,7 +67,7 @@ const ProfileInfo = ({ uploadData }) => {
 
                 if (profileData.success) {
                     // User info setup
-                    const usersResponse = await fetch("http://localhost:3015/api/users", {
+                    const usersResponse = await fetch("http://localhost:3016/api/users", {
                         method: "GET",
                         credentials: "include",
                     });
@@ -85,7 +85,7 @@ const ProfileInfo = ({ uploadData }) => {
                     }
 
                     // Provider info setup
-                    const providersResponse = await fetch("http://localhost:3015/api/providers", {
+                    const providersResponse = await fetch("http://localhost:3016/api/providers", {
                         method: "GET",
                         credentials: "include",
                     });
@@ -153,7 +153,7 @@ const ProfileInfo = ({ uploadData }) => {
                     status: profile.status,
                 };
 
-                const updateResponse = await fetch("http://localhost:3015/api/users/profile/update-profile", {
+                const updateResponse = await fetch("http://localhost:3016/api/users/profile/update-profile", {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
@@ -233,7 +233,7 @@ const ProfileInfo = ({ uploadData }) => {
                     status: profile.status,
                 };
 
-                const providerResponse = await fetch("http://localhost:3015/api/providers/update-provider", {
+                const providerResponse = await fetch("http://localhost:3016/api/providers/update-provider", {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
@@ -243,7 +243,7 @@ const ProfileInfo = ({ uploadData }) => {
 
                 const providerResult = await providerResponse.json();
 
-                const userResponse = await fetch("http://localhost:3015/api/users/profile/update-profile", {
+                const userResponse = await fetch("http://localhost:3016/api/users/profile/update-profile", {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
@@ -311,7 +311,7 @@ const ProfileInfo = ({ uploadData }) => {
                     popularity: providerProfile.popularity
                 };
 
-                const response = await fetch("http://localhost:3015/api/providers/update-provider", {
+                const response = await fetch("http://localhost:3016/api/providers/update-provider", {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
@@ -378,7 +378,7 @@ const ProfileInfo = ({ uploadData }) => {
                     popularity: providerProfile.popularity
                 };
 
-                const response = await fetch("http://localhost:3015/api/providers/update-provider", {
+                const response = await fetch("http://localhost:3016/api/providers/update-provider", {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
@@ -445,7 +445,7 @@ const ProfileInfo = ({ uploadData }) => {
                     popularity: providerProfile.popularity
                 };
 
-                const response = await fetch("http://localhost:3015/api/providers/update-provider", {
+                const response = await fetch("http://localhost:3016/api/providers/update-provider", {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
@@ -527,7 +527,7 @@ const ProfileInfo = ({ uploadData }) => {
                 popularity: providerProfile.popularity,
             };
 
-            const additionalInfoResponse = await fetch("http://localhost:3015/api/providers/update-provider", {
+            const additionalInfoResponse = await fetch("http://localhost:3016/api/providers/update-provider", {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
