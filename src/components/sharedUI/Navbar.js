@@ -201,14 +201,14 @@ export default function Navbar() {
                 >
                   <MenuIcon className="md:text-3xl" />
                 </IconButton>
-                <h3 className="text-xl 2xl:text-2xl font-bold font-lora text-black dark:text-white" noWrap component="div">
+                <h3 className="text-xl 2xl:text-2xl font-bold font-lora text-black dark:text-white" component="div">
                   <Link href="/">WedPlan BD</Link>
                 </h3>
               </Toolbar>
               <Box className="flex justify-end items-center">
                 <section className="hidden xl:flex items-center justify-end">
                   {menus.map((menu) => (
-                    <Link href={menu.pathName} key={menu.route} className={`font-lora font-medium mr-10 dark:text-white ${isActive(menu.pathName) ? `font-semibold text-black underline` : `text-[#6f6f6f] hover:underline`}`}>
+                    <Link href={menu.pathName} key={menu.route} className={`font-lora font-medium mr-10 dark:text-white rounded px-2 ${isActive(menu.pathName) ? `font-semibold text-black border-b-2 border-black` : `text-[#6f6f6f] hover:border-b-2 hover:border-black`}`}>
                       {menu.route}
                     </Link>
                   ))}
