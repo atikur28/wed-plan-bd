@@ -170,7 +170,7 @@ const DashboardDrawer = () => {
                         {/* Dashboard Link */}
                         <ListItem disablePadding>
                             <Link href="/dashboard/provider" className="w-full font-medium font-lora mb-3">
-                                <ListItemButton className={`${isActive("/dashboard/provider/dashboard") ? `font-extrabold bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4]` : `hover:bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4] hover:underline`}`} >
+                                <ListItemButton className={`${isActive("/dashboard/provider") ? `font-extrabold bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4]` : `hover:bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4] hover:underline`}`} >
                                     <ListItemIcon sx={{ paddingLeft: 1, paddingRight: 2 }}>
                                         <DashboardIcon />
                                     </ListItemIcon>
@@ -188,20 +188,20 @@ const DashboardDrawer = () => {
                         </ListItemButton>
                         <Collapse in={openServices} timeout="auto" unmountOnExit>
                             <List component="div" disablePadding>
-                                <Link href="/dashboard/add-post">
-                                    <ListItemButton className={`hover:bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4] hover:underline mb-3 ${isActive("/dashboard/add-post") ? `bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4]` : ``}`} sx={{ pl: 4 }}>
+                                <Link href="/dashboard/provider/add-post">
+                                    <ListItemButton className={`hover:bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4] hover:underline mb-3 ${isActive("/dashboard/provider/add-post") ? `bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4]` : ``}`} sx={{ pl: 4 }}>
                                         <ListItemIcon sx={{ paddingLeft: 2, paddingRight: 3 }}>
                                             <PostAddIcon />
                                         </ListItemIcon>
-                                        <ListItemText primary="Add post" primaryTypographyProps={{ style: { fontFamily: 'Lora', fontSize: '17px', fontWeight: isActive("/dashboard/add-post") ? 600 : 500 } }} />
+                                        <ListItemText primary="Add post" primaryTypographyProps={{ style: { fontFamily: 'Lora', fontSize: '17px', fontWeight: isActive("/dashboard/provider/add-post") ? 600 : 500 } }} />
                                     </ListItemButton>
                                 </Link>
-                                <Link href="/dashboard/manage-posts">
-                                    <ListItemButton className={`hover:bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4] hover:underline mb-3 ${isActive("/dashboard/manage-posts") ? `bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4]` : ``}`} sx={{ pl: 4 }}>
+                                <Link href="/dashboard/provider/manage-posts">
+                                    <ListItemButton className={`hover:bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4] hover:underline mb-3 ${isActive("/dashboard/provider/manage-posts") ? `bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4]` : ``}`} sx={{ pl: 4 }}>
                                         <ListItemIcon sx={{ paddingLeft: 2, paddingRight: 3 }}>
                                             <FactCheckIcon />
                                         </ListItemIcon>
-                                        <ListItemText primary="Manage posts" primaryTypographyProps={{ style: { fontFamily: 'Lora', fontSize: '17px', fontWeight: isActive("/dashboard/manage-posts") ? 600 : 500 } }} />
+                                        <ListItemText primary="Manage posts" primaryTypographyProps={{ style: { fontFamily: 'Lora', fontSize: '17px', fontWeight: isActive("/dashboard/provider/manage-posts") ? 600 : 500 } }} />
                                     </ListItemButton>
                                 </Link>
                             </List>
