@@ -192,6 +192,18 @@ const DashboardMenus = () => {
                                 </Link>
                             </List>
                         </Collapse>
+                        {providerMenu?.map((menu) => (
+                            <ListItem key={menu.route} disablePadding>
+                                <Link href={menu.pathName} className="w-full font-medium font-lora mb-3">
+                                    <ListItemButton className={`${isActive(menu.pathName) ? "font-extrabold bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4]" : "hover:bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4] hover:underline"}`}>
+                                        <ListItemIcon sx={{ paddingLeft: 1, paddingRight: 2 }}>
+                                            <menu.icon />
+                                        </ListItemIcon>
+                                        {menu.route}
+                                    </ListItemButton>
+                                </Link>
+                            </ListItem>
+                        ))}
                     </>
                 )}
 
@@ -216,9 +228,9 @@ const DashboardMenus = () => {
                 <Divider />
                 {/* Common Menus */}
                 {commonMenu?.map((menu) => (
-                    <ListItem key={menu.route} disablePadding sx={{marginTop: 1}}>
-                        <Link href={menu.pathName} className="w-full font-medium font-lora mb-3">
-                            <ListItemButton className={`${isActive(menu.pathName) ? "font-extrabold bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4]" : "hover:bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4] hover:underline"}`}>
+                    <ListItem key={menu.route} disablePadding>
+                        <Link href={menu.pathName} className="w-full font-medium font-lora mt-3">
+                            <ListItemButton className={`flex items-center ${isActive(menu.pathName) ? "font-extrabold bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4]" : "hover:bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4] hover:underline"}`}>
                                 <ListItemIcon sx={{ paddingLeft: 1, paddingRight: 2 }}>
                                     <menu.icon />
                                 </ListItemIcon>
@@ -230,7 +242,7 @@ const DashboardMenus = () => {
 
                 {/* Sign out */}
                 <ListItem disablePadding>
-                    <ListItemButton onClick={handleSignOut} className="font-lora font-medium mb-3 hover:bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4] hover:underline">
+                    <ListItemButton onClick={handleSignOut} className="font-lora font-medium mt-3 hover:bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4] hover:underline">
                         <ListItemIcon sx={{ paddingLeft: 1, paddingRight: 2 }}>
                             <LogoutIcon />
                         </ListItemIcon>

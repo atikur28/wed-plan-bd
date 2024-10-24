@@ -121,7 +121,7 @@ const DashboardDrawer = () => {
     const isActive = (path) => {
         return pathName === path;
     }
-    
+
 
     const handleSignOut = async () => {
         try {
@@ -244,7 +244,7 @@ const DashboardDrawer = () => {
             <List>
                 {commonMenu?.map((menu, index) => (
                     <ListItem key={menu.route} disablePadding>
-                        <Link href={menu.pathName} className="w-full font-medium font-lora mb-3">
+                        <Link href={menu.pathName} className="w-full font-medium font-lora mt-1 mb-2">
                             <ListItemButton className={`${isActive(menu.pathName) ? `font-extrabold bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4]` : `hover:bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4] hover:underline`}`} >
                                 <ListItemIcon sx={{ paddingLeft: 1, paddingRight: 2 }}>
                                     <menu.icon />
@@ -256,7 +256,7 @@ const DashboardDrawer = () => {
                 ))}
                 {/* Sign out */}
                 <ListItem disablePadding>
-                    <ListItemButton onClick={handleSignOut} className="font-lora font-medium mb-3 hover:bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4] hover:underline">
+                    <ListItemButton onClick={handleSignOut} className="font-lora font-medium mt-2 hover:bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4] hover:underline">
                         <ListItemIcon sx={{ paddingLeft: 1, paddingRight: 2 }}>
                             <LogoutIcon />
                         </ListItemIcon>
