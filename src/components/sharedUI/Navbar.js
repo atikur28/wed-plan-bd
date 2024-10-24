@@ -45,7 +45,6 @@ const menus = [
 
 const settings = [
   { route: "Profile", pathName: "/profile", icon: FaceIcon },
-  { route: "Dashboard", pathName: "/dashboard", icon: DashboardIcon }
 ];
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({ theme }) => ({
@@ -108,6 +107,7 @@ export default function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
   const [snackbarMessage, setSnackbarMessage] = React.useState('');
+  const [isAdmin, setIsAdmin] = React.useState(null);
   const pathName = usePathname();
 
   const checkAuth = async () => {
@@ -115,6 +115,21 @@ export default function Navbar() {
       const res = await axios.post("/api/users/profile");
       if (res.data.success) {
         setIsLoggedIn(true);
+
+        const user = res?.data?.result;
+
+        const usersResponse = await fetch("http://localhost:3017/api/users", {
+          method: "GET",
+          credentials: "include",
+        });
+        const usersData = await usersResponse.json();
+
+        const currentUser = usersData.result.find((u) => u.email === user?.email);
+        if (currentUser) {
+          setIsAdmin(currentUser?.status);
+        } else {
+          console.log("User not found with this email");
+        }
       } else {
         setIsLoggedIn(false);
       }
@@ -241,13 +256,43 @@ export default function Navbar() {
                     {settings.map((setting) => (
                       <MenuItem key={setting.route} onClick={handleClose}>
                         <Link href={setting.pathName}
-                          className={`font-medium font-lora ${isActive(setting.pathName) ? `font-semibold underline` : `hover:underline`}`}
+                          className={`font-medium font-lora flex justify-center items-center ${isActive(setting.pathName) ? `font-semibold underline` : `hover:underline`}`}
                           textAlign="center">
-                          <setting.icon className='mr-2' />
+                          <setting.icon sx={{ mr: 1 }} />
                           {setting.route}
                         </Link>
                       </MenuItem>
                     ))}
+                    {isAdmin === "Admin" && (
+                      <MenuItem onClick={handleClose}>
+                        <Link href="/dashboard/admin"
+                          className={`font-medium font-lora flex justify-center items-center ${isActive("/dashboard/admin") ? `font-semibold underline` : `hover:underline`}`}
+                          textAlign="center">
+                          <DashboardIcon sx={{ mr: 1 }} />
+                          Dashboard
+                        </Link>
+                      </MenuItem>
+                    )}
+                    {isAdmin === "Provider" && (
+                      <MenuItem onClick={handleClose}>
+                        <Link href="/dashboard/provider"
+                          className={`font-medium font-lora flex justify-center items-center ${isActive("/dashboard/provider") ? `font-semibold underline` : `hover:underline`}`}
+                          textAlign="center">
+                          <DashboardIcon sx={{ mr: 1 }} />
+                          Dashboard
+                        </Link>
+                      </MenuItem>
+                    )}
+                    {isAdmin === "User" && (
+                      <MenuItem onClick={handleClose}>
+                        <Link href="/dashboard/user"
+                          className={`font-medium font-lora flex justify-center items-center ${isActive("/dashboard/user") ? `font-semibold underline` : `hover:underline`}`}
+                          textAlign="center">
+                          <DashboardIcon sx={{ mr: 1 }} />
+                          Dashboard
+                        </Link>
+                      </MenuItem>
+                    )}
                   </Menu>
                 </section>
               )}
