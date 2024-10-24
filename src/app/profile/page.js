@@ -1,4 +1,5 @@
 import Footer from "@/components/sharedUI/Footer";
+import Navbar from "@/components/sharedUI/Navbar";
 import ProfileInfo from "@/components/ui/ProfileInfo";
 import { Box } from "@mui/material";
 
@@ -11,6 +12,7 @@ const Profile = () => {
 
     return (
         <>
+            <Navbar />
             <Box className="mt-8 min-h-[70vh]">
                 <ProfileInfo uploadData={uploadData} />
             </Box>

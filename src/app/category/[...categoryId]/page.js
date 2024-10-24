@@ -1,4 +1,5 @@
 import Footer from "@/components/sharedUI/Footer";
+import Navbar from "@/components/sharedUI/Navbar";
 import { Box, Card, CardContent, CardMedia, Grid } from "@mui/material";
 
 const Category = async ({ params }) => {
@@ -8,6 +9,7 @@ const Category = async ({ params }) => {
 
     return (
         <>
+            <Navbar />
             <Box className="mt-8 w-[90%] mx-auto mb-10 min-h-[70vh]">
                 <h3 className="lg:text-lg xl:text-xl font-lora font-semibold mb-8 dark:text-white">
                     {providers[0]?.professionName}
