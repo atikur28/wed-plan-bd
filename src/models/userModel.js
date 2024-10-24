@@ -16,6 +16,7 @@ const userModel = new mongoose.Schema({
     },
     userCategory: String,
     status: String,
+    signedUp : Date,
     isVerified: {
         type: Boolean,
         default: false

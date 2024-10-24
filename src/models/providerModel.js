@@ -10,7 +10,6 @@ const providerModel = new mongoose.Schema({
         type: String,
         required: [true, "Please provide an email"]
     },
-    cost: String,
     age: String,
     address: String,
     status: String,

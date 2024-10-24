@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const getCategories = async () => {
-    const res = await fetch("http://localhost:3017/api/categories");
+    const res = await fetch("http://localhost:3018/api/categories");
     const data = await res.json();
     return data.result;
 };
@@ -25,7 +25,6 @@ export default function SignUpForm() {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [userCategory, setUserCategory] = useState("");
-    const [userStatus, setUserStatus] = useState("");
 
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState({});
@@ -84,10 +83,12 @@ export default function SignUpForm() {
         if (validateForm()) {
             setLoading(true);
 
+            let userStatus = "";
+
             if (userCategory === "user") {
-                setUserStatus("User");
+                userStatus = "User"
             } else {
-                setUserStatus("Provider")
+                userStatus = "Provider"
             }
 
             const user = {
@@ -97,6 +98,7 @@ export default function SignUpForm() {
                 password,
                 status: userStatus,
                 userCategory,
+                signedUp: new Date()
             };
 
             const professionFinder = categories?.find((p) => p.pathName === userCategory);
@@ -106,7 +108,6 @@ export default function SignUpForm() {
                 name: name,
                 posts: [],
                 email: email,
-                cost: "",
                 age: "",
                 address: "",
                 status: userCategory,
@@ -119,7 +120,7 @@ export default function SignUpForm() {
             }
 
             try {
-                let res = await fetch("http://localhost:3017/api/users/signup", {
+                let res = await fetch("http://localhost:3018/api/users/signup", {
                     method: "POST",
                     body: JSON.stringify(user),
                     headers: {
@@ -129,7 +130,7 @@ export default function SignUpForm() {
                 res = await res.json();
 
                 if (userCategory !== "user") {
-                    let response = await fetch("http://localhost:3017/api/providers/provider-post", {
+                    let response = await fetch("http://localhost:3018/api/providers/provider-post", {
                         method: "POST",
                         body: JSON.stringify(provider),
                         headers: {

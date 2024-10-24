@@ -118,7 +118,7 @@ export default function Navbar() {
 
         const user = res?.data?.result;
 
-        const usersResponse = await fetch("http://localhost:3017/api/users", {
+        const usersResponse = await fetch("http://localhost:3018/api/users", {
           method: "GET",
           credentials: "include",
         });

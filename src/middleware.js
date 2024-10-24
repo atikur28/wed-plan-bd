@@ -29,7 +29,7 @@ export async function middleware(request) {
 
       const email = payload.email;
 
-      const userResponse = await fetch("http://localhost:3017/api/users/get-user", {
+      const userResponse = await fetch("http://localhost:3018/api/users/get-user", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
