@@ -3,7 +3,7 @@ import Navbar from "@/components/sharedUI/Navbar";
 import { Box, Card, CardContent, CardMedia, Grid } from "@mui/material";
 
 const Category = async ({ params }) => {
-    const res = await fetch(`http://localhost:3016/api/categories/${params.categoryId}`);
+    const res = await fetch(`http://localhost:3017/api/categories/${params.categoryId}`);
     const data = await res.json();
     const providers = data.result;
 

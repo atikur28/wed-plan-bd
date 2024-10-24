@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const getCategories = async () => {
-    const res = await fetch("http://localhost:3016/api/categories");
+    const res = await fetch("http://localhost:3017/api/categories");
     const data = await res.json();
     return data.result;
 };
@@ -25,6 +25,7 @@ export default function SignUpForm() {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [userCategory, setUserCategory] = useState("");
+    const [userStatus, setUserStatus] = useState("");
 
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState({});
@@ -82,12 +83,19 @@ export default function SignUpForm() {
 
         if (validateForm()) {
             setLoading(true);
+
+            if (userCategory === "user") {
+                setUserStatus("User");
+            } else {
+                setUserStatus("Provider")
+            }
+
             const user = {
                 name,
                 image: "",
                 email,
                 password,
-                status: "User",
+                status: userStatus,
                 userCategory,
             };
 
@@ -111,7 +119,7 @@ export default function SignUpForm() {
             }
 
             try {
-                let res = await fetch("http://localhost:3016/api/users/signup", {
+                let res = await fetch("http://localhost:3017/api/users/signup", {
                     method: "POST",
                     body: JSON.stringify(user),
                     headers: {
@@ -120,14 +128,16 @@ export default function SignUpForm() {
                 });
                 res = await res.json();
 
-                let response = await fetch("http://localhost:3016/api/providers/provider-post", {
-                    method: "POST",
-                    body: JSON.stringify(provider),
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                });
-                response = await response.json();
+                if (userCategory !== "user") {
+                    let response = await fetch("http://localhost:3017/api/providers/provider-post", {
+                        method: "POST",
+                        body: JSON.stringify(provider),
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    });
+                    response = await response.json();
+                }
 
                 setLoading(false);
                 if (res.success) {

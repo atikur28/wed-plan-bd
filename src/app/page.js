@@ -11,13 +11,13 @@ import Image from "next/image";
 import Link from "next/link";
 
 const getCategories = async () => {
-  const res = await fetch("http://localhost:3016/api/categories");
+  const res = await fetch("http://localhost:3017/api/categories");
   const data = await res.json();
   return data.result;
 }
 
 const popularCenters = async () => {
-  const res = await fetch("http://localhost:3016/api/providers");
+  const res = await fetch("http://localhost:3017/api/providers");
   const data = await res.json();
 
   const filteredData = data.result
@@ -28,7 +28,7 @@ const popularCenters = async () => {
 }
 
 const getReviews = async () => {
-  const res = await fetch("http://localhost:3016/api/reviews");
+  const res = await fetch("http://localhost:3017/api/reviews");
   const data = await res.json();
   return data.result;
 }

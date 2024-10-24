@@ -7,10 +7,10 @@ const VerifyEmail = () => {
     return (
         <>
             <Navbar />
-            <Box className="min-h-[70vh]">
+            <Box className="min-h-[70vh] flex justify-center items-center">
                 <EmailVerification />
-                <Footer />
             </Box>
+            <Footer />
         </>
     );
 };

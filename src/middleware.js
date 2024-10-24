@@ -1,5 +1,5 @@
-import { NextResponse } from 'next/server';
 import { jwtVerify } from 'jose';
+import { NextResponse } from 'next/server';
 
 export async function middleware(request) {
   const token = request.cookies.get("token")?.value || "";
@@ -18,10 +18,6 @@ export async function middleware(request) {
     '/dashboard/provider/manage-posts', '/dashboard/provider/bookings', '/dashboard/provider/availability', '/dashboard/provider/reviews'
   ];
 
-  const userRoutes = [
-    '/dashboard/user', '/dashboard/user/bookings', '/dashboard/user/providers', '/dashboard/user/reviews', '/dashboard/user/wishlist'
-  ]
-
   if (!token && protectedRoutes.some(route => request.nextUrl.pathname.startsWith(route))) {
     return NextResponse.redirect(new URL('/signin', request.url));
   }
@@ -34,7 +30,7 @@ export async function middleware(request) {
 
       const email = payload.email;
 
-      const userResponse = await fetch("http://localhost:3016/api/users/get-user", {
+      const userResponse = await fetch("http://localhost:3017/api/users/get-user", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -51,10 +47,6 @@ export async function middleware(request) {
       }
 
       if(status !== "Provider" && providerRoutes.some(route => request.nextUrl.pathname.startsWith(route))) {
-        return NextResponse.redirect(new URL('/signin', request.url));
-      }
-
-      if(status !== "User" && userRoutes.some(route => request.nextUrl.pathname.startsWith(route))) {
         return NextResponse.redirect(new URL('/signin', request.url));
       }
 
