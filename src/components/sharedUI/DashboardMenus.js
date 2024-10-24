@@ -23,7 +23,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import axios from 'axios';
 
 const adminMenu = [
-    { route: "Dashboard", pathName: "/dashboard", icon: DashboardIcon },
+    { route: "Dashboard", pathName: "/dashboard/admin", icon: DashboardIcon },
     { route: "Users", pathName: "/dashboard/admin/users", icon: GroupIcon },
     { route: "Providers", pathName: "/dashboard/admin/providers", icon: GroupIcon },
     { route: "Events", pathName: "/dashboard/admin/events", icon: EventIcon },
