@@ -13,13 +13,13 @@ export default function DashboardLayout({ children }) {
     return (
         <>
             <DashboardDrawer />
-            <Box className="lg:flex lg:justify-center min-h-[70vh]">
+            <Box className="lg:flex lg:justify-center lg:gap-[2%] min-h-[70vh]">
                 {/* First Column */}
                 <Box className="hidden lg:block lg:w-[30%] xl:w-[20%] 3xl:w-[600px] bg-[#f5f5f5] border-r-2 border-b-2">
                     <DashboardMenus />
                 </Box>
                 {/* Second Column */}
-                <Box className="lg:w-[70%] xl:w-[80%] 3xl:w-full">
+                <Box className="lg:w-[68%] xl:w-[78%] 3xl:w-full">
                     {children}
                 </Box>
             </Box>
