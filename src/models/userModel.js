@@ -14,6 +14,10 @@ const userModel = new mongoose.Schema({
         type: String,
         required: [true, "Please provide a password"]
     },
+    age: String,
+    address: String,
+    bio: String,
+    additionalInfo: Array,
     userCategory: String,
     status: String,
     signedUp : Date,

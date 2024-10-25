@@ -6,7 +6,7 @@ mongoDbConnect();
 
 export async function POST(req) {
   try {
-    const { name, posts, email, age, address, status, professionName, photos, videos, bio, additionalInfo, popularity } = await req.json();
+    const { name, posts, email, status, professionName, photos, videos, popularity } = await req.json();
 
     if (!name || !email) {
       return NextResponse.json({ error: "Name and email are required fields." }, { status: 400 });
@@ -16,14 +16,10 @@ export async function POST(req) {
       name,
       posts,
       email,
-      age,
-      address,
       status,
       professionName,
       photos,
       videos,
-      bio,
-      additionalInfo,
       popularity,
     });
 

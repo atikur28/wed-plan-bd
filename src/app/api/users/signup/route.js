@@ -9,7 +9,7 @@ mongoDbConnect();
 export async function POST(request) {
     try {
         const payload = await request.json();
-        const {name, image, userCategory, email, password, status, signedUp} = payload;
+        const {name, image, userCategory, email, password, age, address, bio, additionalInfo, status, signedUp} = payload;
 
         const user = await User.findOne({email});
 
@@ -25,6 +25,10 @@ export async function POST(request) {
             image,
             userCategory,
             email,
+            age, 
+            address, 
+            bio, 
+            additionalInfo,
             password: hashedPassword,
             status,
             signedUp

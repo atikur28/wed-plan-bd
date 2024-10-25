@@ -1,30 +1,28 @@
 "use client";
 
-import * as React from 'react';
-import { Alert, Box, Button, Collapse, Divider, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Snackbar, Toolbar } from '@mui/material';
+import { ExpandLess, ExpandMore } from '@mui/icons-material';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import BuildIcon from '@mui/icons-material/Build';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import DateRangeIcon from '@mui/icons-material/DateRange';
+import EventIcon from '@mui/icons-material/Event';
+import FactCheckIcon from '@mui/icons-material/FactCheck';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import GroupIcon from '@mui/icons-material/Group';
+import HandshakeIcon from '@mui/icons-material/Handshake';
 import HouseIcon from '@mui/icons-material/House';
-import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
-import BuildIcon from '@mui/icons-material/Build';
-import DateRangeIcon from '@mui/icons-material/DateRange';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import ReviewsIcon from '@mui/icons-material/Reviews';
 import PostAddIcon from '@mui/icons-material/PostAdd';
-import FactCheckIcon from '@mui/icons-material/FactCheck';
-import GroupIcon from '@mui/icons-material/Group';
-import EventIcon from '@mui/icons-material/Event';
 import ReportIcon from '@mui/icons-material/Report';
-import HandshakeIcon from '@mui/icons-material/Handshake';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import { ExpandLess, ExpandMore } from '@mui/icons-material';
-import { usePathname, useRouter } from 'next/navigation';
-import Link from 'next/link';
+import ReviewsIcon from '@mui/icons-material/Reviews';
+import SettingsIcon from '@mui/icons-material/Settings';
+import { Alert, Box, Button, Collapse, Divider, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Snackbar, Toolbar } from '@mui/material';
 import axios from 'axios';
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
+import * as React from 'react';
 
 const adminMenu = [
     { route: "Dashboard", pathName: "/dashboard/admin", icon: DashboardIcon },
@@ -69,7 +67,7 @@ const DashboardDrawer = () => {
     React.useEffect(() => {
         const fetchUserEmailAndStatus = async () => {
             try {
-                const profileResponse = await fetch("http://localhost:3018/api/users/profile", {
+                const profileResponse = await fetch("http://localhost:3021/api/users/profile", {
                     method: "POST",
                     credentials: "include",
                 });
@@ -78,7 +76,7 @@ const DashboardDrawer = () => {
                 if (profileData.success) {
                     const email = profileData?.result?.email;
 
-                    const usersResponse = await fetch("http://localhost:3018/api/users", {
+                    const usersResponse = await fetch("http://localhost:3021/api/users", {
                         method: "GET",
                         credentials: "include",
                     });
@@ -152,7 +150,7 @@ const DashboardDrawer = () => {
                         {adminMenu?.map((menu, index) => (
                             <ListItem key={menu.route} disablePadding>
                                 <Link href={menu.pathName} className="w-full font-medium font-lora mb-3">
-                                    <ListItemButton className={`${isActive(menu.pathName) ? `font-extrabold bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4]` : `hover:bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4] hover:underline`}`} >
+                                    <ListItemButton className={`${isActive(menu.pathName) ? `font-extrabold bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4]` : `hover:bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4] hover:underline`}`} onClick={toggleDrawer(false)}>
                                         <ListItemIcon sx={{ paddingLeft: 1, paddingRight: 2 }}>
                                             <menu.icon />
                                         </ListItemIcon>
@@ -170,7 +168,7 @@ const DashboardDrawer = () => {
                         {/* Dashboard Link */}
                         <ListItem disablePadding>
                             <Link href="/dashboard/provider" className="w-full font-medium font-lora mb-3">
-                                <ListItemButton className={`${isActive("/dashboard/provider") ? `font-extrabold bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4]` : `hover:bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4] hover:underline`}`} >
+                                <ListItemButton className={`${isActive("/dashboard/provider") ? `font-extrabold bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4]` : `hover:bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4] hover:underline`}`} onClick={toggleDrawer(false)}>
                                     <ListItemIcon sx={{ paddingLeft: 1, paddingRight: 2 }}>
                                         <DashboardIcon />
                                     </ListItemIcon>
@@ -189,7 +187,8 @@ const DashboardDrawer = () => {
                         <Collapse in={openServices} timeout="auto" unmountOnExit>
                             <List component="div" disablePadding>
                                 <Link href="/dashboard/provider/add-post">
-                                    <ListItemButton className={`hover:bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4] hover:underline mb-3 ${isActive("/dashboard/provider/add-post") ? `bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4]` : ``}`} sx={{ pl: 4 }}>
+                                    <ListItemButton className={`hover:bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4] hover:underline mb-3 ${isActive("/dashboard/provider/add-post") ? `bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4]` : ``}`} sx={{ pl: 4 }}
+                                    onClick={toggleDrawer(false)}>
                                         <ListItemIcon sx={{ paddingLeft: 2, paddingRight: 3 }}>
                                             <PostAddIcon />
                                         </ListItemIcon>
@@ -197,7 +196,8 @@ const DashboardDrawer = () => {
                                     </ListItemButton>
                                 </Link>
                                 <Link href="/dashboard/provider/manage-posts">
-                                    <ListItemButton className={`hover:bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4] hover:underline mb-3 ${isActive("/dashboard/provider/manage-posts") ? `bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4]` : ``}`} sx={{ pl: 4 }}>
+                                    <ListItemButton className={`hover:bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4] hover:underline mb-3 ${isActive("/dashboard/provider/manage-posts") ? `bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4]` : ``}`} sx={{ pl: 4 }}
+                                    onClick={toggleDrawer(false)}>
                                         <ListItemIcon sx={{ paddingLeft: 2, paddingRight: 3 }}>
                                             <FactCheckIcon />
                                         </ListItemIcon>
@@ -210,7 +210,7 @@ const DashboardDrawer = () => {
                         {providerMenu?.map((menu, index) => (
                             <ListItem key={menu.route} disablePadding>
                                 <Link href={menu.pathName} className="w-full font-medium font-lora mb-3">
-                                    <ListItemButton className={`${isActive(menu.pathName) ? `font-extrabold bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4]` : `hover:bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4] hover:underline`}`} >
+                                    <ListItemButton className={`${isActive(menu.pathName) ? `font-extrabold bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4]` : `hover:bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4] hover:underline`}`} onClick={toggleDrawer(false)}>
                                         <ListItemIcon sx={{ paddingLeft: 1, paddingRight: 2 }}>
                                             <menu.icon />
                                         </ListItemIcon>
@@ -228,7 +228,7 @@ const DashboardDrawer = () => {
                         {userMenu?.map((menu, index) => (
                             <ListItem key={menu.route} disablePadding>
                                 <Link href={menu.pathName} className="w-full font-medium font-lora mb-3">
-                                    <ListItemButton className={`${isActive(menu.pathName) ? `font-extrabold bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4]` : `hover:bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4] hover:underline`}`} >
+                                    <ListItemButton className={`${isActive(menu.pathName) ? `font-extrabold bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4]` : `hover:bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4] hover:underline`}`} onClick={toggleDrawer(false)}>
                                         <ListItemIcon sx={{ paddingLeft: 1, paddingRight: 2 }}>
                                             <menu.icon />
                                         </ListItemIcon>
@@ -245,7 +245,7 @@ const DashboardDrawer = () => {
                 {commonMenu?.map((menu, index) => (
                     <ListItem key={menu.route} disablePadding>
                         <Link href={menu.pathName} className="w-full font-medium font-lora mt-1 mb-2">
-                            <ListItemButton className={`${isActive(menu.pathName) ? `font-extrabold bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4]` : `hover:bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4] hover:underline`}`} >
+                            <ListItemButton className={`${isActive(menu.pathName) ? `font-extrabold bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4]` : `hover:bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4] hover:underline`}`} onClick={toggleDrawer(false)}>
                                 <ListItemIcon sx={{ paddingLeft: 1, paddingRight: 2 }}>
                                     <menu.icon />
                                 </ListItemIcon>
@@ -268,7 +268,7 @@ const DashboardDrawer = () => {
     );
 
     return (
-        <Box className="flex justify-start items-center gap-5 lg:hidden py-2.5">
+        <Box className="flex justify-start items-center gap-5 lg:hidden py-2.5 shadow-md">
             <Button onClick={toggleDrawer(true)}><MenuIcon sx={{ fontSize: "32px", color: "black" }} /></Button>
             <Drawer open={open} onClose={toggleDrawer(false)}>
                 {DrawerList}

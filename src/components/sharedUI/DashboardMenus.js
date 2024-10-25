@@ -1,26 +1,26 @@
 "use client";
 
-import * as React from 'react';
-import { Snackbar, Alert, Collapse, Divider, List, ListItem, ListItemButton, ListItemIcon, Toolbar, ListItemText } from '@mui/material';
-import HouseIcon from '@mui/icons-material/House';
-import SettingsIcon from '@mui/icons-material/Settings';
-import LogoutIcon from '@mui/icons-material/Logout';
-import BuildIcon from '@mui/icons-material/Build';
-import DateRangeIcon from '@mui/icons-material/DateRange';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import ReviewsIcon from '@mui/icons-material/Reviews';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
-import PostAddIcon from '@mui/icons-material/PostAdd';
-import FactCheckIcon from '@mui/icons-material/FactCheck';
-import GroupIcon from '@mui/icons-material/Group';
-import ReportIcon from '@mui/icons-material/Report';
-import HandshakeIcon from '@mui/icons-material/Handshake';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import BuildIcon from '@mui/icons-material/Build';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import DateRangeIcon from '@mui/icons-material/DateRange';
 import EventIcon from '@mui/icons-material/Event';
+import FactCheckIcon from '@mui/icons-material/FactCheck';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import GroupIcon from '@mui/icons-material/Group';
+import HandshakeIcon from '@mui/icons-material/Handshake';
+import HouseIcon from '@mui/icons-material/House';
+import LogoutIcon from '@mui/icons-material/Logout';
+import PostAddIcon from '@mui/icons-material/PostAdd';
+import ReportIcon from '@mui/icons-material/Report';
+import ReviewsIcon from '@mui/icons-material/Reviews';
+import SettingsIcon from '@mui/icons-material/Settings';
+import { Alert, Collapse, Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Snackbar, Toolbar } from '@mui/material';
+import axios from 'axios';
 import Link from "next/link";
 import { usePathname, useRouter } from 'next/navigation';
-import axios from 'axios';
+import * as React from 'react';
 
 const adminMenu = [
     { route: "Dashboard", pathName: "/dashboard/admin", icon: DashboardIcon },
@@ -65,7 +65,7 @@ const DashboardMenus = () => {
     React.useEffect(() => {
         const fetchUserEmailAndStatus = async () => {
             try {
-                const profileResponse = await fetch("http://localhost:3018/api/users/profile", {
+                const profileResponse = await fetch("http://localhost:3021/api/users/profile", {
                     method: "POST",
                     credentials: "include",
                 });
@@ -74,7 +74,7 @@ const DashboardMenus = () => {
                 if (profileData.success) {
                     const email = profileData?.result?.email;
 
-                    const usersResponse = await fetch("http://localhost:3018/api/users", {
+                    const usersResponse = await fetch("http://localhost:3021/api/users", {
                         method: "GET",
                         credentials: "include",
                     });

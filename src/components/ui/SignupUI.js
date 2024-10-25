@@ -6,13 +6,13 @@ import EmailIcon from "@mui/icons-material/Email";
 import LockIcon from "@mui/icons-material/Lock";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { Alert, Box, Button, IconButton, InputAdornment, MenuItem, Snackbar, TextField } from "@mui/material";
+import { Alert, Box, Button, IconButton, InputAdornment, MenuItem, Snackbar, TextField, Typography } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const getCategories = async () => {
-    const res = await fetch("http://localhost:3018/api/categories");
+    const res = await fetch("http://localhost:3021/api/categories");
     const data = await res.json();
     return data.result;
 };
@@ -96,6 +96,10 @@ export default function SignUpForm() {
                 image: "",
                 email,
                 password,
+                age: "",
+                address: "",
+                bio: "",
+                additionalInfo: [],
                 status: userStatus,
                 userCategory,
                 signedUp: new Date()
@@ -108,19 +112,15 @@ export default function SignUpForm() {
                 name: name,
                 posts: [],
                 email: email,
-                age: "",
-                address: "",
                 status: userCategory,
                 professionName: profession,
                 photos: [],
                 videos: [],
-                bio: "",
-                additionalInfo: [],
                 popularity: []
             }
 
             try {
-                let res = await fetch("http://localhost:3018/api/users/signup", {
+                let res = await fetch("http://localhost:3021/api/users/signup", {
                     method: "POST",
                     body: JSON.stringify(user),
                     headers: {
@@ -130,7 +130,7 @@ export default function SignUpForm() {
                 res = await res.json();
 
                 if (userCategory !== "user") {
-                    let response = await fetch("http://localhost:3018/api/providers/provider-post", {
+                    let response = await fetch("http://localhost:3021/api/providers/provider-post", {
                         method: "POST",
                         body: JSON.stringify(provider),
                         headers: {
@@ -265,10 +265,14 @@ export default function SignUpForm() {
                             className: "dark:text-white",
                         }}
                     >
-                        <MenuItem value="user">User</MenuItem>
+                        <MenuItem value="user">
+                            <Typography sx={{ fontFamily: "Lora, serif" }}>User</Typography>
+                        </MenuItem>
                         {categories?.map((category, index) => (
                             <MenuItem key={index} value={category?.pathName}>
-                                {category?.name}
+                                <Typography sx={{ fontFamily: "Lora, serif" }}>
+                                    {category?.name}
+                                </Typography>
                             </MenuItem>
                         ))}
                     </TextField>

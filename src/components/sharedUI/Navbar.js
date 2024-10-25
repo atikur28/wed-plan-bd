@@ -25,7 +25,6 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import { styled, useTheme } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import axios from 'axios';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -118,7 +117,7 @@ export default function Navbar() {
 
         const user = res?.data?.result;
 
-        const usersResponse = await fetch("http://localhost:3018/api/users", {
+        const usersResponse = await fetch("http://localhost:3021/api/users", {
           method: "GET",
           credentials: "include",
         });
