@@ -1,14 +1,36 @@
 "use client";
 
-import AddIcon from '@mui/icons-material/Add';
-import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
-import DeleteIcon from '@mui/icons-material/Delete';
+import AddIcon from "@mui/icons-material/Add";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import DeleteIcon from "@mui/icons-material/Delete";
 import PersonIcon from "@mui/icons-material/Person";
-import SearchIcon from '@mui/icons-material/Search';
-import { Alert, Box, IconButton, InputAdornment, Paper, Snackbar, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel, TextField } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import {
+    Alert,
+    Box,
+    Button,
+    CircularProgress,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    IconButton,
+    InputAdornment,
+    Paper,
+    Snackbar,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TablePagination,
+    TableRow,
+    TextField,
+} from "@mui/material";
 import Avatar from "@mui/material/Avatar";
-import Link from 'next/link';
-import * as React from 'react';
+import Link from "next/link";
+import * as React from "react";
 
 const AdminUsers = () => {
     const [users, setUsers] = React.useState([]);
@@ -17,13 +39,18 @@ const AdminUsers = () => {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage] = React.useState(20);
     const [searchQuery, setSearchQuery] = React.useState("");
+    const [loading, setLoading] = React.useState(true);
 
+    // Alert States Code:
     const [alertOpen, setAlertOpen] = React.useState(false);
     const [alertMessage, setAlertMessage] = React.useState("");
     const [alertType, setAlertType] = React.useState("success");
+    const [confirmDeleteDialogOpen, setConfirmDeleteDialogOpen] = React.useState(false);
+    const [selectedUserId, setSelectedUserId] = React.useState(null);
 
     React.useEffect(() => {
         const fetchUsers = async () => {
+            setLoading(true);
             try {
                 const usersResponse = await fetch("http://localhost:3021/api/users", {
                     method: "GET",
@@ -39,13 +66,16 @@ const AdminUsers = () => {
                 }
             } catch (error) {
                 console.log("Failed to fetch users: ", error);
+            } finally {
+                setLoading(false);
             }
         };
         fetchUsers();
     }, []);
 
+    // Alert Handle Code:
     const handleCloseAlert = (event, reason) => {
-        if (reason === 'clickaway') {
+        if (reason === "clickaway") {
             return;
         }
         setAlertOpen(false);
@@ -58,8 +88,8 @@ const AdminUsers = () => {
     };
 
     const sortedUsers = users.slice().sort((a, b) => {
-        if (orderBy === "name" || orderBy === "email" || orderBy === "userCategory") {
-            return (a[orderBy].localeCompare(b[orderBy])) * (order === "asc" ? 1 : -1);
+        if (orderBy === "name" || orderBy === "email" || orderBy === "status") {
+            return a[orderBy].localeCompare(b[orderBy]) * (order === "asc" ? 1 : -1);
         }
         return (new Date(a.signedUp) - new Date(b.signedUp)) * (order === "asc" ? 1 : -1);
     });
@@ -74,16 +104,18 @@ const AdminUsers = () => {
         setPage(newPage);
     };
 
+    // Convert User to Admin Code:
     const handleConvertToAdmin = async (event, userId) => {
         event.stopPropagation();
         try {
+            setLoading(true);
             const userInfo = await users?.filter(user => user._id === userId);
             const updatedUserInfo = {
                 name: userInfo[0]?.name,
                 image: userInfo[0]?.image,
                 email: userInfo[0]?.email,
                 userCategory: userInfo[0]?.userCategory,
-                status: "Admin"
+                status: "Admin",
             };
             const userResponse = await fetch("http://localhost:3021/api/users/profile/update-profile", {
                 method: "PUT",
@@ -96,38 +128,69 @@ const AdminUsers = () => {
             const userResult = await userResponse.json();
 
             if (userResult.success) {
+                setUsers(prevUsers => prevUsers.filter(user => user._id !== userId));
                 setAlertMessage("User converted to Admin successfully!");
                 setAlertType("success");
                 setAlertOpen(true);
             } else {
-                console.log("Failed to converted User to Admin");
-                setAlertMessage("Failed to converted User to Admin.");
+                console.log("Failed to convert User to Admin");
+                setAlertMessage("Failed to convert User to Admin.");
                 setAlertType("error");
                 setAlertOpen(true);
             }
         } catch (error) {
-            console.error('Error converting user:', error);
+            console.error("Error converting user:", error);
+        } finally {
+            setLoading(false);
         }
     };
 
-    const handleDeleteUser = async (event, userId) => {
-        event.stopPropagation();
-        if (confirm("Are you sure you want to delete this user?")) {
-            try {
-                const response = await fetch(`http://localhost:3021/api/users/delete/${userId}`, {
-                    method: 'DELETE',
-                    credentials: 'include',
-                });
-                const data = await response.json();
+    // User Delete Code:
+    const handleDeleteDialogOpen = (userId) => {
+        setSelectedUserId(userId);
+        setConfirmDeleteDialogOpen(true);
+    };
 
-                if (data.success) {
-                    console.log('User deleted successfully');
-                    setUsers(prevUsers => prevUsers.filter(user => user._id !== userId));
+    const handleDeleteDialogClose = () => {
+        setConfirmDeleteDialogOpen(false);
+        setSelectedUserId(null);
+    };
+
+    const handleDeleteUser = async () => {
+        if (selectedUserId) {
+            try {
+                setLoading(true);
+
+                const response = await fetch("http://localhost:3021/api/users/profile/delete-profile", {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ userId: selectedUserId }),
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    setAlertMessage("User deleted successfully!");
+                    setAlertType("success");
+                    setAlertOpen(true);
+
+                    setUsers((prevUsers) => prevUsers.filter((user) => user._id !== selectedUserId));
                 } else {
-                    console.log('Failed to delete user', data.message);
+                    console.error("Failed to delete user:", result.message);
+                    setAlertMessage("Failed to delete user!");
+                    setAlertType("error");
+                    setAlertOpen(true);
                 }
             } catch (error) {
-                console.error('Error deleting user:', error);
+                console.error("Error deleting user:", error);
+                setAlertMessage("Failed to delete user!");
+                setAlertType("error");
+                setAlertOpen(true);
+            } finally {
+                setConfirmDeleteDialogOpen(false);
+                setLoading(false);
             }
         }
     };
@@ -143,16 +206,12 @@ const AdminUsers = () => {
                         placeholder="Search by email"
                         variant="outlined"
                         className="w-[195px] md:w-[300px] font-lora"
-                        InputLabelProps={{
-                            className: 'font-lora text-gray-800',
-                        }}
                         InputProps={{
                             startAdornment: (
                                 <InputAdornment position="start">
                                     <SearchIcon className="text-gray-500" />
                                 </InputAdornment>
                             ),
-                            className: 'font-lora text-gray-800',
                         }}
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
@@ -172,152 +231,123 @@ const AdminUsers = () => {
                                 },
                             },
                             '& .MuiInputLabel-root': {
-                                top: '-5px',
+                                top: '-4px',
                             },
                         }}
                     />
                     <Link href="/signup">
-                        <p className="text-xs lg:text-base flex justify-center items-center gap-1 font-lora text-white bg-black rounded-lg py-1 md:py-[6px] px-[5px] md:px-3 transition-all duration-200 ease-in-out active:scale-90 select-none">
-                            <AddIcon />Add user
+                        <p className="text-xs lg:text-base flex justify-center items-center gap-1 font-lora text-white bg-black rounded-lg py-1 md:py-[6px] px-[5px] md:px-3">
+                            <AddIcon /> Add user
                         </p>
                     </Link>
                 </Box>
             </Box>
-            {/* Table */}
-            <TableContainer component={Paper} sx={{ mt: 2 }}>
-                <Table aria-label="user table">
-                    <TableHead>
-                        <TableRow style={{ backgroundColor: "#1F2937" }}>
-                            {["Username", "Email", "Access", "Date added", "Action"].map((headCell, index) => {
-                                const property = ["name", "email", "userCategory", "signedUp", "action"][index];
-                                return (
-                                    <TableCell
-                                        key={headCell}
-                                        sortDirection={orderBy === property ? order : false}
-                                        sx={{ color: "white", fontFamily: "Lora" }}
-                                    >
-                                        <TableSortLabel
-                                            active={orderBy === property}
-                                            direction={orderBy === property ? order : "asc"}
-                                            onClick={() => handleRequestSort(property)}
-                                            sx={{
-                                                color: "white !important",
-                                                fontFamily: "Lora",
-                                                '&:hover': { color: "white !important" },
-                                                '& .MuiTableSortLabel-icon': {
-                                                    color: orderBy === property ? "white !important" : "#1F2937",
-                                                },
-                                                '&.Mui-active .MuiTableSortLabel-icon': {
-                                                    color: "white !important",
-                                                },
+
+            {loading ? (
+                <Box display="flex" justifyContent="center" alignItems="center" sx={{ mt: 5 }}>
+                    <CircularProgress />
+                </Box>
+            ) : (
+                <>
+                    <TableContainer component={Paper} sx={{ mt: 2 }}>
+                        <Table aria-label="user table">
+                            <TableHead>
+                                <TableRow style={{ backgroundColor: "#1F2937" }}>
+                                    {["Username", "Email", "Access", "Verified", "Date Added", "Action"].map((header) => (
+                                        <TableCell
+                                            key={header}
+                                            style={{
+                                                color: "white",
+                                                fontWeight: "bold",
+                                                textAlign: header === "Action" ? "center" : "left",
+                                                fontFamily: "Lora, serif",
                                             }}
                                         >
-                                            {headCell}
-                                        </TableSortLabel>
-                                    </TableCell>
-                                );
-                            })}
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {paginatedUsers.length > 0 ? (
-                            paginatedUsers.map((user) => {
-                                return (
-                                    <TableRow key={user._id} hover>
-                                        <TableCell sx={{ display: "flex", alignItems: "center", fontFamily: "Lora" }}>
-                                            {user.image ? (
-                                                <Avatar src={user.image} alt={user.name} />
-                                            ) : (
-                                                <Avatar>
-                                                    <PersonIcon />
-                                                </Avatar>
-                                            )}
-                                            <span className="ml-2">{user.name}</span>
+                                            {header}
                                         </TableCell>
-                                        <TableCell sx={{ fontFamily: "Lora" }}>{user.email}</TableCell>
-                                        <TableCell sx={{ fontFamily: "Lora" }}>{user.status}</TableCell>
-                                        <TableCell sx={{ fontFamily: "Lora" }}>{user.signedUp.split("T")[0]}</TableCell>
-                                        <TableCell>
-                                            {/* Action Buttons */}
-                                            {user.status === "User" && (
-                                                <div style={{ display: 'flex', gap: '10px' }}>
-                                                    <IconButton
-                                                        onClick={(event) => handleConvertToAdmin(event, user._id)}
-                                                        title="Make Admin from User"
-                                                        color="primary"
-                                                        sx={{ fontSize: '1.5rem' }}
-                                                    >
-                                                        <AdminPanelSettingsIcon />
-                                                    </IconButton>
-                                                    <IconButton
-                                                        onClick={(event) => handleDeleteUser(event, user._id)}
-                                                        title="Delete User"
-                                                        color="error"
-                                                        sx={{ fontSize: '1.5rem' }}
-                                                    >
-                                                        <DeleteIcon />
-                                                    </IconButton>
-                                                </div>
-                                            )}
+                                    ))}
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {paginatedUsers.map((user) => (
+                                    <TableRow key={user._id} hover role="checkbox" tabIndex={-1}>
+                                        <TableCell style={{ fontFamily: "Lora, serif" }}>
+                                            <Box display="flex" alignItems="center">
+                                                <Avatar alt={user.name} src={user.image} sx={{ width: 24, height: 24, marginRight: 1 }} />
+                                                {user.name}
+                                            </Box>
+                                        </TableCell>
+                                        <TableCell style={{ fontFamily: "Lora, serif" }}>{user.email}</TableCell>
+                                        <TableCell style={{ fontFamily: "Lora, serif" }}>
+                                            <span className="flex items-center">
+                                                {user.status === "Admin" ? <AdminPanelSettingsIcon className="mr-1" /> : <PersonIcon className="mr-1" />}
+                                                {user.status}
+                                            </span>
+                                        </TableCell>
+                                        <TableCell style={{ fontFamily: "Lora, serif" }}>
+                                            <span
+                                                style={{
+                                                    color: user.isVerified ? "green" : "red",
+                                                    border: `2px solid ${user.isVerified ? "green" : "red"}`,
+                                                    borderRadius: "12px",
+                                                    padding: "4px 8px",
+                                                    display: "inline-block",
+                                                }}
+                                            >
+                                                {user.isVerified ? "Verified" : "Not Verified"}
+                                            </span>
+                                        </TableCell>
+                                        <TableCell style={{ fontFamily: "Lora, serif" }}>{new Date(user.signedUp).toLocaleDateString()}</TableCell>
+                                        <TableCell style={{ textAlign: "center", fontFamily: "Lora, serif" }}>
+                                            <IconButton title="User to Admin" color="secondary" onClick={(e) => handleConvertToAdmin(e, user._id)}>
+                                                <AdminPanelSettingsIcon />
+                                            </IconButton>
+                                            <IconButton title="Delete user" color="error" onClick={() => handleDeleteDialogOpen(user._id)}>
+                                                <DeleteIcon />
+                                            </IconButton>
                                         </TableCell>
                                     </TableRow>
-                                );
-                            })
-                        ) : (
-                            <TableRow>
-                                <TableCell colSpan={5} align="center" sx={{ fontFamily: "Lora" }}>
-                                    No users found
-                                </TableCell>
-                            </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                    <TablePagination
+                        component="div"
+                        count={filteredUsers.length}
+                        page={page}
+                        onPageChange={handleChangePage}
+                        rowsPerPage={rowsPerPage}
+                        labelRowsPerPage=""
+                        rowsPerPageOptions={[]}
+                        labelDisplayedRows={({ from, to, count }) => (
+                            <span style={{ fontFamily: "Lora" }}>{`Showing ${from}-${to} of ${count}`}</span>
                         )}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-            <TablePagination
-                rowsPerPageOptions={[20, 50, 100]}
-                component="div"
-                count={filteredUsers.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={handleChangePage}
-                labelDisplayedRows={({ from, to, count }) => (
-                    <span style={{ fontFamily: "Lora" }}>{`Showing ${from}-${to} of ${count}`}</span>
-                )}
-                labelRowsPerPage={
-                    <span style={{ fontFamily: "Lora" }}>Rows per page:</span>
-                }
-                sx={{
-                    fontFamily: "Lora",
-                    '& .MuiTablePagination-selectLabel': {
-                        fontFamily: 'Lora',
-                    },
-                    '& .MuiTablePagination-displayedRows': {
-                        fontFamily: 'Lora',
-                    },
-                    '& .MuiTablePagination-actions button': {
-                        fontFamily: 'Lora',
-                    },
-                    '& .MuiTablePagination-select': {
-                        fontFamily: 'Lora',
-                    },
-                }}
-            />
+                    />
+                </>
+            )}
 
-            {/* Snackbar Alert for Success or Error */}
-            <Snackbar
-                open={alertOpen}
-                autoHideDuration={6000}
-                onClose={handleCloseAlert}
-                anchorOrigin={{ vertical: "top", horizontal: "center" }}
-            >
-                <Alert
-                    onClose={handleCloseAlert}
-                    severity={alertType}
-                    sx={{ width: "100%" }}
-                >
+            <Snackbar open={alertOpen} autoHideDuration={5000} onClose={handleCloseAlert} anchorOrigin={{ vertical: "top", horizontal: "center" }}>
+                <Alert onClose={handleCloseAlert} severity={alertType} sx={{ width: '100%' }}>
                     {alertMessage}
                 </Alert>
             </Snackbar>
+
+            <Dialog open={confirmDeleteDialogOpen} onClose={handleDeleteDialogClose}>
+                <DialogTitle sx={{ fontFamily: "Lora, serif" }}>Confirm Deletion</DialogTitle>
+                <DialogContent>
+                    <DialogContentText sx={{ fontFamily: "Lora, serif" }}>
+                        Are you sure you want to delete this user? This action is irreversible.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleDeleteDialogClose} color="primary" sx={{ fontFamily: "Lora, serif" }}>
+                        Cancel
+                    </Button>
+                    <Button onClick={handleDeleteUser} color="error" sx={{ fontFamily: "Lora, serif" }}>
+                        Delete
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </Box>
     );
 };

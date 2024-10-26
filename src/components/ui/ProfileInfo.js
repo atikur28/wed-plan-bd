@@ -500,14 +500,14 @@ const ProfileInfo = ({ uploadData }) => {
 
             const updatedAdditionalInfoData = {
                 name: profile.name,
-                    image: profile.image,
-                    email: profile.email,
-                    age: profile.age,
-                    address: profile.address,
-                    bio: profile.bio,
-                    additionalInfo: updatedAdditionalInfo,
-                    userCategory: profile.userCategory,
-                    status: profile.status,
+                image: profile.image,
+                email: profile.email,
+                age: profile.age,
+                address: profile.address,
+                bio: profile.bio,
+                additionalInfo: updatedAdditionalInfo,
+                userCategory: profile.userCategory,
+                status: profile.status,
             };
 
             const additionalInfoResponse = await fetch("http://localhost:3021/api/users/profile/update-profile", {
@@ -1216,7 +1216,9 @@ const ProfileInfo = ({ uploadData }) => {
                     )}
 
                     {/* Popularity */}
-                    <p className='font-lora text-lg mb-3'><span className='font-bold'>Like:</span> {providerProfile?.popularity?.length} liked.</p>
+                    {providerProfile && (
+                        <p className='font-lora text-lg mb-3'><span className='font-bold'>Like:</span> {providerProfile.popularity.length} liked.</p>
+                    )}
 
                     {/* Additional info */}
                     <section>
