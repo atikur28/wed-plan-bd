@@ -22,6 +22,7 @@
     "nodemailer": "^6.9.14",
     "react": "^18",
     "react-dom": "^18",
+    "recharts": "^2.13.0",
     "swiper": "^11.1.14"
   },
   "devDependencies": {
