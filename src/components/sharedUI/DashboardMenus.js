@@ -16,7 +16,7 @@ import PostAddIcon from '@mui/icons-material/PostAdd';
 import ReportIcon from '@mui/icons-material/Report';
 import ReviewsIcon from '@mui/icons-material/Reviews';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { Alert, Collapse, Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Snackbar, Toolbar } from '@mui/material';
+import { Alert, Box, CircularProgress, Collapse, Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Snackbar, Toolbar, Typography } from '@mui/material';
 import axios from 'axios';
 import Link from "next/link";
 import { usePathname, useRouter } from 'next/navigation';
@@ -56,6 +56,7 @@ const DashboardMenus = () => {
     const [snackbarOpen, setSnackbarOpen] = React.useState(false);
     const [snackbarMessage, setSnackbarMessage] = React.useState("");
     const [snackbarSeverity, setSnackbarSeverity] = React.useState("success");
+    const [loading, setLoading] = React.useState(false);
     const router = useRouter();
 
     const handleSnackbarClose = () => {
@@ -65,6 +66,7 @@ const DashboardMenus = () => {
     React.useEffect(() => {
         const fetchUserEmailAndStatus = async () => {
             try {
+                setLoading(true);
                 const profileResponse = await fetch("http://localhost:3022/api/users/profile", {
                     method: "POST",
                     credentials: "include",
@@ -96,6 +98,8 @@ const DashboardMenus = () => {
                 }
             } catch (err) {
                 console.log("Failed to fetch profile or users", err);
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -126,6 +130,26 @@ const DashboardMenus = () => {
             setSnackbarOpen(true);
         }
     };
+
+    // Render loading state or user information
+    if (loading) {
+        return (
+            <Box
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+                justifyContent="center"
+                minHeight="40vh"
+                textAlign="center"
+                p={2}
+            >
+                <CircularProgress size={30} color="primary" />
+                <Typography variant="h6" mt={2} className="font-lora">
+                    Loading, please wait...
+                </Typography>
+            </Box>
+        );
+    }
 
     return (
         <>

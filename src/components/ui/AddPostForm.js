@@ -89,12 +89,12 @@ const AddPostForm = ({ uploadData }) => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         if (!formData.serviceImage) return;
-    
+
         const imageData = new FormData();
         imageData.append("file", formData.serviceImage);
         imageData.append("upload_preset", uploadData.IMAGE_UPLOAD_PRESET);
         imageData.append("folder", uploadData.IMAGE_UPLOAD_FOLDER);
-    
+
         try {
             const postsResponse = await fetch("http://localhost:3022/api/posts", {
                 method: "GET",
@@ -102,7 +102,7 @@ const AddPostForm = ({ uploadData }) => {
                     "Content-Type": "application/json",
                 }
             });
-    
+
             const postData = await postsResponse.json();
             const userPosts = postData.result.filter((post) => post.email === user?.email);
 
@@ -112,19 +112,19 @@ const AddPostForm = ({ uploadData }) => {
                 setAlertOpen(true);
                 return;
             }
-    
+
             setLoading(true);
 
             const response = await fetch(uploadData.IMAGE_UPLOAD_URL, {
                 method: "POST",
                 body: imageData,
             });
-    
+
             const data = await response.json();
-    
+
             if (data.url) {
                 console.log("Image uploaded successfully");
-    
+
                 const newPostData = {
                     serviceName: formData.serviceName,
                     provider: formData.provider,
@@ -146,7 +146,7 @@ const AddPostForm = ({ uploadData }) => {
                     },
                     body: JSON.stringify(newPostData),
                 });
-    
+
                 const updateResult = await updateResponse.json();
                 if (updateResult.success) {
                     setAlertMessage("Post created successfully!");
@@ -184,7 +184,7 @@ const AddPostForm = ({ uploadData }) => {
         } finally {
             setLoading(false);
         }
-    };    
+    };
 
     // Render loading state or user information
     if (loading) {
@@ -222,60 +222,22 @@ const AddPostForm = ({ uploadData }) => {
                 </p>
 
                 <Grid container spacing={4}>
-                    <Grid item xs={12} sm={6} md={4}>
-                        <Card className="shadow-md hover:shadow-lg transition-all py-5">
-                            <CardContent>
-                                <h4 className="lg:text-lg font-lora font-semibold mb-2">Service Name</h4>
-                                <p className="text-sm lg:text-[14px] font-lora text-gray-500">
-                                    Enter the name of your service (e.g., &quot;Premium Wedding Photography&quot;).
-                                </p>
-                            </CardContent>
-                        </Card>
-                    </Grid>
-
-                    <Grid item xs={12} sm={6} md={4}>
-                        <Card className="shadow-md hover:shadow-lg transition-all py-5">
-                            <CardContent>
-                                <h4 className="lg:text-lg font-lora font-semibold mb-2">Provider Information</h4>
-                                <p className="text-sm lg:text-[14px] font-lora text-gray-500">
-                                    Provide the name or business name of the service provider, along with a brief description if applicable.
-                                </p>
-                            </CardContent>
-                        </Card>
-                    </Grid>
-
-                    <Grid item xs={12} sm={6} md={4}>
-                        <Card className="shadow-md hover:shadow-lg transition-all py-5">
-                            <CardContent>
-                                <h4 className="lg:text-lg font-lora font-semibold mb-2">Pricing</h4>
-                                <p className="text-sm lg:text-[14px] font-lora text-gray-500">
-                                    Add the price for your service, if applicable. Include currency and any additional pricing details users might need.
-                                </p>
-                            </CardContent>
-                        </Card>
-                    </Grid>
-
-                    <Grid item xs={12} sm={6} md={4}>
-                        <Card className="shadow-md hover:shadow-lg transition-all py-5">
-                            <CardContent>
-                                <h4 className="lg:text-lg font-lora font-semibold mb-2">Location</h4>
-                                <p className="text-sm lg:text-[14px] font-lora text-gray-500">
-                                    Specify the primary location where your service is available. This helps users filter by location.
-                                </p>
-                            </CardContent>
-                        </Card>
-                    </Grid>
-
-                    <Grid item xs={12} sm={6} md={4}>
-                        <Card className="shadow-md hover:shadow-lg transition-all py-5">
-                            <CardContent>
-                                <h4 className="lg:text-lg font-lora font-semibold mb-2">Image Upload</h4>
-                                <p className="text-sm lg:text-[14px] font-lora text-gray-500">
-                                    Add an image that best represents your service. Accepted formats: JPG, PNG. Please make sure the image size is under 5 MB.
-                                </p>
-                            </CardContent>
-                        </Card>
-                    </Grid>
+                    {[
+                        { title: "Service Name", description: "Enter the name of your service (e.g., 'Premium Wedding Photography')." },
+                        { title: "Provider Information", description: "Provide the name or business name of the service provider, along with a brief description if applicable." },
+                        { title: "Pricing", description: "Add the price for your service, if applicable. Include currency and any additional pricing details users might need." },
+                        { title: "Location", description: "Specify the primary location where your service is available. This helps users filter by location." },
+                        { title: "Image Upload", description: "Add an image that best represents your service. Accepted formats: JPG, PNG. Please make sure the image size is under 5 MB." },
+                    ].map((item, index) => (
+                        <Grid item xs={12} sm={6} md={4} key={index}>
+                            <Card className="shadow-md hover:shadow-lg transition-all py-5 min-h-full flex flex-col justify-between">
+                                <CardContent className="flex-grow">
+                                    <h4 className="lg:text-lg font-lora font-semibold mb-2">{item.title}</h4>
+                                    <p className="text-sm lg:text-[14px] font-lora text-gray-500">{item.description}</p>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                    ))}
                 </Grid>
             </Box>
             <Box
