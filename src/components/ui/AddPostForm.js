@@ -35,7 +35,7 @@ const AddPostForm = ({ uploadData }) => {
         const fetchUser = async () => {
             setLoading(true);
             try {
-                const profileResponse = await fetch("http://localhost:3022/api/users/profile", {
+                const profileResponse = await fetch("http://localhost:3023/api/users/profile", {
                     method: "POST",
                     credentials: "include",
                 });
@@ -43,7 +43,7 @@ const AddPostForm = ({ uploadData }) => {
 
                 if (profileData.success) {
                     const email = profileData.result.email;
-                    const userResponse = await fetch("http://localhost:3022/api/users/get-user", {
+                    const userResponse = await fetch("http://localhost:3023/api/users/get-user", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
@@ -96,7 +96,7 @@ const AddPostForm = ({ uploadData }) => {
         imageData.append("folder", uploadData.IMAGE_UPLOAD_FOLDER);
 
         try {
-            const postsResponse = await fetch("http://localhost:3022/api/posts", {
+            const postsResponse = await fetch("http://localhost:3023/api/posts", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -139,7 +139,7 @@ const AddPostForm = ({ uploadData }) => {
                     description: formData.description,
                 };
 
-                const updateResponse = await fetch("http://localhost:3022/api/posts/provider-post", {
+                const updateResponse = await fetch("http://localhost:3023/api/posts/provider-post", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",

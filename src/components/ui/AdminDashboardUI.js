@@ -32,7 +32,7 @@ const AdminDashboardUI = () => {
             try {
                 setLoading(true);
 
-                const profileResponse = await fetch("http://localhost:3022/api/users/profile", {
+                const profileResponse = await fetch("http://localhost:3023/api/users/profile", {
                     method: "POST",
                     credentials: "include",
                 });
@@ -41,7 +41,7 @@ const AdminDashboardUI = () => {
                 if (profileData.success) {
                     const email = profileData.result.email;
 
-                    const userResponse = await fetch("http://localhost:3022/api/users/get-user", {
+                    const userResponse = await fetch("http://localhost:3023/api/users/get-user", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
@@ -60,7 +60,7 @@ const AdminDashboardUI = () => {
                     console.log("Profile not found");
                 }
 
-                const usersResponse = await fetch("http://localhost:3022/api/users", {
+                const usersResponse = await fetch("http://localhost:3023/api/users", {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",
