@@ -65,7 +65,7 @@ const DashboardMenus = () => {
     React.useEffect(() => {
         const fetchUserEmailAndStatus = async () => {
             try {
-                const profileResponse = await fetch("http://localhost:3021/api/users/profile", {
+                const profileResponse = await fetch("http://localhost:3022/api/users/profile", {
                     method: "POST",
                     credentials: "include",
                 });
@@ -74,7 +74,7 @@ const DashboardMenus = () => {
                 if (profileData.success) {
                     const email = profileData?.result?.email;
 
-                    const usersResponse = await fetch("http://localhost:3021/api/users", {
+                    const usersResponse = await fetch("http://localhost:3022/api/users", {
                         method: "GET",
                         credentials: "include",
                     });
@@ -188,6 +188,14 @@ const DashboardMenus = () => {
                                             <FactCheckIcon />
                                         </ListItemIcon>
                                         <ListItemText primary="Manage posts" primaryTypographyProps={{ style: { fontFamily: 'Lora', fontSize: '17px', fontWeight: isActive("/dashboard/provider/manage-posts") ? 600 : 500 } }} />
+                                    </ListItemButton>
+                                </Link>
+                                <Link href="/dashboard/provider/add-category">
+                                    <ListItemButton className={`${isActive("/dashboard/provider/add-category") ? "bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4]" : "hover:bg-gradient-to-r from-[#e1e1e1] to-[#c4c4c4] hover:underline"} mb-3`} sx={{ pl: 4 }}>
+                                        <ListItemIcon sx={{ paddingLeft: 2, paddingRight: 3 }}>
+                                            <PostAddIcon />
+                                        </ListItemIcon>
+                                        <ListItemText primary="Add category" primaryTypographyProps={{ style: { fontFamily: 'Lora', fontSize: '17px', fontWeight: isActive("/dashboard/provider/add-category") ? 600 : 500 } }} />
                                     </ListItemButton>
                                 </Link>
                             </List>

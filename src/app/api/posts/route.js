@@ -1,4 +1,4 @@
-import Provider from "@/models/providerModel";
+import Post from "@/models/postModel";
 import { mongoDbConnect } from "@/mongoDB/mongoDB";
 import { NextResponse } from "next/server";
 
@@ -8,7 +8,7 @@ export async function GET() {
     let data = [];
 
     try {
-        data = await Provider.find();
+        data = await Post.find();
     } catch (error) {
         data = { success: false }
     }

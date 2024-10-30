@@ -11,31 +11,31 @@ import Image from "next/image";
 import Link from "next/link";
 
 const getCategories = async () => {
-  const res = await fetch("http://localhost:3021/api/categories");
+  const res = await fetch("http://localhost:3022/api/categories");
   const data = await res.json();
   return data.result;
 }
 
-const popularCenters = async () => {
-  const res = await fetch("http://localhost:3021/api/providers");
-  const data = await res.json();
+// const popularCenters = async () => {
+//   const res = await fetch("http://localhost:3022/api/providers");
+//   const data = await res.json();
 
-  const filteredData = data.result
-    .filter((f) => f.status === "centers")
-    .sort((a, b) => b.popularity - a.popularity);
+//   const filteredData = data.result
+//     .filter((f) => f.status === "centers")
+//     .sort((a, b) => b.popularity - a.popularity);
 
-  return filteredData;
-}
+//   return filteredData;
+// }
 
 const getReviews = async () => {
-  const res = await fetch("http://localhost:3021/api/reviews");
+  const res = await fetch("http://localhost:3022/api/reviews");
   const data = await res.json();
   return data.result;
 }
 
 export default async function Home() {
   const categories = await getCategories();
-  const centers = await popularCenters();
+  // const centers = await popularCenters();
   const reviews = await getReviews();
 
   return (
@@ -58,10 +58,10 @@ export default async function Home() {
         <section className="w-[98%] lg:w-[95%] xl:w-4/5 mx-auto my-10">
           <Box className="flex justify-between items-center">
             <h3 className="md:text-lg xl:text-2xl font-lora font-semibold dark:text-white">Popular Centers</h3>
-            <p className="text-sm md:text-base font-lora font-semibold dark:text-white">View All ({centers.length})</p>
+            <p className="text-sm md:text-base font-lora font-semibold dark:text-white">View All (100)</p>
           </Box>
           {/* Centers Lists */}
-          <CenterList centers={centers} />
+          {/* <CenterList centers={centers} /> */}
         </section>
 
         {/* Advertisement */}

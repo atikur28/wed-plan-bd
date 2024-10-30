@@ -8,7 +8,7 @@ const IMAGE_UPLOAD_PRESET = process.env.image_preset;
 const IMAGE_UPLOAD_FOLDER = process.env.image_folder;
 
 const Profile = () => {
-    const uploadData = { IMAGE_UPLOAD_URL, IMAGE_UPLOAD_PRESET, IMAGE_UPLOAD_FOLDER }
+    const uploadData = { IMAGE_UPLOAD_URL, IMAGE_UPLOAD_PRESET, IMAGE_UPLOAD_FOLDER };
 
     return (
         <>

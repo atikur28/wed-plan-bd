@@ -13,7 +13,6 @@ import { useEffect, useRef, useState } from "react";
 const ProfileInfo = ({ uploadData }) => {
     // States Code:
     const [profile, setProfile] = useState(null);
-    const [providerProfile, setProviderProfile] = useState(null);
     const [loading, setLoading] = useState(true);
     const [selectedImage, setSelectedImage] = useState(null);
     const [imageFile, setImageFile] = useState(null);
@@ -57,7 +56,7 @@ const ProfileInfo = ({ uploadData }) => {
     useEffect(() => {
         const fetchProfile = async () => {
             try {
-                const profileResponse = await fetch("http://localhost:3021/api/users/profile", {
+                const profileResponse = await fetch("http://localhost:3022/api/users/profile", {
                     method: "POST",
                     credentials: "include",
                 });
@@ -67,7 +66,7 @@ const ProfileInfo = ({ uploadData }) => {
 
                 if (profileData.success) {
                     // User info setup
-                    const usersResponse = await fetch("http://localhost:3021/api/users", {
+                    const usersResponse = await fetch("http://localhost:3022/api/users", {
                         method: "GET",
                         credentials: "include",
                     });
@@ -82,23 +81,6 @@ const ProfileInfo = ({ uploadData }) => {
                         }
                     } else {
                         console.log("Failed to fetch users");
-                    }
-
-                    // Provider info setup
-                    const providersResponse = await fetch("http://localhost:3021/api/providers", {
-                        method: "GET",
-                        credentials: "include",
-                    });
-                    const providerData = await providersResponse.json();
-                    if (providerData.success) {
-                        const provider = providerData.result.find((p) => p.email === email);
-                        if (provider) {
-                            setProviderProfile(provider);
-                        } else {
-                            console.log("Provider not found with this email");
-                        }
-                    } else {
-                        console.log("Failed to fetch providers");
                     }
                 } else {
                     console.log("Profile not found");
@@ -153,7 +135,7 @@ const ProfileInfo = ({ uploadData }) => {
                     status: profile.status,
                 };
 
-                const updateResponse = await fetch("http://localhost:3021/api/users/profile/update-profile", {
+                const updateResponse = await fetch("http://localhost:3022/api/users/profile/update-profile", {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
@@ -209,17 +191,6 @@ const ProfileInfo = ({ uploadData }) => {
                 setAlertType("error");
                 setAlertOpen(true);
             } else {
-                const updatedProviderData = {
-                    name: name,
-                    posts: providerProfile.posts,
-                    email: providerProfile.email,
-                    status: providerProfile.status,
-                    professionName: providerProfile.professionName,
-                    photos: providerProfile.photos,
-                    videos: providerProfile.videos,
-                    popularity: providerProfile.popularity
-                };
-
                 const updatedProfileData = {
                     name: name,
                     image: profile.image,
@@ -232,17 +203,7 @@ const ProfileInfo = ({ uploadData }) => {
                     status: profile.status,
                 };
 
-                const providerResponse = await fetch("http://localhost:3021/api/providers/update-provider", {
-                    method: "PUT",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(updatedProviderData),
-                });
-
-                const providerResult = await providerResponse.json();
-
-                const userResponse = await fetch("http://localhost:3021/api/users/profile/update-profile", {
+                const userResponse = await fetch("http://localhost:3022/api/users/profile/update-profile", {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
@@ -252,7 +213,7 @@ const ProfileInfo = ({ uploadData }) => {
 
                 const userResult = await userResponse.json();
 
-                if (providerResult.success && userResult.success) {
+                if (userResult.success) {
                     setProfile((prevProfile) => ({
                         ...prevProfile,
                         name: name,
@@ -306,7 +267,7 @@ const ProfileInfo = ({ uploadData }) => {
                     status: profile.status,
                 };
 
-                const response = await fetch("http://localhost:3021/api/users/profile/update-profile", {
+                const response = await fetch("http://localhost:3022/api/users/profile/update-profile", {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
@@ -369,7 +330,7 @@ const ProfileInfo = ({ uploadData }) => {
                     status: profile.status,
                 };
 
-                const response = await fetch("http://localhost:3021/api/users/profile/update-profile", {
+                const response = await fetch("http://localhost:3022/api/users/profile/update-profile", {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
@@ -432,7 +393,7 @@ const ProfileInfo = ({ uploadData }) => {
                     status: profile.status,
                 };
 
-                const response = await fetch("http://localhost:3021/api/users/profile/update-profile", {
+                const response = await fetch("http://localhost:3022/api/users/profile/update-profile", {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
@@ -468,7 +429,7 @@ const ProfileInfo = ({ uploadData }) => {
 
     // Others Info Adding Code:
     const handleOtherInfoOpen = () => {
-        setOthersInfoList(providerProfile?.additionalInfo || [{ property: '', info: '' }]);
+        setOthersInfoList(profile?.additionalInfo || [{ property: '', info: '' }]);
         setOthersInfoDialogOpen(true);
     };
 
@@ -510,7 +471,7 @@ const ProfileInfo = ({ uploadData }) => {
                 status: profile.status,
             };
 
-            const additionalInfoResponse = await fetch("http://localhost:3021/api/users/profile/update-profile", {
+            const additionalInfoResponse = await fetch("http://localhost:3022/api/users/profile/update-profile", {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -759,7 +720,7 @@ const ProfileInfo = ({ uploadData }) => {
                 <p className="font-lora font-medium text-center">{profile?.email}</p>
 
                 {/* Provider's profession name showing and updating in providers database */}
-                <h4 className="font-lora font-semibold text-center">{providerProfile?.professionName}</h4>
+                <h4 className="font-lora font-semibold text-center">{profile?.professionName}</h4>
 
                 {/* Provider's bio showing and updating in providers database */}
                 {profile?.bio ? (
@@ -1216,9 +1177,7 @@ const ProfileInfo = ({ uploadData }) => {
                     )}
 
                     {/* Popularity */}
-                    {providerProfile && (
-                        <p className='font-lora text-lg mb-3'><span className='font-bold'>Like:</span> {providerProfile.popularity.length} liked.</p>
-                    )}
+                    <p className='font-lora text-lg mb-3'><span className='font-bold'>Like:</span> {profile?.popularity?.length} liked.</p>
 
                     {/* Additional info */}
                     <section>

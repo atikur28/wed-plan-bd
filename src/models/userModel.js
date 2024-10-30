@@ -19,7 +19,9 @@ const userModel = new mongoose.Schema({
     bio: String,
     additionalInfo: Array,
     userCategory: String,
+    professionName: String,
     status: String,
+    popularity: Array,
     signedUp : Date,
     isVerified: {
         type: Boolean,

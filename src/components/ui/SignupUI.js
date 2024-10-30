@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const getCategories = async () => {
-    const res = await fetch("http://localhost:3021/api/categories");
+    const res = await fetch("http://localhost:3022/api/categories");
     const data = await res.json();
     return data.result;
 };
@@ -91,6 +91,9 @@ export default function SignUpForm() {
                 userStatus = "Provider"
             }
 
+            const professionFinder = await categories?.find((p) => p.pathName === userCategory);
+            const profession = await professionFinder?.name || "User";
+
             const user = {
                 name,
                 image: "",
@@ -102,25 +105,13 @@ export default function SignUpForm() {
                 additionalInfo: [],
                 status: userStatus,
                 userCategory,
+                professionName: profession,
+                popularity: [],
                 signedUp: new Date()
             };
 
-            const professionFinder = categories?.find((p) => p.pathName === userCategory);
-            const profession = professionFinder?.name;
-
-            const provider = {
-                name: name,
-                posts: [],
-                email: email,
-                status: userCategory,
-                professionName: profession,
-                photos: [],
-                videos: [],
-                popularity: []
-            }
-
             try {
-                let res = await fetch("http://localhost:3021/api/users/signup", {
+                let res = await fetch("http://localhost:3022/api/users/signup", {
                     method: "POST",
                     body: JSON.stringify(user),
                     headers: {
@@ -128,17 +119,6 @@ export default function SignUpForm() {
                     },
                 });
                 res = await res.json();
-
-                if (userCategory !== "user") {
-                    let response = await fetch("http://localhost:3021/api/providers/provider-post", {
-                        method: "POST",
-                        body: JSON.stringify(provider),
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                    });
-                    response = await response.json();
-                }
 
                 setLoading(false);
                 if (res.success) {
