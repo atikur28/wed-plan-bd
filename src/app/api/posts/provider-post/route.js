@@ -26,6 +26,8 @@ export async function POST(request) {
       price,
       location,
       availableDays,
+      booked: "Available",
+      bookedFor: 0,
       description,
       liked : [],
       ratings: {

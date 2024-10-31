@@ -35,6 +35,8 @@ const postModel = new mongoose.Schema({
         required: [true, "Please provide service's location"]
     },
     availableDays: String,
+    booked: String,
+    bookedFor: Number,
     description: {
         type: String,
         required: [true, "Please provide service's description"]
