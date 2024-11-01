@@ -25,6 +25,10 @@ const postModel = new mongoose.Schema({
         type: String,
         required: [true, "Please provide post's profession name"]
     },
+    posted: {
+        type: String,
+        required: [true, "Please provide post's pending or approved permission"]
+    },
     number: {
         type: Number,
         required: [true, "Please provide provider's number"]

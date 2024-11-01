@@ -22,6 +22,7 @@ export async function POST(request) {
       email,
       status,
       professionName,
+      posted: "Pending",
       number,
       price,
       location,
