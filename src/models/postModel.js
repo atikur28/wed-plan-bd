@@ -30,7 +30,7 @@ const postModel = new mongoose.Schema({
         required: [true, "Please provide post's pending or approved permission"]
     },
     number: {
-        type: Number,
+        type: String,
         required: [true, "Please provide provider's number"]
     },
     price: Number,
