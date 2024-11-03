@@ -45,6 +45,7 @@ const postModel = new mongoose.Schema({
         type: String,
         required: [true, "Please provide service's description"]
     },
+    days: String,
     liked: Array,
     ratings: {
         average: {

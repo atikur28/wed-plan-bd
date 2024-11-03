@@ -15,8 +15,9 @@ const AddPostForm = ({ uploadData }) => {
         price: "",
         location: "",
         availableDays: "",
-        description: "",
+        description: ""
     });
+    const [days, setDays] = useState('');
 
     // Alert Code:
     const [alertOpen, setAlertOpen] = useState(false);
@@ -137,6 +138,7 @@ const AddPostForm = ({ uploadData }) => {
                     location: formData.location,
                     availableDays: formData.availableDays,
                     description: formData.description,
+                    days: days
                 };
 
                 const updateResponse = await fetch("http://localhost:3023/api/posts/provider-post", {
@@ -517,39 +519,74 @@ const AddPostForm = ({ uploadData }) => {
                     />
                 </Box>
 
-                {/* Description */}
-                <TextField
-                    label="Description"
-                    name="description"
-                    value={formData.description}
-                    onChange={handleChange}
-                    fullWidth
-                    required
-                    multiline
-                    rows={4}
-                    variant="outlined"
-                    sx={{
-                        mb: 2,
-                        "& .MuiOutlinedInput-root": {
-                            borderRadius: "15px",
-                            borderColor: "#ccc",
-                            boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
-                            backgroundColor: "#fff",
-                            padding: "10px",
-                            "&:hover": {
-                                borderColor: "#6200ea",
+                {/* Description and Days */}
+                <Box className="flex flex-col lg:flex-row justify-between items-center lg:gap-5">
+                    <TextField
+                        label="Description"
+                        name="description"
+                        value={formData.description}
+                        onChange={handleChange}
+                        fullWidth
+                        required
+                        multiline
+                        rows={4}
+                        variant="outlined"
+                        sx={{
+                            mb: 2,
+                            "& .MuiOutlinedInput-root": {
+                                borderRadius: "15px",
+                                borderColor: "#ccc",
+                                boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+                                backgroundColor: "#fff",
+                                padding: "10px",
+                                "&:hover": {
+                                    borderColor: "#6200ea",
+                                },
+                                "&.Mui-focused": {
+                                    borderColor: "#6200ea",
+                                    boxShadow: "0px 4px 12px rgba(98, 0, 234, 0.2)",
+                                },
+                                fontFamily: "Lora, serif",
                             },
-                            "&.Mui-focused": {
-                                borderColor: "#6200ea",
-                                boxShadow: "0px 4px 12px rgba(98, 0, 234, 0.2)",
+                            "& .MuiInputLabel-root": {
+                                fontFamily: "Lora, serif",
                             },
-                            fontFamily: "Lora, serif",
-                        },
-                        "& .MuiInputLabel-root": {
-                            fontFamily: "Lora, serif",
-                        },
-                    }}
-                />
+                        }}
+                    />
+                    {user?.userCategory === "travel" && (
+                        <TextField
+                            label="Travel's day limit (e.g. 3 days)"
+                            name="days"
+                            value={days}
+                            onChange={(e) => setDays(e.target.value)}
+                            fullWidth
+                            multiline
+                            rows={4}
+                            variant="outlined"
+                            sx={{
+                                mb: 2,
+                                "& .MuiOutlinedInput-root": {
+                                    borderRadius: "15px",
+                                    borderColor: "#ccc",
+                                    boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+                                    backgroundColor: "#fff",
+                                    padding: "10px",
+                                    "&:hover": {
+                                        borderColor: "#6200ea",
+                                    },
+                                    "&.Mui-focused": {
+                                        borderColor: "#6200ea",
+                                        boxShadow: "0px 4px 12px rgba(98, 0, 234, 0.2)",
+                                    },
+                                    fontFamily: "Lora, serif",
+                                },
+                                "& .MuiInputLabel-root": {
+                                    fontFamily: "Lora, serif",
+                                },
+                            }}
+                        />
+                    )}
+                </Box>
 
                 <Button
                     type="submit"

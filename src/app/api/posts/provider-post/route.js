@@ -6,7 +6,7 @@ mongoDbConnect();
 
 export async function POST(request) {
   try {
-    const { serviceName, provider, serviceImage, email, status, professionName, number, price, location, availableDays, description } = await request.json();
+    const { serviceName, provider, serviceImage, email, status, professionName, number, price, location, availableDays, description, days } = await request.json();
 
     if (!serviceName || !provider || !serviceImage || !email || !number || !location || !description) {
       return NextResponse.json({
@@ -30,6 +30,7 @@ export async function POST(request) {
       booked: "Available",
       bookedFor: 0,
       description,
+      days: days || "",
       liked : [],
       ratings: {
         average: 0,
