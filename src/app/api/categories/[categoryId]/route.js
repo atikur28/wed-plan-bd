@@ -1,4 +1,4 @@
-import Provider from "@/models/providerModel";
+import Post from "@/models/postModel";
 import { mongoDbConnect } from "@/mongoDB/mongoDB";
 import { NextResponse } from "next/server";
 
@@ -8,13 +8,13 @@ export async function GET(request, { params }) {
     const { categoryId } = params;
 
     try {
-        const providers = await Provider.find({ status: categoryId });
+        const posts = await Post.find({ status: categoryId });
 
-        if (providers.length === 0) {
-            return NextResponse.json({ message: "No providers found for this category." }, { status: 404 });
+        if (posts.length === 0) {
+            return NextResponse.json({ message: "No posts found for this category." }, { status: 404 });
         }
 
-        return NextResponse.json({result: providers, success: true});
+        return NextResponse.json({result: posts, success: true});
     } catch (error) {
         console.error("Error fetching providers:", error);
         return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
