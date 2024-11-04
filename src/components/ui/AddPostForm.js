@@ -166,6 +166,7 @@ const AddPostForm = ({ uploadData }) => {
                         availableDays: "",
                         description: "",
                     });
+                    setDays("");
                 } else {
                     console.log("Failed to create post!");
                     setAlertMessage("Failed to create post!");
