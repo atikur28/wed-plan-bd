@@ -1,7 +1,7 @@
 "use client";
 
-import { Box, Button, TextField, Typography, CircularProgress, Grid, Card, CardContent, Snackbar, Alert } from "@mui/material";
-import { useState, useEffect } from "react";
+import { Alert, Box, Button, Card, CardContent, CircularProgress, Grid, Snackbar, TextField, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
 
 const AddPostForm = ({ uploadData }) => {
     const [user, setUser] = useState({});
@@ -36,7 +36,7 @@ const AddPostForm = ({ uploadData }) => {
         const fetchUser = async () => {
             setLoading(true);
             try {
-                const profileResponse = await fetch("http://localhost:3023/api/users/profile", {
+                const profileResponse = await fetch("http://localhost:3026/api/users/profile", {
                     method: "POST",
                     credentials: "include",
                 });
@@ -44,7 +44,7 @@ const AddPostForm = ({ uploadData }) => {
 
                 if (profileData.success) {
                     const email = profileData.result.email;
-                    const userResponse = await fetch("http://localhost:3023/api/users/get-user", {
+                    const userResponse = await fetch("http://localhost:3026/api/users/get-user", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
@@ -97,7 +97,7 @@ const AddPostForm = ({ uploadData }) => {
         imageData.append("folder", uploadData.IMAGE_UPLOAD_FOLDER);
 
         try {
-            const postsResponse = await fetch("http://localhost:3023/api/posts", {
+            const postsResponse = await fetch("http://localhost:3026/api/posts", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -141,7 +141,7 @@ const AddPostForm = ({ uploadData }) => {
                     days: days
                 };
 
-                const updateResponse = await fetch("http://localhost:3023/api/posts/provider-post", {
+                const updateResponse = await fetch("http://localhost:3026/api/posts/provider-post", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -216,7 +216,7 @@ const AddPostForm = ({ uploadData }) => {
 
                 <p className="text-sm lg:text-base text-justify text-gray-700 font-lora mb-10">
                     Welcome to the post creation page! Here, you have the opportunity to add a new service to our platform, showcasing what you have to offer to clients seeking quality wedding and event services.
-                    Providing detailed information in each section will help users find your service, understand its unique features, and make informed decisions. <br /> <br />
+                    Providing detailed information in each section will help users find your service, understand its unique features, and make informed decisions. Remember, you can&apos;t post more than 5 times. <br /> <br />
 
                     Begin by adding the name of your service, such as &quot;Elegant Floral Decorations&quot; or &quot;Professional Event Photography.&quot; Then, proceed to include your business or provider details to build trust with potential clients.
                     Don&apos;t forget to include pricing information and specify your primary location, as these factors help users filter and choose services that meet their needs. <br /> <br />

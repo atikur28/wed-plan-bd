@@ -38,7 +38,7 @@ const AddCategoryUI = ({ uploadData }) => {
         const fetchCategories = async () => {
             setLoading(true);
             try {
-                const response = await fetch("http://localhost:3023/api/categories", {
+                const response = await fetch("http://localhost:3026/api/categories", {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",
@@ -106,7 +106,7 @@ const AddCategoryUI = ({ uploadData }) => {
                     pathName: formData.pathName,
                 };
 
-                const categoryResponse = await fetch("http://localhost:3023/api/categories/add-category", {
+                const categoryResponse = await fetch("http://localhost:3026/api/categories/add-category", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(newCategory),

@@ -11,31 +11,36 @@ import Image from "next/image";
 import Link from "next/link";
 
 const getCategories = async () => {
-  const res = await fetch("http://localhost:3023/api/categories");
+  const res = await fetch("http://localhost:3026/api/categories");
   const data = await res.json();
   return data.result;
 }
 
-// const popularCenters = async () => {
-//   const res = await fetch("http://localhost:3023/api/providers");
-//   const data = await res.json();
+const popularCenters = async () => {
+  const res = await fetch("http://localhost:3026/api/posts");
+  const data = await res.json();
 
-//   const filteredData = data.result
-//     .filter((f) => f.status === "centers")
-//     .sort((a, b) => b.popularity - a.popularity);
+  if (!data.success) {
+    console.error("Failed to fetch data:", data.message);
+    return [];
+  }
 
-//   return filteredData;
-// }
+  const filteredData = data.result
+    .filter((f) => f.status === "centers")
+    .sort((a, b) => b.liked.length - a.liked.length);
+
+  return filteredData;
+};
 
 const getReviews = async () => {
-  const res = await fetch("http://localhost:3023/api/reviews");
+  const res = await fetch("http://localhost:3026/api/reviews");
   const data = await res.json();
   return data.result;
 }
 
 export default async function Home() {
   const categories = await getCategories();
-  // const centers = await popularCenters();
+  const centers = await popularCenters();
   const reviews = await getReviews();
 
   return (
@@ -61,7 +66,7 @@ export default async function Home() {
             <p className="text-sm md:text-base font-lora font-semibold dark:text-white">View All (100)</p>
           </Box>
           {/* Centers Lists */}
-          {/* <CenterList centers={centers} /> */}
+          <CenterList centers={centers} />
         </section>
 
         {/* Advertisement */}

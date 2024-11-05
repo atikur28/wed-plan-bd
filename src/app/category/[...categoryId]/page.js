@@ -4,20 +4,20 @@ import { Box, Button, Card, CardContent, CardMedia, Grid, Typography } from "@mu
 import Link from "next/link";
 
 const Category = async ({ params }) => {
-    // const res = await fetch(`http://localhost:3023/api/categories/${params.categoryId}`);
-    // const data = await res.json();
-    // const posts = data.result;
+    const res = await fetch(`http://localhost:3026/api/categories/${params.categoryId}`);
+    const data = await res.json();
+    const posts = data.result;
 
-    // const approvedPosts = posts.filter(post => post.posted === 'Approved');
+    const approvedPosts = posts.filter(post => post.posted === 'Approved');
 
-    // const categoryId = params.categoryId[0];
-    // const name = categoryId.charAt(0).toUpperCase() + categoryId.slice(1);
+    const categoryId = params.categoryId[0];
+    const name = categoryId.charAt(0).toUpperCase() + categoryId.slice(1);
 
     return (
         <>
             <Navbar />
             <Box className="mt-8 w-[90%] mx-auto mb-10 min-h-[70vh]">
-                {/* {approvedPosts.length > 0 && (<> <h2 className="text-2xl font-lora font-semibold">{name} posts:</h2> </>)}
+                 {approvedPosts.length > 0 && (<> <h2 className="text-2xl font-lora font-semibold">{name} posts:</h2> </>)}
 
                 {approvedPosts.length === 0 ? (
                     <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh', mt: 2 }}>
@@ -113,7 +113,7 @@ const Category = async ({ params }) => {
                             </Grid>
                         ))}
                     </Grid>
-                )} */}
+                )}
             </Box>
             <Footer />
         </>

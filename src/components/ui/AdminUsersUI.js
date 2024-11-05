@@ -30,7 +30,7 @@ const AdminUsersUI = () => {
         const fetchUsers = async () => {
             setLoading(true);
             try {
-                const usersResponse = await fetch("http://localhost:3023/api/users", {
+                const usersResponse = await fetch("http://localhost:3026/api/users", {
                     method: "GET",
                     credentials: "include",
                 });
@@ -95,7 +95,7 @@ const AdminUsersUI = () => {
                 userCategory: userInfo[0]?.userCategory,
                 status: "Admin",
             };
-            const userResponse = await fetch("http://localhost:3023/api/users/profile/update-profile", {
+            const userResponse = await fetch("http://localhost:3026/api/users/profile/update-profile", {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -139,7 +139,7 @@ const AdminUsersUI = () => {
             try {
                 setLoading(true);
 
-                const response = await fetch("http://localhost:3023/api/users/profile/delete-profile", {
+                const response = await fetch("http://localhost:3026/api/users/profile/delete-profile", {
                     method: "DELETE",
                     headers: {
                         "Content-Type": "application/json",
@@ -225,12 +225,21 @@ const AdminUsersUI = () => {
                                     borderColor: '#3e98f2',
                                 },
                                 '& .MuiOutlinedInput-input': {
+                                    fontFamily: 'Lora, serif',
                                     padding: '6px 6px',
+                                    '&::placeholder': {
+                                        color: 'rgba(0, 0, 0, 0.5)',
+                                        fontFamily: 'Lora, serif',
+                                    },
                                 },
                             },
                             '& .MuiInputLabel-root': {
+                                fontFamily: 'Lora, serif',
                                 top: '-4px',
                             },
+                            '& .MuiInputAdornment-root': {
+                                fontFamily: 'Lora, serif',
+                            }
                         }}
                     />
                     <Link href="/signup">

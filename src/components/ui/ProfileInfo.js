@@ -56,7 +56,7 @@ const ProfileInfo = ({ uploadData }) => {
     useEffect(() => {
         const fetchProfile = async () => {
             try {
-                const profileResponse = await fetch("http://localhost:3023/api/users/profile", {
+                const profileResponse = await fetch("http://localhost:3026/api/users/profile", {
                     method: "POST",
                     credentials: "include",
                 });
@@ -66,7 +66,7 @@ const ProfileInfo = ({ uploadData }) => {
 
                 if (profileData.success) {
                     // User info setup
-                    const usersResponse = await fetch("http://localhost:3023/api/users", {
+                    const usersResponse = await fetch("http://localhost:3026/api/users", {
                         method: "GET",
                         credentials: "include",
                     });
@@ -135,7 +135,7 @@ const ProfileInfo = ({ uploadData }) => {
                     status: profile.status,
                 };
 
-                const updateResponse = await fetch("http://localhost:3023/api/users/profile/update-profile", {
+                const updateResponse = await fetch("http://localhost:3026/api/users/profile/update-profile", {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
@@ -203,7 +203,7 @@ const ProfileInfo = ({ uploadData }) => {
                     status: profile.status,
                 };
 
-                const userResponse = await fetch("http://localhost:3023/api/users/profile/update-profile", {
+                const userResponse = await fetch("http://localhost:3026/api/users/profile/update-profile", {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
@@ -267,7 +267,7 @@ const ProfileInfo = ({ uploadData }) => {
                     status: profile.status,
                 };
 
-                const response = await fetch("http://localhost:3023/api/users/profile/update-profile", {
+                const response = await fetch("http://localhost:3026/api/users/profile/update-profile", {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
@@ -330,7 +330,7 @@ const ProfileInfo = ({ uploadData }) => {
                     status: profile.status,
                 };
 
-                const response = await fetch("http://localhost:3023/api/users/profile/update-profile", {
+                const response = await fetch("http://localhost:3026/api/users/profile/update-profile", {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
@@ -393,7 +393,7 @@ const ProfileInfo = ({ uploadData }) => {
                     status: profile.status,
                 };
 
-                const response = await fetch("http://localhost:3023/api/users/profile/update-profile", {
+                const response = await fetch("http://localhost:3026/api/users/profile/update-profile", {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
@@ -471,7 +471,7 @@ const ProfileInfo = ({ uploadData }) => {
                 status: profile.status,
             };
 
-            const additionalInfoResponse = await fetch("http://localhost:3023/api/users/profile/update-profile", {
+            const additionalInfoResponse = await fetch("http://localhost:3026/api/users/profile/update-profile", {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",

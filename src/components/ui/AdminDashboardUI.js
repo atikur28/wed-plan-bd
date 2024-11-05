@@ -1,13 +1,13 @@
 "use client";
 
-import * as React from "react";
-import { Avatar, Box, Button, CircularProgress, Divider, Grid, List, ListItem, ListItemText, Paper, Tooltip, Typography } from "@mui/material";
-import PeopleIcon from "@mui/icons-material/People";
 import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
-import { Bar, BarChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis } from "recharts";
+import PeopleIcon from "@mui/icons-material/People";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import { Avatar, Box, Button, CircularProgress, Divider, Grid, List, ListItem, ListItemText, Paper, Tooltip, Typography } from "@mui/material";
 import Link from "next/link";
+import * as React from "react";
+import { Bar, BarChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis } from "recharts";
 
 const AdminDashboardUI = () => {
     const [user, setUser] = React.useState([]);
@@ -32,7 +32,7 @@ const AdminDashboardUI = () => {
             try {
                 setLoading(true);
 
-                const profileResponse = await fetch("http://localhost:3023/api/users/profile", {
+                const profileResponse = await fetch("http://localhost:3026/api/users/profile", {
                     method: "POST",
                     credentials: "include",
                 });
@@ -41,7 +41,7 @@ const AdminDashboardUI = () => {
                 if (profileData.success) {
                     const email = profileData.result.email;
 
-                    const userResponse = await fetch("http://localhost:3023/api/users/get-user", {
+                    const userResponse = await fetch("http://localhost:3026/api/users/get-user", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
@@ -60,7 +60,7 @@ const AdminDashboardUI = () => {
                     console.log("Profile not found");
                 }
 
-                const usersResponse = await fetch("http://localhost:3023/api/users", {
+                const usersResponse = await fetch("http://localhost:3026/api/users", {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",

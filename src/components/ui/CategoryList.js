@@ -26,22 +26,41 @@ const CategoryList = ({ categories }) => {
         {currentCategories.map((category, index) => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
             <Link href={`/category/${category.pathName}`}>
-              <Card elevation={0}>
+              <Card
+                elevation={0}
+                sx={{
+                  height: '300px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'flex-start',
+                }}
+              >
                 <CardMedia
                   className="rounded-2xl"
                   component="img"
-                  height="140"
+                  height="200"
                   image={category.image}
                   alt={category.name}
+                  style={{
+                    objectFit: 'cover',
+                    transition: "all 0.3s ease-in-out",
+                  }}
+                  sx={{
+                    "&:hover": {
+                      boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.15)",
+                      transform: "scale(1.02)",
+                    },
+                  }}
                 />
+                <h4 className="xl:text-xl font-lora font-semibold dark:text-white mt-2">
+                  {category.name}
+                </h4>
               </Card>
-              <h4 className="xl:text-xl font-lora font-semibold mt-2 dark:text-white" component="div">
-                {category.name}
-              </h4>
             </Link>
           </Grid>
         ))}
       </Grid>
+
 
       <Box display="flex" justifyContent="center" mt={4}>
         <Pagination

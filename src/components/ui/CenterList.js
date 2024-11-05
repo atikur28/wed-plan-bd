@@ -26,21 +26,24 @@ const CenterList = ({ centers }) => {
                 {currentCenters.map((center, index) => (
                     <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
                         <Link href={center._id}>
-                            <Card elevation={0}>
+                            <Card elevation={0} style={{ height: '300px' }}>
                                 <CardMedia
                                     className="rounded-2xl"
                                     component="img"
-                                    height="140"
-                                    image={center.professionImage}
-                                    alt={center.professionName}
+                                    height="150"
+                                    image={center.serviceImage}
+                                    alt={center.serviceImage}
+                                    style={{ objectFit: 'cover', height: '200px' }}
                                 />
+                                <div style={{ padding: '16px' }}>
+                                    <h4 className="xl:text-xl font-lora font-semibold mt-2 dark:text-white">
+                                        {center.serviceName}
+                                    </h4>
+                                    <p className="text-sm font-lora font-semibold mt-1 text-gray-500 dark:text-white">
+                                        {center.location}
+                                    </p>
+                                </div>
                             </Card>
-                            <h4 className="xl:text-xl font-lora font-semibold mt-2 dark:text-white" component="div">
-                                {center.professionName}
-                            </h4>
-                            <p className="text-sm font-lora font-semibold mt-1 text-gray-500 dark:text-white">
-                                {center.address}
-                            </p>
                         </Link>
                     </Grid>
                 ))}
