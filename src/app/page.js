@@ -63,7 +63,7 @@ export default async function Home() {
         <section className="w-[98%] lg:w-[95%] xl:w-4/5 mx-auto my-10">
           <Box className="flex justify-between items-center">
             <h3 className="md:text-lg xl:text-2xl font-lora font-semibold">Popular Centers</h3>
-            <p className="text-sm md:text-base font-lora font-semibold">View All (100)</p>
+            <p className="text-sm md:text-base font-lora font-semibold">View All ({centers.length})</p>
           </Box>
           {/* Centers Lists */}
           <CenterList centers={centers} />
