@@ -167,7 +167,7 @@ const AdminUsersUI = () => {
                 setAlertType("error");
                 setAlertOpen(true);
             } finally {
-                setConfirmDeleteDialogOpen(false);
+                handleDeleteDialogClose();
                 setLoading(false);
             }
         }

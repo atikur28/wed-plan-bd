@@ -1,7 +1,7 @@
 "use client";
 
 import SearchIcon from "@mui/icons-material/Search";
-import { Alert, Box, Button, Card, CardContent, CardMedia, CircularProgress, Grid, InputAdornment, Snackbar, TextField, Typography } from "@mui/material";
+import { Alert, Box, Button, Card, CardContent, CardMedia, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, InputAdornment, Snackbar, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
 const AdminEventsUI = () => {
@@ -13,6 +13,8 @@ const AdminEventsUI = () => {
     const [alertOpen, setAlertOpen] = useState(false);
     const [alertMessage, setAlertMessage] = useState("");
     const [alertType, setAlertType] = useState("success");
+    const [confirmDeleteDialogOpen, setConfirmDeleteDialogOpen] = useState(false);
+    const [selectedPostId, setSelectedPostId] = useState(null);
 
     useEffect(() => {
         const getEvents = async () => {
@@ -38,6 +40,18 @@ const AdminEventsUI = () => {
         setAlertOpen(false);
     };
 
+    const handleSearchChange = (event) => {
+        setSearchQuery(event.target.value);
+    };
+
+    // Filter events based on the search query
+    const filteredEvents = allEvents.filter((event) => {
+        const serviceNameMatch = event.serviceName.toLowerCase().includes(searchQuery.toLowerCase());
+        const postedMatch = event.posted.toLowerCase().includes(searchQuery.toLowerCase());
+        return serviceNameMatch || postedMatch;
+    });
+
+    // Post's Approval code:
     const handleApproval = async (data) => {
         try {
             setLoading(true);
@@ -97,16 +111,53 @@ const AdminEventsUI = () => {
         }
     };
 
-    const handleSearchChange = (event) => {
-        setSearchQuery(event.target.value);
+    // Delete Posts code:
+    const handleDeleteDialogOpen = (postId) => {
+        setSelectedPostId(postId);
+        setConfirmDeleteDialogOpen(true);
     };
 
-    // Filter events based on the search query
-    const filteredEvents = allEvents.filter((event) => {
-        const serviceNameMatch = event.serviceName.toLowerCase().includes(searchQuery.toLowerCase());
-        const postedMatch = event.posted.toLowerCase().includes(searchQuery.toLowerCase());
-        return serviceNameMatch || postedMatch;
-    });
+    const handleDeleteDialogClose = () => {
+        setConfirmDeleteDialogOpen(false);
+        setSelectedPostId(null);
+    };
+
+    const handlePostDelete = async () => {
+        if(selectedPostId) {
+            try {
+                setLoading(true);
+                const response = await fetch("http://localhost:3026/api/posts/delete-post", {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ postId: selectedPostId })
+                });
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    setAlertMessage("Post deleted successfully!");
+                    setAlertType("success");
+                    setAlertOpen(true);
+
+                    setAllEvents((prevPosts) => prevPosts.filter((post) => post._id !== selectedPostId));
+                } else {
+                    console.error("Failed to delete user:", result.message);
+                    setAlertMessage("Failed to delete user!");
+                    setAlertType("error");
+                    setAlertOpen(true);
+                }
+            } catch (error) {
+                console.error("Error deleting post:", error);
+                setAlertMessage("Failed to delete post!");
+                setAlertType("error");
+                setAlertOpen(true);
+            } finally {
+                handleDeleteDialogClose();
+                setLoading(false);
+            }
+        }
+    }
 
     // Render loading state or user information
     if (loading) {
@@ -140,8 +191,8 @@ const AdminEventsUI = () => {
                             </InputAdornment>
                         ),
                     }}
-                    value={searchQuery} // Set the value from searchQuery
-                    onChange={handleSearchChange} // Handle input change
+                    value={searchQuery}
+                    onChange={handleSearchChange}
                     sx={{
                         '& .MuiOutlinedInput-root': {
                             '& fieldset': {
@@ -255,17 +306,7 @@ const AdminEventsUI = () => {
                                     Available Days: <span style={{ fontWeight: "bold" }}>{event.availableDays}</span>
                                 </Typography>
                                 <Box mt={2} className="flex gap-2">
-                                    <Button variant="contained" color="primary" size="small" sx={{
-                                        backgroundColor: '#0033cc',
-                                        color: '#ffffff',
-                                        fontFamily: 'Lora, serif',
-                                        '&:hover': {
-                                            backgroundColor: '#002699',
-                                        },
-                                    }}>
-                                        Details
-                                    </Button>
-                                    <Button variant="outlined" color="error" size="small" sx={{ fontFamily: 'Lora, serif' }}>
+                                    <Button variant="outlined" color="error" size="small" sx={{ fontFamily: 'Lora, serif' }} onClick={() => handleDeleteDialogOpen(event._id)}>
                                         Delete
                                     </Button>
                                 </Box>
@@ -280,6 +321,23 @@ const AdminEventsUI = () => {
                     {alertMessage}
                 </Alert>
             </Snackbar>
+
+            <Dialog open={confirmDeleteDialogOpen} onClose={handleDeleteDialogClose}>
+                <DialogTitle sx={{ fontFamily: "Lora, serif" }}>Confirm Deletion</DialogTitle>
+                <DialogContent>
+                    <DialogContentText sx={{ fontFamily: "Lora, serif" }}>
+                        Are you sure you want to delete this post? This action is irreversible.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleDeleteDialogClose} color="primary" sx={{ fontFamily: "Lora, serif" }}>
+                        Cancel
+                    </Button>
+                    <Button onClick={handlePostDelete} color="error" sx={{ fontFamily: "Lora, serif" }}>
+                        Delete
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </Box>
     );
 };
