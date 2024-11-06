@@ -33,7 +33,13 @@ const CenterList = ({ centers }) => {
                                     height="150"
                                     image={center.serviceImage}
                                     alt={center.serviceImage}
-                                    style={{ objectFit: 'cover', height: '200px' }}
+                                    style={{ objectFit: 'cover', transition: "all 0.3s ease-in-out", height: '200px' }}
+                                    sx={{
+                                        "&:hover": {
+                                          boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.15)",
+                                          transform: "scale(1.03)",
+                                        },
+                                      }}
                                 />
                                 <div style={{ padding: '16px' }}>
                                     <h4 className="xl:text-xl font-lora font-semibold mt-2 dark:text-white">

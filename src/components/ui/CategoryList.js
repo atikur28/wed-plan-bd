@@ -48,7 +48,7 @@ const CategoryList = ({ categories }) => {
                   sx={{
                     "&:hover": {
                       boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.15)",
-                      transform: "scale(1.02)",
+                      transform: "scale(1.03)",
                     },
                   }}
                 />
