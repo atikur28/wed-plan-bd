@@ -21,7 +21,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${lora.variable} ${gupter.variable} dark:bg-medium max-w-[2560px] mx-auto`}>
+      <body className={`${lora.variable} ${gupter.variable} max-w-[2560px] mx-auto`}>
         <section className="min-h-[70vh]">
           {children}
         </section>

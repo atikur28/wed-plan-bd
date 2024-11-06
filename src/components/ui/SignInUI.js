@@ -90,7 +90,7 @@ export default function SignInForm() {
         <Box className="flex flex-col items-center justify-center px-4 py-8 sm:px-6 lg:px-8">
             <Box className="max-w-md w-full px-8 pt-8 border-l border-t rounded-md">
                 <h3
-                    className="text-2xl dark:text-white font-lora font-bold mb-6"
+                    className="text-2xl font-lora font-bold mb-6"
                 >
                     {loading ? "Processing" : "Sign In"}
                 </h3>
@@ -111,7 +111,7 @@ export default function SignInForm() {
                         InputProps={{
                             startAdornment: (
                                 <InputAdornment position="start">
-                                    <EmailIcon className="dark:text-white" />
+                                    <EmailIcon className="" />
                                 </InputAdornment>
                             ),
                             sx: {
@@ -124,7 +124,7 @@ export default function SignInForm() {
                                     color: 'white',
                                 },
                             },
-                            className: 'dark:text-white',
+                            className: '',
                         }}
                         InputLabelProps={{
                             sx: {
@@ -134,7 +134,7 @@ export default function SignInForm() {
                                     color: 'black',
                                 },
                             },
-                            className: 'dark:text-white',
+                            className: '',
                         }}
                     />
 
@@ -154,7 +154,7 @@ export default function SignInForm() {
                         InputProps={{
                             startAdornment: (
                                 <InputAdornment position="start">
-                                    <LockIcon className="dark:text-white" />
+                                    <LockIcon className="" />
                                 </InputAdornment>
                             ),
                             endAdornment: (
@@ -164,7 +164,7 @@ export default function SignInForm() {
                                         onClick={handleClickShowPassword}
                                         edge="end"
                                     >
-                                        {showPassword ? <VisibilityOff className="dark:text-white" /> : <Visibility className="dark:text-white" />}
+                                        {showPassword ? <VisibilityOff className="" /> : <Visibility className="" />}
                                     </IconButton>
                                 </InputAdornment>
                             ),
@@ -178,7 +178,7 @@ export default function SignInForm() {
                                     color: 'white',
                                 },
                             },
-                            className: 'dark:text-white',
+                            className: '',
                         }}
                         InputLabelProps={{
                             sx: {
@@ -188,7 +188,7 @@ export default function SignInForm() {
                                     color: 'black',
                                 },
                             },
-                            className: 'dark:text-white',
+                            className: '',
                         }}
                     />
 

@@ -27,9 +27,8 @@ import { styled, useTheme } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import axios from 'axios';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import * as React from 'react';
-import ThemeToggle from '../ui/ThemeToggle';
 
 const drawerWidth = 240;
 
@@ -108,6 +107,7 @@ export default function Navbar() {
   const [snackbarMessage, setSnackbarMessage] = React.useState('');
   const [isAdmin, setIsAdmin] = React.useState(null);
   const pathName = usePathname();
+  const router = useRouter();
 
   const checkAuth = async () => {
     try {
@@ -147,6 +147,7 @@ export default function Navbar() {
       setSnackbarMessage("Successfully Signed Out");
       setSnackbarOpen(true);
       setIsLoggedIn(false);
+      router.push("/");
     } catch (error) {
       setSnackbarMessage(error.message);
       setSnackbarOpen(true);
@@ -181,24 +182,23 @@ export default function Navbar() {
     <>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
-        <AppBar className="fixed 3xl:static bg-white dark:bg-dark pt-3" open={open}>
+        <AppBar className="fixed 3xl:static bg-white pt-3" open={open}>
           <Box className="flex justify-end items-center gap-2 md:gap-8 mr-5 lg:mr-8">
-            <ThemeToggle />
             {
               !isLoggedIn ? (
                 <>
-                  <Link href="/signin" className={`text-[12px] md:text-base text-black dark:text-white dark:hover:text-black font-lora font-medium px-2 md:px-10 py-1.5 border rounded-sm ${isActive("/signin") ? `font-semibold bg-[#e1e1e1]` : `hover:bg-[#e1e1e1]`}`}>SIGN IN</Link>
-                  <Link href="/signup" className={`text-[12px] md:text-base text-black dark:text-white dark:hover:text-black font-lora font-medium px-2 md:px-10 py-1.5 hover:bg-[#e1e1e1] border rounded-sm ${isActive("/signup") ? `font-semibold bg-[#e1e1e1] border rounded-sm` : ``}`}>SIGNUP</Link>
+                  <Link href="/signin" className={`text-[12px] md:text-base text-black font-lora font-medium px-2 md:px-10 py-1.5 border rounded-sm ${isActive("/signin") ? `font-semibold bg-[#e1e1e1]` : `hover:bg-[#e1e1e1]`}`}>SIGN IN</Link>
+                  <Link href="/signup" className={`text-[12px] md:text-base text-black font-lora font-medium px-2 md:px-10 py-1.5 hover:bg-[#e1e1e1] border rounded-sm ${isActive("/signup") ? `font-semibold bg-[#e1e1e1] border rounded-sm` : ``}`}>SIGNUP</Link>
                 </>
               ) : (
-                <p onClick={signout} className={`text-[12px] md:text-base text-black dark:text-white dark:hover:text-black font-lora font-medium px-2 md:px-10 py-1.5 border hover:cursor-pointer rounded-sm ${isActive("/signout") ? `font-semibold bg-[#e1e1e1]` : `hover:bg-[#e1e1e1]`}`}>SIGN OUT</p>
+                <p onClick={signout} className={`text-[12px] md:text-base text-black font-lora font-medium px-2 md:px-10 py-1.5 border hover:cursor-pointer rounded-sm ${isActive("/signout") ? `font-semibold bg-[#e1e1e1]` : `hover:bg-[#e1e1e1]`}`}>SIGN OUT</p>
               )
             }
           </Box>
           <Box className="flex items-center justify-between">
             <Toolbar>
               <IconButton
-                className="text-black dark:text-white lg:hidden"
+                className="text-black lg:hidden"
                 title="Open menu"
                 aria-label="open drawer"
                 onClick={handleDrawerOpen}
@@ -212,14 +212,14 @@ export default function Navbar() {
               >
                 <MenuIcon className="md:text-3xl" />
               </IconButton>
-              <h3 className="text-xl 2xl:text-2xl font-bold font-lora text-black dark:text-white" component="div">
+              <h3 className="text-xl 2xl:text-2xl font-bold font-lora text-black" component="div">
                 <Link href="/">WedPlan BD</Link>
               </h3>
             </Toolbar>
             <Box className="flex justify-end items-center">
               <section className="hidden xl:flex items-center justify-end">
                 {menus.map((menu) => (
-                  <Link href={menu.pathName} key={menu.route} className={`font-lora font-medium mr-10 dark:text-white rounded px-2 ${isActive(menu.pathName) ? `font-semibold text-black border-b-2 border-black` : `text-[#6f6f6f] hover:border-b-2 hover:border-black`}`}>
+                  <Link href={menu.pathName} key={menu.route} className={`font-lora font-medium mr-10 rounded px-2 ${isActive(menu.pathName) ? `font-semibold text-black border-b-2 border-black` : `text-[#6f6f6f] hover:border-b-2 hover:border-black`}`}>
                     {menu.route}
                   </Link>
                 ))}
@@ -235,7 +235,7 @@ export default function Navbar() {
                     onClick={handleMenu}
                     color="inherit"
                   >
-                    <AccountCircle className="text-black dark:text-white text-4xl" />
+                    <AccountCircle className="text-black text-4xl" />
                   </IconButton>
                   <Menu
                     id="menu-appbar"

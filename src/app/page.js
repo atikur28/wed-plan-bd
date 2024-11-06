@@ -52,8 +52,8 @@ export default async function Home() {
         {/* Browse By Category */}
         <section className="w-[98%] lg:w-[95%] xl:w-4/5 mx-auto my-10">
           <Box className="flex justify-between items-center">
-            <h3 className="md:text-lg xl:text-2xl font-lora font-semibold dark:text-white">Browse By Category</h3>
-            <p className="text-sm md:text-base font-lora font-semibold dark:text-white">View All ({categories.length})</p>
+            <h3 className="md:text-lg xl:text-2xl font-lora font-semibold">Browse By Category</h3>
+            <p className="text-sm md:text-base font-lora font-semibold">View All ({categories.length})</p>
           </Box>
           {/* Category Lists */}
           <CategoryList categories={categories} />
@@ -62,8 +62,8 @@ export default async function Home() {
         {/* Popular Centers */}
         <section className="w-[98%] lg:w-[95%] xl:w-4/5 mx-auto my-10">
           <Box className="flex justify-between items-center">
-            <h3 className="md:text-lg xl:text-2xl font-lora font-semibold dark:text-white">Popular Centers</h3>
-            <p className="text-sm md:text-base font-lora font-semibold dark:text-white">View All (100)</p>
+            <h3 className="md:text-lg xl:text-2xl font-lora font-semibold">Popular Centers</h3>
+            <p className="text-sm md:text-base font-lora font-semibold">View All (100)</p>
           </Box>
           {/* Centers Lists */}
           <CenterList centers={centers} />
@@ -104,14 +104,14 @@ export default async function Home() {
 
         {/* Reviews */}
         <section className="w-[98%] lg:w-[95%] xl:w-4/5 mx-auto my-16">
-          <h3 className="md:text-lg xl:text-2xl font-lora font-semibold dark:text-white">Reviews</h3>
+          <h3 className="md:text-lg xl:text-2xl font-lora font-semibold">Reviews</h3>
 
           {/* Slider */}
           <ReviewSlider reviews={reviews} />
         </section>
 
-        <Footer />
       </main>
+      <Footer />
     </>
   );
 }

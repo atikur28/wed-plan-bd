@@ -42,10 +42,10 @@ const CenterList = ({ centers }) => {
                                       }}
                                 />
                                 <div style={{ padding: '16px' }}>
-                                    <h4 className="xl:text-xl font-lora font-semibold mt-2 dark:text-white">
+                                    <h4 className="xl:text-xl font-lora font-semibold mt-2">
                                         {center.serviceName}
                                     </h4>
-                                    <p className="text-sm font-lora font-semibold mt-1 text-gray-500 dark:text-white">
+                                    <p className="text-sm font-lora font-semibold mt-1 text-gray-500">
                                         {center.location}
                                     </p>
                                 </div>

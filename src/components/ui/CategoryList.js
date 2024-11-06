@@ -52,7 +52,7 @@ const CategoryList = ({ categories }) => {
                     },
                   }}
                 />
-                <h4 className="xl:text-xl font-lora font-semibold dark:text-white mt-2">
+                <h4 className="xl:text-xl font-lora font-semibold mt-2">
                   {category.name}
                 </h4>
               </Card>

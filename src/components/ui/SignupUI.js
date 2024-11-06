@@ -159,7 +159,7 @@ export default function SignUpForm() {
         <Box className="flex flex-col items-center justify-center px-4 py-8 sm:px-6 lg:px-8">
             <Box className="max-w-md w-full px-8 pt-8 border-l border-t rounded-md">
                 <h3
-                    className="text-2xl dark:text-white font-lora font-bold mb-6"
+                    className="text-2xl font-lora font-bold mb-6"
                 >
                     {loading ? "Processing" : "Sign Up"}
                 </h3>
@@ -178,7 +178,7 @@ export default function SignUpForm() {
                         InputProps={{
                             startAdornment: (
                                 <InputAdornment position="start">
-                                    <AccountCircleIcon className="dark:text-white" />
+                                    <AccountCircleIcon className="" />
                                 </InputAdornment>
                             ),
                             sx: {
@@ -191,7 +191,7 @@ export default function SignUpForm() {
                                     color: "white",
                                 },
                             },
-                            className: "dark:text-white",
+                            className: "",
                         }}
                         InputLabelProps={{
                             sx: {
@@ -201,7 +201,7 @@ export default function SignUpForm() {
                                     color: "black",
                                 },
                             },
-                            className: "dark:text-white",
+                            className: "",
                         }}
                     />
 
@@ -219,7 +219,7 @@ export default function SignUpForm() {
                         InputProps={{
                             startAdornment: (
                                 <InputAdornment position="start">
-                                    <CategoryIcon className="dark:text-white" />
+                                    <CategoryIcon className="" />
                                 </InputAdornment>
                             ),
                             sx: {
@@ -232,7 +232,7 @@ export default function SignUpForm() {
                                     color: "white",
                                 },
                             },
-                            className: "dark:text-white",
+                            className: "",
                         }}
                         InputLabelProps={{
                             sx: {
@@ -242,7 +242,7 @@ export default function SignUpForm() {
                                     color: "black",
                                 },
                             },
-                            className: "dark:text-white",
+                            className: "",
                         }}
                     >
                         <MenuItem value="user">
@@ -273,7 +273,7 @@ export default function SignUpForm() {
                         InputProps={{
                             startAdornment: (
                                 <InputAdornment position="start">
-                                    <EmailIcon className="dark:text-white" />
+                                    <EmailIcon className="" />
                                 </InputAdornment>
                             ),
                             sx: {
@@ -286,7 +286,7 @@ export default function SignUpForm() {
                                     color: "white",
                                 },
                             },
-                            className: "dark:text-white",
+                            className: "",
                         }}
                         InputLabelProps={{
                             sx: {
@@ -296,7 +296,7 @@ export default function SignUpForm() {
                                     color: "black",
                                 },
                             },
-                            className: "dark:text-white",
+                            className: "",
                         }}
                     />
 
@@ -316,14 +316,14 @@ export default function SignUpForm() {
                         InputProps={{
                             startAdornment: (
                                 <InputAdornment position="start">
-                                    <LockIcon className="dark:text-white" />
+                                    <LockIcon className="" />
                                 </InputAdornment>
                             ),
                             endAdornment: (
                                 <InputAdornment position="end">
                                     <IconButton
                                         onClick={handleClickShowPassword}
-                                        className="dark:text-white"
+                                        className=""
                                     >
                                         {showPassword ? <Visibility /> : <VisibilityOff />}
                                     </IconButton>
@@ -339,7 +339,7 @@ export default function SignUpForm() {
                                     color: "white",
                                 },
                             },
-                            className: "dark:text-white",
+                            className: "",
                         }}
                         InputLabelProps={{
                             sx: {
@@ -349,7 +349,7 @@ export default function SignUpForm() {
                                     color: "black",
                                 },
                             },
-                            className: "dark:text-white",
+                            className: "",
                         }}
                     />
 
@@ -369,14 +369,14 @@ export default function SignUpForm() {
                         InputProps={{
                             startAdornment: (
                                 <InputAdornment position="start">
-                                    <LockIcon className="dark:text-white" />
+                                    <LockIcon className="" />
                                 </InputAdornment>
                             ),
                             endAdornment: (
                                 <InputAdornment position="end">
                                     <IconButton
                                         onClick={handleClickShowPassword}
-                                        className="dark:text-white"
+                                        className=""
                                     >
                                         {showPassword ? <Visibility /> : <VisibilityOff />}
                                     </IconButton>
@@ -392,7 +392,7 @@ export default function SignUpForm() {
                                     color: "white",
                                 },
                             },
-                            className: "dark:text-white",
+                            className: "",
                         }}
                         InputLabelProps={{
                             sx: {
@@ -402,7 +402,7 @@ export default function SignUpForm() {
                                     color: "black",
                                 },
                             },
-                            className: "dark:text-white",
+                            className: "",
                         }}
                     />
 

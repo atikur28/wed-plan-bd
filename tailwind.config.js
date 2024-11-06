@@ -17,10 +17,6 @@ module.exports = {
         lora: ["var(--font-lora)"],
         gupter: ["var(--font-gupter)"],
       },
-      colors: {
-        "dark": "#232A3C",
-        "medium": "#293245"
-      },
       screens: {
         '3xl': '2560px',
       },
