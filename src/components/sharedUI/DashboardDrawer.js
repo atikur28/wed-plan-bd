@@ -67,7 +67,7 @@ const DashboardDrawer = () => {
     React.useEffect(() => {
         const fetchUserEmailAndStatus = async () => {
             try {
-                const profileResponse = await fetch("http://localhost:3026/api/users/profile", {
+                const profileResponse = await fetch("http://localhost:3034/api/users/profile", {
                     method: "POST",
                     credentials: "include",
                 });
@@ -76,7 +76,7 @@ const DashboardDrawer = () => {
                 if (profileData.success) {
                     const email = profileData?.result?.email;
 
-                    const usersResponse = await fetch("http://localhost:3026/api/users", {
+                    const usersResponse = await fetch("http://localhost:3034/api/users", {
                         method: "GET",
                         credentials: "include",
                     });

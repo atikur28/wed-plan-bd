@@ -14,7 +14,8 @@ const reviewModel = new mongoose.Schema({
         type: String,
         required: [true, "Please provide reviewer's review"]
     },
-    recommendation: String
+    recommendation: String,
+    recommendationPost: String,
 });
 
 const Review = mongoose.models.reviews || mongoose.model("reviews", reviewModel);

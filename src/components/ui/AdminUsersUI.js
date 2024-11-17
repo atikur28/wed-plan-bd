@@ -30,7 +30,7 @@ const AdminUsersUI = () => {
         const fetchUsers = async () => {
             setLoading(true);
             try {
-                const usersResponse = await fetch("http://localhost:3026/api/users", {
+                const usersResponse = await fetch("http://localhost:3034/api/users", {
                     method: "GET",
                     credentials: "include",
                 });
@@ -95,7 +95,7 @@ const AdminUsersUI = () => {
                 userCategory: userInfo[0]?.userCategory,
                 status: "Admin",
             };
-            const userResponse = await fetch("http://localhost:3026/api/users/profile/update-profile", {
+            const userResponse = await fetch("http://localhost:3034/api/users/profile/update-profile", {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -139,7 +139,7 @@ const AdminUsersUI = () => {
             try {
                 setLoading(true);
 
-                const response = await fetch("http://localhost:3026/api/users/profile/delete-profile", {
+                const response = await fetch("http://localhost:3034/api/users/profile/delete-profile", {
                     method: "DELETE",
                     headers: {
                         "Content-Type": "application/json",

@@ -36,7 +36,7 @@ const AddPostForm = ({ uploadData }) => {
         const fetchUser = async () => {
             setLoading(true);
             try {
-                const profileResponse = await fetch("http://localhost:3026/api/users/profile", {
+                const profileResponse = await fetch("http://localhost:3034/api/users/profile", {
                     method: "POST",
                     credentials: "include",
                 });
@@ -44,7 +44,7 @@ const AddPostForm = ({ uploadData }) => {
 
                 if (profileData.success) {
                     const email = profileData.result.email;
-                    const userResponse = await fetch("http://localhost:3026/api/users/get-user", {
+                    const userResponse = await fetch("http://localhost:3034/api/users/get-user", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
@@ -97,7 +97,7 @@ const AddPostForm = ({ uploadData }) => {
         imageData.append("folder", uploadData.IMAGE_UPLOAD_FOLDER);
 
         try {
-            const postsResponse = await fetch("http://localhost:3026/api/posts", {
+            const postsResponse = await fetch("http://localhost:3034/api/posts", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -141,7 +141,7 @@ const AddPostForm = ({ uploadData }) => {
                     days: days
                 };
 
-                const updateResponse = await fetch("http://localhost:3026/api/posts/provider-post", {
+                const updateResponse = await fetch("http://localhost:3034/api/posts/provider-post", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -554,39 +554,37 @@ const AddPostForm = ({ uploadData }) => {
                             },
                         }}
                     />
-                    {user?.userCategory === "travel" && (
-                        <TextField
-                            label="Travel's day limit (e.g. 3 days)"
-                            name="days"
-                            value={days}
-                            onChange={(e) => setDays(e.target.value)}
-                            fullWidth
-                            multiline
-                            rows={4}
-                            variant="outlined"
-                            sx={{
-                                mb: 2,
-                                "& .MuiOutlinedInput-root": {
-                                    borderRadius: "15px",
-                                    borderColor: "#ccc",
-                                    boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
-                                    backgroundColor: "#fff",
-                                    padding: "10px",
-                                    "&:hover": {
-                                        borderColor: "#6200ea",
-                                    },
-                                    "&.Mui-focused": {
-                                        borderColor: "#6200ea",
-                                        boxShadow: "0px 4px 12px rgba(98, 0, 234, 0.2)",
-                                    },
-                                    fontFamily: "Lora, serif",
+                    <TextField
+                        label="Day limit (e.g. 3 days)"
+                        name="days"
+                        value={days}
+                        onChange={(e) => setDays(e.target.value)}
+                        fullWidth
+                        multiline
+                        rows={4}
+                        variant="outlined"
+                        sx={{
+                            mb: 2,
+                            "& .MuiOutlinedInput-root": {
+                                borderRadius: "15px",
+                                borderColor: "#ccc",
+                                boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+                                backgroundColor: "#fff",
+                                padding: "10px",
+                                "&:hover": {
+                                    borderColor: "#6200ea",
                                 },
-                                "& .MuiInputLabel-root": {
-                                    fontFamily: "Lora, serif",
+                                "&.Mui-focused": {
+                                    borderColor: "#6200ea",
+                                    boxShadow: "0px 4px 12px rgba(98, 0, 234, 0.2)",
                                 },
-                            }}
-                        />
-                    )}
+                                fontFamily: "Lora, serif",
+                            },
+                            "& .MuiInputLabel-root": {
+                                fontFamily: "Lora, serif",
+                            },
+                        }}
+                    />
                 </Box>
 
                 <Button

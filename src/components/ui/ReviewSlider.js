@@ -53,7 +53,7 @@ const ReviewSlider = ({ reviews }) => {
               Booked: {reviews[getPreviousIndex(activeIndex)].recommendation}
             </p>
             <p className="text-sm font-lora font-semibold text-gray-500 mt-2 block">
-              Recommended to try: {reviews[getPreviousIndex(activeIndex)].recommendPerson}
+              Recommended to try: {reviews[getPreviousIndex(activeIndex)].recommendationPost}
             </p>
           </CardContent>
         </Card>
@@ -86,7 +86,7 @@ const ReviewSlider = ({ reviews }) => {
               Booked: {reviews[activeIndex].recommendation}
             </p>
             <p className="font-lora font-semibold text-gray-500 mt-2 block">
-              Recommended to try: {reviews[activeIndex].recommendPerson}
+              Recommended to try: {reviews[activeIndex].recommendationPost}
             </p>
 
             {/* Navigation Buttons for Mobile */}
@@ -131,7 +131,7 @@ const ReviewSlider = ({ reviews }) => {
               Booked: {reviews[getNextIndex(activeIndex)].recommendation}
             </p>
             <p className="text-sm font-lora font-semibold text-gray-500 mt-2 block">
-              Recommended to try: {reviews[getNextIndex(activeIndex)].recommendPerson}
+              Recommended to try: {reviews[getNextIndex(activeIndex)].recommendationPost}
             </p>
           </CardContent>
         </Card>

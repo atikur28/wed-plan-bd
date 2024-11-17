@@ -20,7 +20,7 @@ const AdminEventsUI = () => {
         const getEvents = async () => {
             try {
                 setLoading(true);
-                const res = await fetch("http://localhost:3026/api/posts");
+                const res = await fetch("http://localhost:3034/api/posts");
                 const data = await res.json();
                 if (data.success) {
                     setAllEvents(data.result);
@@ -78,7 +78,7 @@ const AdminEventsUI = () => {
                 review: data.review
             };
 
-            const response = await fetch("http://localhost:3026/api/posts/update-post", {
+            const response = await fetch("http://localhost:3034/api/posts/update-post", {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json',
@@ -126,7 +126,7 @@ const AdminEventsUI = () => {
         if(selectedPostId) {
             try {
                 setLoading(true);
-                const response = await fetch("http://localhost:3026/api/posts/delete-post", {
+                const response = await fetch("http://localhost:3034/api/posts/delete-post", {
                     method: "DELETE",
                     headers: {
                         "Content-Type": "application/json",
