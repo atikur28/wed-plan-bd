@@ -1,13 +1,19 @@
 "use client"
 
 import { ThumbUp as ThumbUpIcon } from "@mui/icons-material";
-import { Alert, Box, Button, Card, CardContent, CardMedia, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton, Rating, Snackbar, TextField, Typography } from "@mui/material";
+import SearchIcon from '@mui/icons-material/Search';
+import { Alert, Box, Button, Card, CardContent, CardMedia, CircularProgress, Container, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton, Rating, Snackbar, TextField, Typography, InputAdornment } from "@mui/material";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import CategoryPostBanner from "@/assets/category-post/category-post-banner.png";
+import Categories from "@/assets/category-post/3.png";
+import Image from "next/image";
 
 const CategoryPostUI = ({ params }) => {
     const [user, setUser] = useState(null);
     const [approvedPosts, setApprovedPosts] = useState([]);
+    const [location, setLocation] = useState('');
+    const [filteredPosts, setFilteredPosts] = useState(approvedPosts);
     const [open, setOpen] = useState(false);
     const [selectedPost, setSelectedPost] = useState(null);
     const [review, setReview] = useState("");
@@ -51,6 +57,21 @@ const CategoryPostUI = ({ params }) => {
 
     const categoryId = params.categoryId[0];
     const name = categoryId.charAt(0).toUpperCase() + categoryId.slice(1);
+
+    useEffect(() => {
+        if (location) {
+            const filtered = approvedPosts.filter((post) =>
+                post.location.toLowerCase().includes(location.toLowerCase())
+            );
+            setFilteredPosts(filtered);
+        } else {
+            setFilteredPosts(approvedPosts);
+        }
+    }, [location, approvedPosts]);
+
+    const handleChange = (e) => {
+        setLocation(e.target.value);
+    };
 
     // Alert Code:
     const handleCloseAlert = (event, reason) => {
@@ -143,7 +164,7 @@ const CategoryPostUI = ({ params }) => {
             }
         } catch (error) {
             console.log(error.message);
-            setAlertMessage("Error liking the post: " + error.message);
+            setAlertMessage("Error liking the post!");
             setAlertType("error");
             setAlertOpen(true);
         }
@@ -224,9 +245,129 @@ const CategoryPostUI = ({ params }) => {
 
     return (
         <Box className="mt-8 w-[90%] mx-auto mb-10 min-h-[70vh]">
-            {approvedPosts.length > 0 && (<> <h2 className="text-2xl font-lora font-semibold">{name} posts:</h2> </>)}
+            {/* Banner */}
+            <Box
+                sx={{
+                    position: 'relative',
+                    backgroundImage: `url(${CategoryPostBanner.src})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    color: '#fff',
+                    padding: { xs: '50px 20px', md: '80px 40px' },
+                    minHeight: '300px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    fontFamily: "'Lora', serif",
+                    borderRadius: "5px",
+                    marginBottom: "10px",
+                    marginBottom: 5
+                }}
+            >
+                <Container
+                    sx={{
+                        display: 'flex',
+                        flexDirection: { xs: 'column', md: 'row' },
+                        alignItems: { xs: 'flex-start', md: 'center' },
+                    }}
+                >
+                    {/* Left Side: Category Information */}
+                    <Box
+                        sx={{
+                            flex: 1,
+                            paddingRight: { md: '20px' },
+                            marginBottom: { xs: '20px', md: '0' },
+                        }}
+                    >
+                        <h2 className="text-xl lg:text-4xl font-lora font-bold text-black mb-5">{name}</h2>
+                        <Typography
+                            variant="body1"
+                            sx={{
+                                maxWidth: '600px',
+                                fontFamily: "'Lora', serif",
+                                lineHeight: 1.6,
+                                color: "black",
+                                fontSize: { xs: '16px', md: '18px' },
+                            }}
+                        >
+                            Explore a curated selection of exceptional services in the <strong>{name}</strong> category. From experienced professionals to cutting-edge offerings, we help you create unforgettable moments.
+                            Whether you&apos;re looking for photographers to capture timeless memories, decorators to bring your vision to life, or community centers to host your special day, we have it all covered.
+                            <br />
+                            <br />
+                            Discover tailored solutions designed to match your preferences and make your event truly extraordinary.
+                        </Typography>
+                    </Box>
 
-            {approvedPosts.length === 0 ? (
+                    {/* Right Side: Image */}
+                    <Box
+                        sx={{
+                            flex: 1,
+                            display: 'flex',
+                            justifyContent: 'center',
+                        }}
+                    >
+                        <Box
+                            sx={{
+                                width: '100%',
+                                maxWidth: '400px',
+                                height: 'auto',
+                                overflow: 'hidden',
+                            }}
+                        >
+                            <Image
+                                src={Categories}
+                                alt={`${name} Banner`}
+                                style={{
+                                    width: '100%',
+                                    height: 'auto',
+                                    objectFit: 'cover',
+                                }}
+                            />
+                        </Box>
+                    </Box>
+                </Container>
+            </Box>
+
+            {filteredPosts.length > 0 && (<Box className="flex flex-col md:flex-row justify-between items-center gap-5">
+                <h2 className="text-2xl font-lora font-semibold">{name} posts:</h2>
+                {/* Search Input */}
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexDirection: { xs: 'column', sm: 'row' },
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: 2,
+                    }}
+                >
+                    <TextField
+                        variant="outlined"
+                        placeholder="Search in your location"
+                        value={location}
+                        onChange={handleChange}
+                        sx={{
+                            width: { xs: '100%', sm: '300px' },
+                            '& .MuiInputBase-input': {
+                                fontFamily: "'Lora', serif",
+                                height: '20px',
+                                padding: '10px',
+                            },
+                            '& .MuiOutlinedInput-root': {
+                                height: '42px',
+                            },
+                        }}
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <SearchIcon />
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+                </Box>
+            </Box>)}
+
+            {filteredPosts.length === 0 ? (
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh', mt: 2 }}>
                     <Typography variant="body1" sx={{ color: "#555", fontFamily: "Lora, Serif" }}>
                         No approved posts available for {name} category.
@@ -234,7 +375,7 @@ const CategoryPostUI = ({ params }) => {
                 </Box>
             ) : (
                 <Grid container spacing={3} className="mt-2">
-                    {approvedPosts.map((post) => (
+                    {filteredPosts.map((post) => (
                         <Grid item xs={12} sm={6} md={4} key={post._id}>
                             <Card
                                 sx={{
@@ -385,6 +526,7 @@ const CategoryPostUI = ({ params }) => {
                                                 sx={{
                                                     fontFamily: 'Lora, serif',
                                                     fontSize: { xs: '0.8rem', sm: '1rem' },
+                                                    fontWeight: 600,
                                                     marginLeft: '4px',
                                                 }}
                                             >
