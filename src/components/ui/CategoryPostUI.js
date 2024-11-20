@@ -249,7 +249,7 @@ const CategoryPostUI = ({ params }) => {
             <Box
                 sx={{
                     position: 'relative',
-                    backgroundImage: `url(${CategoryPostBanner.src})`,
+                    background: 'linear-gradient(135deg, #FDA085 0%, #F6D365 50%, #FF9A8B 100%)',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     color: '#fff',
@@ -260,8 +260,7 @@ const CategoryPostUI = ({ params }) => {
                     justifyContent: 'space-between',
                     fontFamily: "'Lora', serif",
                     borderRadius: "5px",
-                    marginBottom: "10px",
-                    marginBottom: 5
+                    marginBottom: 5,
                 }}
             >
                 <Container
@@ -269,6 +268,7 @@ const CategoryPostUI = ({ params }) => {
                         display: 'flex',
                         flexDirection: { xs: 'column', md: 'row' },
                         alignItems: { xs: 'flex-start', md: 'center' },
+                        gap: { xs: 0, md: '40px', lg: '80px' },
                     }}
                 >
                     {/* Left Side: Category Information */}
@@ -279,14 +279,14 @@ const CategoryPostUI = ({ params }) => {
                             marginBottom: { xs: '20px', md: '0' },
                         }}
                     >
-                        <h2 className="text-xl lg:text-4xl font-lora font-bold text-black mb-5">{name}</h2>
+                        <h2 className="text-xl lg:text-4xl font-lora font-bold white mb-5">{name}</h2>
                         <Typography
                             variant="body1"
                             sx={{
                                 maxWidth: '600px',
                                 fontFamily: "'Lora', serif",
                                 lineHeight: 1.6,
-                                color: "black",
+                                color: "white",
                                 fontSize: { xs: '16px', md: '18px' },
                             }}
                         >
@@ -312,6 +312,13 @@ const CategoryPostUI = ({ params }) => {
                                 maxWidth: '400px',
                                 height: 'auto',
                                 overflow: 'hidden',
+                                boxShadow: '0 8px 20px rgba(0, 0, 0, 0.4)',
+                                borderRadius: '8px',
+                                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                                '&:hover': {
+                                    transform: 'scale(1.05)',
+                                    boxShadow: '0 12px 30px rgba(0, 0, 0, 0.5)',
+                                },
                             }}
                         >
                             <Image
@@ -321,6 +328,7 @@ const CategoryPostUI = ({ params }) => {
                                     width: '100%',
                                     height: 'auto',
                                     objectFit: 'cover',
+                                    transition: 'transform 0.3s ease',
                                 }}
                             />
                         </Box>
