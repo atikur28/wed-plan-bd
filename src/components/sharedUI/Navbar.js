@@ -182,7 +182,7 @@ export default function Navbar() {
     <>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
-        <AppBar className="fixed 3xl:static bg-white pt-3" open={open}>
+        <AppBar className="fixed bg-white pt-3" open={open}>
           <Box className="flex justify-end items-center gap-2 md:gap-8 mr-5 lg:mr-8">
             {
               !isLoggedIn ? (

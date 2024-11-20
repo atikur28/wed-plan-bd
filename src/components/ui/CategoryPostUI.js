@@ -164,7 +164,7 @@ const CategoryPostUI = ({ params }) => {
             }
         } catch (error) {
             console.log(error.message);
-            setAlertMessage("Error liking the post!");
+            setAlertMessage("Please sign in first!");
             setAlertType("error");
             setAlertOpen(true);
         }
