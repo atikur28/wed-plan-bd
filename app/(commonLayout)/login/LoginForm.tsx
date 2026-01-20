@@ -30,12 +30,12 @@ export default function LoginForm() {
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.message || "Something went wrong");
+        setError(data.message || "Something went wrong!");
         setLoading(false);
         return;
       }
 
-      router.push("/dashboard");
+      router.push("/");
     } catch (err) {
       setError("Network error, please try again.");
       setLoading(false);

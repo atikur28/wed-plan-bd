@@ -25,7 +25,7 @@ export default function SignupForm() {
     setError(null);
 
     if (password !== confirmPassword) {
-      setError("Passwords do not match");
+      setError("Passwords do not match!");
       return;
     }
 
@@ -36,18 +36,17 @@ export default function SignupForm() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          firstName,
-          lastName,
+          name: `${firstName} ${lastName}`,
           email,
           password,
-          phone,
+          phone: phone || null,
         }),
       });
 
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.message || "Something went wrong");
+        setError(data.message || "Something went wrong!");
         setLoading(false);
         return;
       }
@@ -102,9 +101,9 @@ export default function SignupForm() {
         />
       </div>
 
-      {/* Phone */}
+      {/* Phone (optional) */}
       <div className="flex flex-col gap-1">
-        <Label htmlFor="phone">Phone</Label>
+        <Label htmlFor="phone">Phone (optional)</Label>
         <Input
           id="phone"
           type="text"
